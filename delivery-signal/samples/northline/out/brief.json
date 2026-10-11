@@ -44,6 +44,7 @@
       "name": "Aster HR \u2014 Payroll export",
       "project": "ASTER",
       "text": "10 of 15 story points are Done (67%). Remaining 2, original estimate 15.",
+      "percent": 67,
       "evidence": [
         {
           "source": "work_items",
@@ -125,6 +126,7 @@
       "name": "Payroll export",
       "project": "ASTER",
       "text": "10 of 15 story points are Done (67%). Remaining 2, original estimate 15.",
+      "percent": 67,
       "evidence": [
         {
           "source": "work_items",
@@ -206,6 +208,7 @@
       "name": "Cedar Clinics \u2014 Patient portal",
       "project": "CEDAR",
       "text": "0 of 18 story points are Done (0%). Remaining 7, original estimate 10.",
+      "percent": 0,
       "evidence": [
         {
           "source": "work_items",
@@ -287,6 +290,7 @@
       "name": "Patient portal",
       "project": "CEDAR",
       "text": "0 of 18 story points are Done (0%). Remaining 7, original estimate 10.",
+      "percent": 0,
       "evidence": [
         {
           "source": "work_items",
@@ -368,6 +372,7 @@
       "name": "Forge Logistics \u2014 Warehouse API",
       "project": "FORGE",
       "text": "12 of 26 story points are Done (46%). Remaining 8, original estimate 18.",
+      "percent": 46,
       "evidence": [
         {
           "source": "work_items",
@@ -521,6 +526,7 @@
       "name": "Warehouse API",
       "project": "FORGE",
       "text": "10 of 26 story points are Done (38%). Remaining 8, original estimate 18.",
+      "percent": 38,
       "evidence": [
         {
           "source": "work_items",
@@ -650,6 +656,7 @@
       "name": "Pick tickets",
       "project": "FORGE",
       "text": "2 of 5 story points are Done (40%). Remaining 3, original estimate 5.",
+      "percent": 40,
       "evidence": [
         {
           "source": "work_items",
@@ -707,6 +714,7 @@
       "name": "Lumen Bank \u2014 Mobile onboarding",
       "project": "LUMEN",
       "text": "8 of 38 story points are Done (21%). 3 items have no story point or effort. Remaining 7, original estimate 16.",
+      "percent": 21,
       "evidence": [
         {
           "source": "work_items",
@@ -878,6 +886,7 @@
       "name": "Mobile onboarding",
       "project": "LUMEN",
       "text": "8 of 37 story points are Done (22%). 3 items have no story point or effort. Remaining 7, original estimate 16.",
+      "percent": 22,
       "evidence": [
         {
           "source": "work_items",

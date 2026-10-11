@@ -17,16 +17,10 @@ As of 10 Oct 2026, 1 of 4 projects is on track (Aster HR — Payroll export). Th
 | Forge Logistics — Warehouse API | Blocked | 12 of 26 story points are Done (46%). Remaining 8, original estimate 18. |
 | Lumen Bank — Mobile onboarding | Needs attention | 8 of 38 story points are Done (21%). 3 items have no story point or effort. Remaining 7, original estimate 16. |
 
-## Progress
-
-- Aster HR — Payroll export: 10 of 15 story points are Done (67%). Remaining 2, original estimate 15.
 - AST-1 Payroll export: 10 of 15 story points are Done (67%). Remaining 2, original estimate 15.
-- Cedar Clinics — Patient portal: 0 of 18 story points are Done (0%). Remaining 7, original estimate 10.
 - CED-1 Patient portal: 0 of 18 story points are Done (0%). Remaining 7, original estimate 10.
-- Forge Logistics — Warehouse API: 12 of 26 story points are Done (46%). Remaining 8, original estimate 18.
 - FOR-1 Warehouse API: 10 of 26 story points are Done (38%). Remaining 8, original estimate 18.
 - FOR-30 Pick tickets: 2 of 5 story points are Done (40%). Remaining 3, original estimate 5.
-- Lumen Bank — Mobile onboarding: 8 of 38 story points are Done (21%). 3 items have no story point or effort. Remaining 7, original estimate 16.
 - LUM-1 Mobile onboarding: 8 of 37 story points are Done (22%). 3 items have no story point or effort. Remaining 7, original estimate 16.
 
 

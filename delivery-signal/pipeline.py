@@ -499,6 +499,7 @@ def _progress_record(kind: str, ident: str, name: str, project: str, items: list
     done_points = sum(item.story_points or 0 for item in counted if _is_done(item.status))
     total_points = sum(item.story_points or 0 for item in counted)
     parts = []
+    percent = None
     if total_points > 0:
         percent = round(done_points / total_points * 100)
         parts.append(
@@ -536,6 +537,7 @@ def _progress_record(kind: str, ident: str, name: str, project: str, items: list
         "name": name,
         "project": project,
         "text": " ".join(parts),
+        "percent": percent,
         "evidence": evidence,
     }
 
@@ -1397,11 +1399,11 @@ def render_markdown(brief: dict) -> str:
             lines.append(f"| {row['name']} | {labels[row['state']]} | {row.get('progress') or ''} |")
         else:
             lines.append(f"| {row['name']} | {labels[row['state']]} |")
-    if brief.get("progress"):
-        lines.extend(["", "## Progress", ""])
-        for row in brief["progress"]:
-            label = row["name"] if row["kind"] == "project" else f"{row['id']} {row['name']}"
-            lines.append(f"- {label}: {row['text']}")
+    children = [row for row in brief.get("progress") or [] if row["kind"] != "project"]
+    if children:
+        lines.append("")
+        for row in children:
+            lines.append(f"- {row['id']} {row['name']}: {row['text']}")
         lines.append("")
     lines.extend(["", "## Top risks", ""])
     if not brief["top_risks"]:
@@ -1506,6 +1508,26 @@ def _profile_label(profile: str) -> str:
     )
 
 
+def _section(title: str, note: str) -> str:
+    return (
+        '<div class="section-head"><h2>{}</h2><details class="info">'
+        '<summary aria-label="About {}">i</summary><p>{}</p></details></div>'
+    ).format(html.escape(title), html.escape(title), html.escape(note))
+
+
+def _bar_html(row: dict) -> str:
+    percent = row.get("percent")
+    if percent is None:
+        return ""
+    width = max(0, min(100, int(percent)))
+    label = f"{row['name']}, {width} percent of story points Done"
+    return (
+        f'<div class="bar" role="progressbar" aria-valuenow="{width}" aria-valuemin="0" '
+        f'aria-valuemax="100" aria-label="{html.escape(label)}">'
+        f'<span style="width:{width}%"></span></div>'
+    )
+
+
 def render_html(brief: dict) -> str:
     labels = {
         "on_track": "On track",
@@ -1513,32 +1535,37 @@ def render_html(brief: dict) -> str:
         "blocked": "Blocked",
         "unchecked": "Not checked",
     }
-    pulse = "".join(
-        "<li class=\"card\"><span class=\"state {}\">{}</span><span>{}</span>{}</li>".format(
-            html.escape(row["state"]),
-            labels[row["state"]],
-            html.escape(row["name"]),
-            (
-                f"<span class=\"progress\">{html.escape(row['progress'])}</span>"
-                if row.get("progress")
-                else ""
-            ),
-        )
-        for row in brief["pulse"]
-    )
-    progress_items = []
-    for row in brief.get("progress") or []:
-        label = row["name"] if row["kind"] == "project" else f"{row['id']} {row['name']}"
-        count = len(row["evidence"])
-        progress_items.append(
-            "<li><strong>{}</strong> {} <details><summary>Evidence, {} fields</summary>{}</details></li>".format(
-                html.escape(label),
-                html.escape(row["text"]),
-                count,
-                _evidence_html(row),
+    progress_rows = brief.get("progress") or []
+    by_project = {row["id"]: row for row in progress_rows if row["kind"] == "project"}
+    children_of: dict[str, list[dict]] = {}
+    for row in progress_rows:
+        if row["kind"] != "project":
+            children_of.setdefault(row["project"], []).append(row)
+    cards = []
+    for row in brief["pulse"]:
+        parts = [
+            f'<span class="state {html.escape(row["state"])}">{labels[row["state"]]}</span>',
+            f"<span>{html.escape(row['name'])}</span>",
+        ]
+        record = by_project.get(row["id"])
+        if record:
+            parts.append(_bar_html(record))
+        if row.get("progress"):
+            parts.append(f'<span class="progress">{html.escape(row["progress"])}</span>')
+        nested = []
+        for child in children_of.get(row["id"], []):
+            nested.append(
+                '<li><span class="name">{} {}</span>{}<span class="progress">{}</span></li>'.format(
+                    html.escape(child["id"]),
+                    html.escape(child["name"]),
+                    _bar_html(child),
+                    html.escape(child["text"]),
+                )
             )
-        )
-    progress_html = f"<h2>Progress</h2><ul>{''.join(progress_items)}</ul>" if progress_items else ""
+        if nested:
+            parts.append(f'<ul class="children">{"".join(nested)}</ul>')
+        cards.append('<li class="card">' + "".join(parts) + "</li>")
+    pulse = "".join(cards)
     risks = []
     for finding in brief["top_risks"]:
         count = len(finding["evidence"])
@@ -1595,7 +1622,15 @@ def render_html(brief: dict) -> str:
     stamp = "Synthetic sample · pending approval" if brief["synthetic"] else "Pending approval"
     profile = _profile_label(str(brief.get("source_profile", "canonical")))
     limit_items = "".join(f"<li>{html.escape(item)}</li>" for item in brief.get("limits") or [])
-    limits_html = f"<h2>What this file does not support</h2><ul>{limit_items}</ul>" if limit_items else ""
+    limits_html = (
+        _section(
+            "What this file does not support",
+            "Columns or words the rules could not use. Lateness, priority, and story points are left out when those cells are missing.",
+        )
+        + f"<ul>{limit_items}</ul>"
+        if limit_items
+        else ""
+    )
     quality_rows = brief.get("data_quality") or []
     if quality_rows:
         shown = "".join(f"<li>{html.escape(issue)}</li>" for issue in quality_rows[:40])
@@ -1620,11 +1655,22 @@ def render_html(brief: dict) -> str:
     header {{ border-top: 6px solid #1c1917; padding-top: 0.8rem; }}
     .stamp {{ margin: 0; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #9a3412; }}
     h1 {{ font-size: 1.8rem; line-height: 1.1; margin: 0.35rem 0; }}
-    h2 {{ font-size: 1.05rem; margin: 1.4rem 0 0.45rem; }}
+    h2 {{ font-size: 1.05rem; margin: 0; }}
+    .section-head {{ display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin: 1.4rem 0 0.45rem; }}
+    .info {{ position: relative; margin: 0; }}
+    .info summary {{ list-style: none; width: 1.25rem; height: 1.25rem; border: 1px solid #a8a29e; border-radius: 999px; display: grid; place-items: center; font: italic 700 0.72rem/1 ui-sans-serif, system-ui, sans-serif; color: #57534e; cursor: pointer; }}
+    .info summary::-webkit-details-marker {{ display: none; }}
+    .info p {{ position: absolute; right: 0; z-index: 2; width: min(22rem, 70vw); margin: 0.35rem 0 0; padding: 0.55rem 0.7rem; background: #fffdf8; border: 1px solid #e7e0d4; box-shadow: 0 8px 20px rgba(28, 25, 23, 0.08); font-size: 0.82rem; font-weight: 400; }}
+    .bar {{ height: 0.45rem; background: #e7e0d4; border-radius: 999px; overflow: hidden; margin: 0.35rem 0 0.15rem; }}
+    .bar > span {{ display: block; height: 100%; background: #1c1917; }}
+    .children {{ list-style: none; padding: 0.35rem 0 0; margin: 0.25rem 0 0; border-top: 1px solid #e7e0d4; }}
+    .children li {{ margin-top: 0.45rem; }}
+    .children .name {{ display: block; font-size: 0.82rem; color: #44403c; }}
+    .children .bar {{ height: 0.3rem; }}
     h3 {{ font-size: 1rem; margin: 0 0 0.35rem; }}
     .meta {{ margin: 0; color: #57534e; }}
     .lede {{ font-size: 1.02rem; }}
-    .pulse {{ list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.45rem; }}
+    .pulse {{ list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.45rem; }}
     .card {{ background: #fffdf8; border: 1px solid #e7e0d4; padding: 0.7rem 0.8rem; }}
     .pulse .card {{ display: flex; flex-direction: column; gap: 0.2rem; min-height: 3.2rem; }}
     .state {{ font-weight: 700; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; }}
@@ -1656,23 +1702,22 @@ def render_html(brief: dict) -> str:
     <p class="lede">{html.escape(brief['lead'])}</p>
     {limits_html}
     {quality_html}
-    <h2>Delivery pulse</h2>
+    {_section("Delivery pulse", "Each card is one project: On track, Needs attention, Blocked, or Not checked. The bar is story points marked Done, among items that have a story point or effort. An epic, feature, or initiative is listed on that card and counted from its direct children. Remaining and the original estimate are sums of rows where both cells are numbers.")}
     <ul class="pulse">{pulse}</ul>
-    {progress_html}
-    <h2>What changed</h2>
+    {_section("What changed", "Fields that differ from the previous export: status, assignee, priority, due date, blocker, percent complete, story points, and remaining. Items that appeared or left the export are listed here too.")}
     <ul>{changes}</ul>
-    <h2>Decisions needed</h2>
+    {_section("Decisions needed", "Open items whose type is Decision, or whose status is Waiting. The owner and the due date come from those cells.")}
     <ul>{''.join(decisions) or '<li>None.</li>'}</ul>
-    <h2>Ask in the review</h2>
+    {_section("Ask in the review", "Questions drawn from the top risks and from open decisions. Nothing is sent until a person approves the brief.")}
     <ul>{questions or '<li>None.</li>'}</ul>
-    <h2>Top risks</h2>
+    {_section("Top risks", "The highest-severity findings that cite a row in the export. Evidence stays folded under each one.")}
     {''.join(risks) or '<p>No risk cleared the evidence rules.</p>'}
-    <h2>Checked and set aside</h2>
+    {_section("Checked and set aside", "A signal the rules looked at and did not promote. An overdue predecessor is set aside when its successor is already Done.")}
     <details>
       <summary>{html.escape(aside_label)}</summary>
       <ul>{aside_items}</ul>
     </details>
-    <h2>Also noted</h2>
+    {_section("Also noted", "Findings that cleared the severity threshold and did not fit at the top of the brief.")}
     <ul>{noted}</ul>
     <footer>
       <p>Send this file. The recipient does not need an account or the original export. Evidence is under each risk. Nothing on this page has been sent to a project tool.</p>
