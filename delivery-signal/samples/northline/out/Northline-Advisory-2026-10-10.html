@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Northline Advisory delivery brief</title>
+  <style>
+    :root { color-scheme: light; }
+    body { margin: 0; background: #f4f1ea; color: #1c1917; font: 15px/1.45 ui-sans-serif, system-ui, sans-serif; }
+    main { max-width: 52rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+    header { border-top: 6px solid #1c1917; padding-top: 0.8rem; }
+    .stamp { margin: 0; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #9a3412; }
+    h1 { font-size: 1.8rem; line-height: 1.1; margin: 0.35rem 0; }
+    h2 { font-size: 1.05rem; margin: 1.4rem 0 0.45rem; }
+    h3 { font-size: 1rem; margin: 0 0 0.35rem; }
+    .meta { margin: 0; color: #57534e; }
+    .lede { font-size: 1.02rem; }
+    .pulse { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.45rem; }
+    .card { background: #fffdf8; border: 1px solid #e7e0d4; padding: 0.7rem 0.8rem; }
+    .pulse .card { display: flex; flex-direction: column; gap: 0.2rem; min-height: 3.2rem; }
+    .state { font-weight: 700; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; }
+    .on_track { color: #166534; }
+    .needs_attention { color: #a16207; }
+    .blocked { color: #9a3412; }
+    .unchecked { color: #57534e; }
+    .kicker { margin: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #57534e; }
+    article { margin: 0.45rem 0; }
+    details { margin-top: 0.35rem; }
+    summary { cursor: pointer; color: #44403c; }
+    .evidence { font: 0.78rem/1.4 ui-monospace, monospace; color: #44403c; }
+    ul { padding-left: 1.1rem; }
+    footer { margin-top: 1.5rem; color: #57534e; }
+    @media (max-width: 640px) {
+      h1 { font-size: 1.45rem; }
+      .pulse { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="stamp">Synthetic sample · pending approval</p>
+      <h1>Northline Advisory</h1>
+      <p class="meta">2026-10-10 · Delivery director · Canonical export · 25 work items · rules 2026-10-11 · result e53f514aa6</p>
+    </header>
+    <p class="lede">As of 10 Oct 2026, 1 of 4 projects is on track (Aster HR — Payroll export). This brief cites rows in the approved export. It does not forecast that a future date will be missed.</p>
+    
+    
+    <h2>Delivery pulse</h2>
+    <ul class="pulse"><li class="card"><span class="state on_track">On track</span><span>Aster HR — Payroll export</span></li><li class="card"><span class="state needs_attention">Needs attention</span><span>Cedar Clinics — Patient portal</span></li><li class="card"><span class="state blocked">Blocked</span><span>Forge Logistics — Warehouse API</span></li><li class="card"><span class="state needs_attention">Needs attention</span><span>Lumen Bank — Mobile onboarding</span></li></ul>
+    <h2>What changed</h2>
+    <ul><li><strong>FOR-12</strong> assignee Alex Rahman → blank.</li><li><strong>LUM-3</strong> status In Progress → Done, percent_complete 60 → 100.</li></ul>
+    <h2>Decisions needed</h2>
+    <ul><li><strong>LUM-9</strong> Approve KYC vendor contract — owner missing, due 3 Oct 2026. overdue; unknown owner; before LUM-4</li></ul>
+    <h2>Ask in the review</h2>
+    <ul><li>Who owns FOR-12 (Rotate carrier credentials)?</li><li>Who owns LUM-4 (KYC document upload)?</li><li>What changed on Cedar Clinics — Patient portal after 20 Aug 2026? N-1 and the work-item export disagree.</li><li>Does the dependent milestone still hold while FOR-20 is blocked by FOR-12?</li><li>Which completion figure should the steering pack use: 85% or 8 of 37 story points?</li><li>Who can close LUM-9 (Approve KYC vendor contract)? No owner is named. Recorded successor: LUM-4.</li></ul>
+    <h2>Top risks</h2>
+    <article class="card"><p class="kicker">fact · severity 90</p><h3>FOR-12 is Highest priority, open, and has no assignee.</h3><p>FOR-12 (Rotate carrier credentials) is In Progress, due 8 Oct 2026 (before this report), and the assignee cell is empty. The item comment says &quot;Unassigned after Alex Rahman went on leave. Due yesterday.&quot;</p><details><summary>Evidence, 5 fields</summary><ul class="evidence"><li><code>work_items</code> FOR-12.assignee = (blank)</li><li><code>work_items</code> FOR-12.priority = Highest</li><li><code>work_items</code> FOR-12.status = In Progress</li><li><code>work_items</code> FOR-12.due = 2026-10-08</li><li><code>work_items</code> FOR-12.comment = Unassigned after Alex Rahman went on leave. Due yesterday.</li></ul></details></article><article class="card"><p class="kicker">fact · severity 90</p><h3>LUM-4 is Highest priority, open, and has no assignee.</h3><p>LUM-4 (KYC document upload) is To Do, due 6 Oct 2026 (before this report), and the assignee cell is empty. The item comment says &quot;Critical path. No owner after the previous owner left the squad.&quot;</p><details><summary>Evidence, 5 fields</summary><ul class="evidence"><li><code>work_items</code> LUM-4.assignee = (blank)</li><li><code>work_items</code> LUM-4.priority = Highest</li><li><code>work_items</code> LUM-4.status = To Do</li><li><code>work_items</code> LUM-4.due = 2026-10-06</li><li><code>work_items</code> LUM-4.comment = Critical path. No owner after the previous owner left the squad.</li></ul></details></article><article class="card"><p class="kicker">inference · severity 86</p><h3>Cedar Clinics — Patient portal is described as on track, but the export disagrees.</h3><p>N-1 on 9 Oct 2026 says the work is on track. CED-2 and CED-3 are already overdue. The newest update among these open items is 20 Aug 2026. CED-2 due 30 Sep 2026, updated 18 Aug 2026, CED-3 due 2 Oct 2026, updated 20 Aug 2026.</p><details><summary>Evidence, 8 fields</summary><ul class="evidence"><li><code>notes</code> N-1.text = Weekly status: Cedar is green and on track. No risks to raise. The team is heads down on the portal.</li><li><code>notes</code> N-1.date = 2026-10-09</li><li><code>work_items</code> CED-2.status = In Progress</li><li><code>work_items</code> CED-2.updated = 2026-08-18</li><li><code>work_items</code> CED-2.due = 2026-09-30</li><li><code>work_items</code> CED-3.status = In Progress</li><li><code>work_items</code> CED-3.updated = 2026-08-20</li><li><code>work_items</code> CED-3.due = 2026-10-02</li></ul></details></article><article class="card"><p class="kicker">fact · severity 85</p><h3>FOR-20 is blocked by FOR-12, which is overdue (8 Oct 2026) and unassigned.</h3><p>FOR-20 (Sandbox returns 401 for pick tickets) is Blocked by FOR-12 (Rotate carrier credentials). FOR-12 is In Progress, overdue (8 Oct 2026) and unassigned. Carrier cutover (MS-FOR) is due 15 Oct 2026.</p><details><summary>Evidence, 7 fields</summary><ul class="evidence"><li><code>work_items</code> FOR-20.status = Blocked</li><li><code>work_items</code> FOR-20.blocked_by = FOR-12</li><li><code>work_items</code> FOR-12.status = In Progress</li><li><code>work_items</code> FOR-12.assignee = (blank)</li><li><code>work_items</code> FOR-12.due = 2026-10-08</li><li><code>dependencies</code> DEP-CUT.successor = MS-FOR</li><li><code>milestones</code> MS-FOR.due = 2026-10-15</li></ul></details></article><article class="card"><p class="kicker">fact · severity 80</p><h3>Lumen Bank — Mobile onboarding reports 85% complete; 8 of 37 story points are done.</h3><p>LUM-1 percent_complete is 85. Child items with story points total 37, of which 8 are Done (22%). Still open at High or Highest: LUM-4 (KYC document upload), LUM-5 (Sanctions screening integration), LUM-6 (Biometric capture). N-2 says &quot;Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.&quot;</p><details><summary>Evidence, 18 fields</summary><ul class="evidence"><li><code>work_items</code> LUM-1.percent_complete = 85</li><li><code>work_items</code> LUM-2.status = Done</li><li><code>work_items</code> LUM-2.story_points = 5</li><li><code>work_items</code> LUM-3.status = Done</li><li><code>work_items</code> LUM-3.story_points = 3</li><li><code>work_items</code> LUM-4.status = To Do</li><li><code>work_items</code> LUM-4.story_points = 8</li><li><code>work_items</code> LUM-5.status = To Do</li><li><code>work_items</code> LUM-5.story_points = 8</li><li><code>work_items</code> LUM-6.status = To Do</li><li><code>work_items</code> LUM-6.story_points = 5</li><li><code>work_items</code> LUM-7.status = To Do</li><li><code>work_items</code> LUM-7.story_points = 3</li><li><code>work_items</code> LUM-8.status = To Do</li><li><code>work_items</code> LUM-8.story_points = 3</li><li><code>work_items</code> LUM-10.status = To Do</li><li><code>work_items</code> LUM-10.story_points = 2</li><li><code>notes</code> N-2.text = Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.</li></ul></details></article>
+    <h2>Checked and set aside</h2>
+    <details>
+      <summary>Legacy data extract (MS-LEG) is overdue, and it does not block FOR-3.</summary>
+      <ul><li>DEP-LEG says MS-LEG precedes FOR-3. Legacy data extract (MS-LEG) is overdue, and FOR-3 is Done. N-5 says &quot;We no longer need the legacy data extract. FOR-3 was finished from the snapshot feed in July.&quot;</li></ul>
+    </details>
+    <h2>Also noted</h2>
+    <ul><li>LUM-5 is Highest priority, open, and has no assignee.</li></ul>
+    <footer>
+      <p>Send this file. The recipient does not need an account or the original export. Evidence is under each risk. Nothing on this page has been sent to a project tool.</p>
+      <p>A person approves the brief before a customer sees it. The result id changes when the findings change, so two copies can be compared.</p>
+      <p>Synthetic portfolio for a boutique consultancy with four client engagements. The names are invented. This is a sample, not a customer delivery.</p>
+    </footer>
+  </main>
+</body>
+</html>

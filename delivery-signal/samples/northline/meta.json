@@ -1,0 +1,10 @@
+{
+  "portfolio": "Northline Advisory",
+  "as_of": "2026-10-10",
+  "audience": "Delivery director",
+  "description": "Synthetic portfolio for a boutique consultancy with four client engagements. The names are invented. This is a sample, not a customer delivery.",
+  "synthetic": true,
+  "stale_days": 14,
+  "top_n": 5,
+  "min_severity": 40
+}

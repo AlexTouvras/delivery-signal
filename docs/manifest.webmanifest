@@ -1,0 +1,47 @@
+{
+  "name": "Delivery Signal",
+  "short_name": "Delivery",
+  "description": "A weekly delivery brief from a Jira or Azure DevOps CSV. The export stays on this device.",
+  "id": "./",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f1ea",
+  "theme_color": "#1c1917",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "share_target": {
+    "action": "./share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "name",
+      "files": [
+        {
+          "name": "export",
+          "accept": ["text/csv", ".csv", "application/vnd.ms-excel"]
+        }
+      ]
+    }
+  },
+  "file_handlers": [
+    {
+      "action": "./index.html",
+      "accept": {
+        "text/csv": [".csv"]
+      }
+    }
+  ]
+}

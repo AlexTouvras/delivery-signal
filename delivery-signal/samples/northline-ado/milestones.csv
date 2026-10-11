@@ -1,0 +1,6 @@
+id,project,name,due,status
+MS-LUM,LUMEN,KYC ready for UAT,2026-10-17,Open
+MS-CED,CEDAR,Clinic pilot,2026-10-30,Open
+MS-FOR,FORGE,Carrier cutover,2026-10-15,Open
+MS-AST,ASTER,Payroll dry run,2026-10-24,Open
+MS-LEG,FORGE,Legacy data extract,2026-09-01,Overdue

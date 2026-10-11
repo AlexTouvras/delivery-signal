@@ -1,0 +1,14 @@
+{
+  "name": "delivery-signal",
+  "version": "0.1.0",
+  "description": "A weekly delivery brief from a Jira, Azure DevOps, or CSV export.",
+  "bin": {
+    "delivery-signal": "delivery-signal/bin.js"
+  },
+  "files": [
+    "delivery-signal/bin.js",
+    "delivery-signal/pipeline.py",
+    "delivery-signal/extract.py",
+    "delivery-signal/link.py"
+  ]
+}

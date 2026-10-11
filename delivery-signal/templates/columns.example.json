@@ -1,0 +1,7 @@
+{
+  "profile": "jira",
+  "columns": {
+    "due": "Target end",
+    "blocked_by": "Custom field (Blocked by)"
+  }
+}

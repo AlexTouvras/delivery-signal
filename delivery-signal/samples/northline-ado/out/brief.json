@@ -1,0 +1,583 @@
+{
+  "portfolio": "Northline Advisory",
+  "as_of": "2026-10-10",
+  "audience": "Delivery director",
+  "description": "Same synthetic portfolio as northline, saved in the azure_devops column layout. Not a customer delivery.",
+  "approval": "pending",
+  "synthetic": true,
+  "source_profile": "azure_devops",
+  "item_count": 25,
+  "rules_version": "2026-10-11",
+  "result_id": "e53f514aa6",
+  "lead": "As of 10 Oct 2026, 1 of 4 projects is on track (Aster HR \u2014 Payroll export). This brief cites rows in the approved export. It does not forecast that a future date will be missed.",
+  "limits": [],
+  "pulse": [
+    {
+      "id": "ASTER",
+      "name": "Aster HR \u2014 Payroll export",
+      "state": "on_track"
+    },
+    {
+      "id": "CEDAR",
+      "name": "Cedar Clinics \u2014 Patient portal",
+      "state": "needs_attention"
+    },
+    {
+      "id": "FORGE",
+      "name": "Forge Logistics \u2014 Warehouse API",
+      "state": "blocked"
+    },
+    {
+      "id": "LUMEN",
+      "name": "Lumen Bank \u2014 Mobile onboarding",
+      "state": "needs_attention"
+    }
+  ],
+  "top_risks": [
+    {
+      "id": "unassigned:FOR-12",
+      "kind": "unassigned",
+      "severity": 90,
+      "confidence": "fact",
+      "project": "FORGE",
+      "title": "FOR-12 is Highest priority, open, and has no assignee.",
+      "summary": "FOR-12 (Rotate carrier credentials) is In Progress, due 8 Oct 2026 (before this report), and the assignee cell is empty. The item comment says \"Unassigned after Alex Rahman went on leave. Due yesterday.\"",
+      "blocks_delivery": false,
+      "suggested_question": "Who owns FOR-12 (Rotate carrier credentials)?",
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "assignee",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "priority",
+          "value": "Highest"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "due",
+          "value": "2026-10-08"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "comment",
+          "value": "Unassigned after Alex Rahman went on leave. Due yesterday."
+        }
+      ]
+    },
+    {
+      "id": "unassigned:LUM-4",
+      "kind": "unassigned",
+      "severity": 90,
+      "confidence": "fact",
+      "project": "LUMEN",
+      "title": "LUM-4 is Highest priority, open, and has no assignee.",
+      "summary": "LUM-4 (KYC document upload) is To Do, due 6 Oct 2026 (before this report), and the assignee cell is empty. The item comment says \"Critical path. No owner after the previous owner left the squad.\"",
+      "blocks_delivery": false,
+      "suggested_question": "Who owns LUM-4 (KYC document upload)?",
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "LUM-4",
+          "field": "assignee",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-4",
+          "field": "priority",
+          "value": "Highest"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-4",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-4",
+          "field": "due",
+          "value": "2026-10-06"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-4",
+          "field": "comment",
+          "value": "Critical path. No owner after the previous owner left the squad."
+        }
+      ]
+    },
+    {
+      "id": "note_conflict:N-1",
+      "kind": "note_conflict",
+      "severity": 86,
+      "confidence": "inference",
+      "project": "CEDAR",
+      "title": "Cedar Clinics \u2014 Patient portal is described as on track, but the export disagrees.",
+      "summary": "N-1 on 9 Oct 2026 says the work is on track. CED-2 and CED-3 are already overdue. The newest update among these open items is 20 Aug 2026. CED-2 due 30 Sep 2026, updated 18 Aug 2026, CED-3 due 2 Oct 2026, updated 20 Aug 2026.",
+      "blocks_delivery": false,
+      "suggested_question": "What changed on Cedar Clinics \u2014 Patient portal after 20 Aug 2026? N-1 and the work-item export disagree.",
+      "evidence": [
+        {
+          "source": "notes",
+          "id": "N-1",
+          "field": "text",
+          "value": "Weekly status: Cedar is green and on track. No risks to raise. The team is heads down on the portal."
+        },
+        {
+          "source": "notes",
+          "id": "N-1",
+          "field": "date",
+          "value": "2026-10-09"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-2",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-2",
+          "field": "updated",
+          "value": "2026-08-18"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-2",
+          "field": "due",
+          "value": "2026-09-30"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-3",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-3",
+          "field": "updated",
+          "value": "2026-08-20"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-3",
+          "field": "due",
+          "value": "2026-10-02"
+        }
+      ]
+    },
+    {
+      "id": "blocked:FOR-20",
+      "kind": "blocked",
+      "severity": 85,
+      "confidence": "fact",
+      "project": "FORGE",
+      "title": "FOR-20 is blocked by FOR-12, which is overdue (8 Oct 2026) and unassigned.",
+      "summary": "FOR-20 (Sandbox returns 401 for pick tickets) is Blocked by FOR-12 (Rotate carrier credentials). FOR-12 is In Progress, overdue (8 Oct 2026) and unassigned. Carrier cutover (MS-FOR) is due 15 Oct 2026.",
+      "blocks_delivery": true,
+      "suggested_question": "Does the dependent milestone still hold while FOR-20 is blocked by FOR-12?",
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "FOR-20",
+          "field": "status",
+          "value": "Blocked"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-20",
+          "field": "blocked_by",
+          "value": "FOR-12"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "assignee",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "due",
+          "value": "2026-10-08"
+        },
+        {
+          "source": "dependencies",
+          "id": "DEP-CUT",
+          "field": "successor",
+          "value": "MS-FOR"
+        },
+        {
+          "source": "milestones",
+          "id": "MS-FOR",
+          "field": "due",
+          "value": "2026-10-15"
+        }
+      ]
+    },
+    {
+      "id": "completion:LUM-1",
+      "kind": "misleading_completion",
+      "severity": 80,
+      "confidence": "fact",
+      "project": "LUMEN",
+      "title": "Lumen Bank \u2014 Mobile onboarding reports 85% complete; 8 of 37 story points are done.",
+      "summary": "LUM-1 percent_complete is 85. Child items with story points total 37, of which 8 are Done (22%). Still open at High or Highest: LUM-4 (KYC document upload), LUM-5 (Sanctions screening integration), LUM-6 (Biometric capture). N-2 says \"Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.\"",
+      "blocks_delivery": false,
+      "suggested_question": "Which completion figure should the steering pack use: 85% or 8 of 37 story points?",
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "LUM-1",
+          "field": "percent_complete",
+          "value": "85"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-3",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-3",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-4",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-4",
+          "field": "story_points",
+          "value": "8"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-5",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-5",
+          "field": "story_points",
+          "value": "8"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-6",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-6",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-7",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-7",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-8",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-8",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-10",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-10",
+          "field": "story_points",
+          "value": "2"
+        },
+        {
+          "source": "notes",
+          "id": "N-2",
+          "field": "text",
+          "value": "Leadership slide says onboarding is 85% complete and the only open item is copy for the app store."
+        }
+      ]
+    }
+  ],
+  "also_noted": [
+    {
+      "id": "unassigned:LUM-5",
+      "kind": "unassigned",
+      "severity": 74,
+      "confidence": "fact",
+      "project": "LUMEN",
+      "title": "LUM-5 is Highest priority, open, and has no assignee.",
+      "summary": "LUM-5 (Sanctions screening integration) is To Do, due 28 Oct 2026, and the assignee cell is empty.",
+      "blocks_delivery": false,
+      "suggested_question": "Who owns LUM-5 (Sanctions screening integration)?",
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "LUM-5",
+          "field": "assignee",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-5",
+          "field": "priority",
+          "value": "Highest"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-5",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-5",
+          "field": "due",
+          "value": "2026-10-28"
+        }
+      ]
+    }
+  ],
+  "set_aside": [
+    {
+      "id": "non_blocking:DEP-LEG",
+      "kind": "non_blocking_dependency",
+      "severity": 15,
+      "confidence": "fact",
+      "project": "FORGE",
+      "title": "Legacy data extract (MS-LEG) is overdue, and it does not block FOR-3.",
+      "summary": "DEP-LEG says MS-LEG precedes FOR-3. Legacy data extract (MS-LEG) is overdue, and FOR-3 is Done. N-5 says \"We no longer need the legacy data extract. FOR-3 was finished from the snapshot feed in July.\"",
+      "blocks_delivery": false,
+      "suggested_question": "",
+      "evidence": [
+        {
+          "source": "dependencies",
+          "id": "DEP-LEG",
+          "field": "predecessor",
+          "value": "MS-LEG"
+        },
+        {
+          "source": "dependencies",
+          "id": "DEP-LEG",
+          "field": "successor",
+          "value": "FOR-3"
+        },
+        {
+          "source": "milestones",
+          "id": "MS-LEG",
+          "field": "status",
+          "value": "Overdue"
+        },
+        {
+          "source": "milestones",
+          "id": "MS-LEG",
+          "field": "due",
+          "value": "2026-09-01"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-3",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "notes",
+          "id": "N-5",
+          "field": "text",
+          "value": "We no longer need the legacy data extract. FOR-3 was finished from the snapshot feed in July."
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "key": "LUM-9",
+      "project": "LUMEN",
+      "project_name": "Lumen Bank \u2014 Mobile onboarding",
+      "summary": "Approve KYC vendor contract",
+      "status": "Waiting",
+      "owner": "missing",
+      "due": "2026-10-03",
+      "overdue": true,
+      "successors": [
+        "LUM-4"
+      ],
+      "unknowns": [
+        "owner"
+      ],
+      "comment": "Legal asked for a vendor decision on 30 Sep. Still waiting.",
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "LUM-9",
+          "field": "status",
+          "value": "Waiting"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-9",
+          "field": "assignee",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-9",
+          "field": "due",
+          "value": "2026-10-03"
+        },
+        {
+          "source": "dependencies",
+          "id": "DEP-KYC",
+          "field": "successor",
+          "value": "LUM-4"
+        }
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "key": "FOR-12",
+      "project": "FORGE",
+      "summary": "Rotate carrier credentials",
+      "fields": [
+        {
+          "field": "assignee",
+          "before": "Alex Rahman",
+          "after": "blank"
+        }
+      ]
+    },
+    {
+      "key": "LUM-3",
+      "project": "LUMEN",
+      "summary": "Email verification",
+      "fields": [
+        {
+          "field": "status",
+          "before": "In Progress",
+          "after": "Done"
+        },
+        {
+          "field": "percent_complete",
+          "before": "60",
+          "after": "100"
+        }
+      ]
+    }
+  ],
+  "has_previous": true,
+  "questions": [
+    "Who owns FOR-12 (Rotate carrier credentials)?",
+    "Who owns LUM-4 (KYC document upload)?",
+    "What changed on Cedar Clinics \u2014 Patient portal after 20 Aug 2026? N-1 and the work-item export disagree.",
+    "Does the dependent milestone still hold while FOR-20 is blocked by FOR-12?",
+    "Which completion figure should the steering pack use: 85% or 8 of 37 story points?",
+    "Who can close LUM-9 (Approve KYC vendor contract)? No owner is named. Recorded successor: LUM-4."
+  ],
+  "actions": [
+    {
+      "text": "Who owns FOR-12 (Rotate carrier credentials)?",
+      "requires_approval": true,
+      "status": "proposed"
+    },
+    {
+      "text": "Who owns LUM-4 (KYC document upload)?",
+      "requires_approval": true,
+      "status": "proposed"
+    },
+    {
+      "text": "What changed on Cedar Clinics \u2014 Patient portal after 20 Aug 2026? N-1 and the work-item export disagree.",
+      "requires_approval": true,
+      "status": "proposed"
+    },
+    {
+      "text": "Does the dependent milestone still hold while FOR-20 is blocked by FOR-12?",
+      "requires_approval": true,
+      "status": "proposed"
+    },
+    {
+      "text": "Which completion figure should the steering pack use: 85% or 8 of 37 story points?",
+      "requires_approval": true,
+      "status": "proposed"
+    },
+    {
+      "text": "Who can close LUM-9 (Approve KYC vendor contract)? No owner is named. Recorded successor: LUM-4.",
+      "requires_approval": true,
+      "status": "proposed"
+    }
+  ],
+  "data_quality": [],
+  "rules": {
+    "stale_days": 14,
+    "completion_reported_at_least": 70,
+    "completion_done_ratio_at_most": 0.5,
+    "top_n": 5,
+    "min_severity": 40
+  },
+  "quality": {
+    "traceable": true,
+    "findings": 6,
+    "set_aside": 1,
+    "unsupported_dropped": 0,
+    "approval": "pending"
+  }
+}

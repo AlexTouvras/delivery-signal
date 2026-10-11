@@ -1,0 +1,5 @@
+id,predecessor,successor,note
+DEP-LEG,MS-LEG,FOR-3,Original plan said the legacy extract blocks the consumer story.
+DEP-CRED,FOR-12,FOR-20,Pick tickets stay blocked until carrier credentials rotate.
+DEP-KYC,LUM-9,LUM-4,Document upload waits on the vendor decision.
+DEP-CUT,FOR-20,MS-FOR,Cutover needs working pick tickets.

@@ -1,0 +1,26 @@
+ID,Team Project,Area Path,Work Item Type,Title,State,Priority,Assigned To,Story Points,Percent Complete,Created Date,Changed Date,Due Date,Parent,Blocked By,Description
+LUM-1,LUMEN,Lumen Bank — Mobile onboarding,Epic,Mobile onboarding,Active,2,Nora Feld <nora.feld@northline.example>,40,85,06/01/2026,10/08/2026 4:12:00 PM,,,,Sprint report marks the epic 85% complete.
+LUM-2,LUMEN,Lumen Bank — Mobile onboarding,Story,Registration form,Closed,3,Nora Feld <nora.feld@northline.example>,5,100,06/02/2026,09/20/2026 4:12:00 PM,09/15/2026,LUM-1,,
+LUM-3,LUMEN,Lumen Bank — Mobile onboarding,Story,Email verification,Closed,3,Jonas Berg <jonas.berg@northline.example>,3,100,06/02/2026,10/09/2026 4:12:00 PM,09/20/2026,LUM-1,,
+LUM-4,LUMEN,Lumen Bank — Mobile onboarding,Story,KYC document upload,New,1,,8,,06/02/2026,09/01/2026 4:12:00 PM,10/06/2026,LUM-1,,Critical path. No owner after the previous owner left the squad.
+LUM-5,LUMEN,Lumen Bank — Mobile onboarding,Story,Sanctions screening integration,New,1,,8,,06/03/2026,08/28/2026 4:12:00 PM,10/28/2026,LUM-1,,
+LUM-6,LUMEN,Lumen Bank — Mobile onboarding,Story,Biometric capture,New,2,Jonas Berg <jonas.berg@northline.example>,5,,06/03/2026,10/02/2026 4:12:00 PM,10/20/2026,LUM-1,,
+LUM-7,LUMEN,Lumen Bank — Mobile onboarding,Story,Audit trail,New,3,Nora Feld <nora.feld@northline.example>,3,,06/04/2026,10/01/2026 4:12:00 PM,10/24/2026,LUM-1,,
+LUM-8,LUMEN,Lumen Bank — Mobile onboarding,Story,UAT script,New,3,,3,,06/04/2026,09/15/2026 4:12:00 PM,10/27/2026,LUM-1,,
+LUM-9,LUMEN,Lumen Bank — Mobile onboarding,Decision,Approve KYC vendor contract,Pending,1,,1,,07/01/2026,09/30/2026 4:12:00 PM,10/03/2026,,,Legal asked for a vendor decision on 30 Sep. Still waiting.
+LUM-10,LUMEN,Lumen Bank — Mobile onboarding,Story,App store listing copy,New,4,Nora Feld <nora.feld@northline.example>,2,,06/05/2026,10/07/2026 4:12:00 PM,11/02/2026,LUM-1,,
+CED-1,CEDAR,Cedar Clinics — Patient portal,Epic,Patient portal,Active,2,Elena Voss <elena.voss@northline.example>,20,60,05/01/2026,08/12/2026 4:12:00 PM,,,,
+CED-2,CEDAR,Cedar Clinics — Patient portal,Story,Appointment view,Active,2,Elena Voss <elena.voss@northline.example>,5,40,05/02/2026,08/18/2026 4:12:00 PM,09/30/2026,CED-1,,Last standup note: still wiring the calendar.
+CED-3,CEDAR,Cedar Clinics — Patient portal,Story,Prescription refill,Active,2,Marco Lind <marco.lind@northline.example>,5,,05/02/2026,08/20/2026 4:12:00 PM,10/02/2026,CED-1,,
+CED-4,CEDAR,Cedar Clinics — Patient portal,Story,Lab results,New,3,Elena Voss <elena.voss@northline.example>,5,,05/03/2026,08/11/2026 4:12:00 PM,10/16/2026,CED-1,,
+CED-5,CEDAR,Cedar Clinics — Patient portal,Story,Accessibility pass,New,3,,3,,05/04/2026,08/11/2026 4:12:00 PM,10/23/2026,CED-1,,
+FOR-1,FORGE,Forge Logistics — Warehouse API,Epic,Warehouse API,Active,2,Samir Adeyemi <samir.adeyemi@northline.example>,30,50,04/01/2026,10/09/2026 4:12:00 PM,,,,
+FOR-2,FORGE,Forge Logistics — Warehouse API,Story,Inventory endpoint,Closed,3,Samir Adeyemi <samir.adeyemi@northline.example>,5,100,04/02/2026,08/01/2026 4:12:00 PM,08/15/2026,FOR-1,,
+FOR-3,FORGE,Forge Logistics — Warehouse API,Story,Legacy data extract consumer,Closed,3,Samir Adeyemi <samir.adeyemi@northline.example>,5,100,04/02/2026,07/20/2026 4:12:00 PM,07/31/2026,FOR-1,,Completed from the snapshot feed. The legacy extract was not required.
+FOR-12,FORGE,Forge Logistics — Warehouse API,Task,Rotate carrier credentials,Active,1,,5,,09/01/2026,10/09/2026 4:12:00 PM,10/08/2026,FOR-1,,Unassigned after Alex Rahman went on leave. Due yesterday.
+FOR-20,FORGE,Forge Logistics — Warehouse API,Bug,Sandbox returns 401 for pick tickets,Blocked,2,Samir Adeyemi <samir.adeyemi@northline.example>,3,,09/20/2026,10/09/2026 4:12:00 PM,10/12/2026,FOR-1,FOR-12,Blocked on carrier credentials.
+FOR-21,FORGE,Forge Logistics — Warehouse API,Story,Rate-limit handling,Active,3,Samir Adeyemi <samir.adeyemi@northline.example>,3,,09/15/2026,10/08/2026 4:12:00 PM,10/18/2026,FOR-1,,
+AST-1,ASTER,Aster HR — Payroll export,Epic,Payroll export,Active,3,Mina Cho <mina.cho@northline.example>,15,70,08/01/2026,10/09/2026 4:12:00 PM,,,,
+AST-2,ASTER,Aster HR — Payroll export,Story,Employee file mapping,Closed,3,Mina Cho <mina.cho@northline.example>,5,100,08/02/2026,09/28/2026 4:12:00 PM,09/30/2026,AST-1,,
+AST-3,ASTER,Aster HR — Payroll export,Story,Tax code table,Closed,3,Mina Cho <mina.cho@northline.example>,5,100,08/02/2026,10/06/2026 4:12:00 PM,10/04/2026,AST-1,,
+AST-4,ASTER,Aster HR — Payroll export,Story,Export scheduler,Active,3,Mina Cho <mina.cho@northline.example>,5,50,08/03/2026,10/09/2026 4:12:00 PM,10/24/2026,AST-1,,On track for the 24 Oct dry run.

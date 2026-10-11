@@ -1,0 +1,6 @@
+id,date,project,author,text
+N-1,2026-10-09,CEDAR,Elena Voss,Weekly status: Cedar is green and on track. No risks to raise. The team is heads down on the portal.
+N-2,2026-10-09,LUMEN,Nora Feld,Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.
+N-3,2026-10-08,FORGE,Samir Adeyemi,Carrier cutover is at risk because pick tickets fail with 401. Alex is on leave and the credential task has no owner.
+N-4,2026-10-09,ASTER,Mina Cho,Payroll export is on track for the 24 October dry run. No blockers.
+N-5,2026-10-01,FORGE,Samir Adeyemi,We no longer need the legacy data extract. FOR-3 was finished from the snapshot feed in July.

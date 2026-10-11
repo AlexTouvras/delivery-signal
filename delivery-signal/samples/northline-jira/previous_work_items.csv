@@ -1,0 +1,26 @@
+Issue key,Project key,Project name,Issue Type,Summary,Status,Priority,Assignee,Story Points,Custom field (Percent complete),Created,Updated,Due date,Parent,Blocked By,Comment
+LUM-1,LUMEN,Lumen Bank — Mobile onboarding,Epic,Mobile onboarding,In Progress,High,Nora Feld,40,85,01/Jun/26,08/Oct/26 4:12 PM,,,,Sprint report marks the epic 85% complete.
+LUM-2,LUMEN,Lumen Bank — Mobile onboarding,Story,Registration form,Done,Medium,Nora Feld,5,100,02/Jun/26,20/Sep/26 4:12 PM,15/Sep/26,LUM-1,,
+LUM-3,LUMEN,Lumen Bank — Mobile onboarding,Story,Email verification,In Progress,Medium,Jonas Berg,3,60,02/Jun/26,22/Sep/26 4:12 PM,20/Sep/26,LUM-1,,Verification edge cases still open.
+LUM-4,LUMEN,Lumen Bank — Mobile onboarding,Story,KYC document upload,To Do,Highest,,8,,02/Jun/26,01/Sep/26 4:12 PM,06/Oct/26,LUM-1,,Critical path. No owner after the previous owner left the squad.
+LUM-5,LUMEN,Lumen Bank — Mobile onboarding,Story,Sanctions screening integration,To Do,Highest,,8,,03/Jun/26,28/Aug/26 4:12 PM,28/Oct/26,LUM-1,,
+LUM-6,LUMEN,Lumen Bank — Mobile onboarding,Story,Biometric capture,To Do,High,Jonas Berg,5,,03/Jun/26,02/Oct/26 4:12 PM,20/Oct/26,LUM-1,,
+LUM-7,LUMEN,Lumen Bank — Mobile onboarding,Story,Audit trail,To Do,Medium,Nora Feld,3,,04/Jun/26,01/Oct/26 4:12 PM,24/Oct/26,LUM-1,,
+LUM-8,LUMEN,Lumen Bank — Mobile onboarding,Story,UAT script,To Do,Medium,,3,,04/Jun/26,15/Sep/26 4:12 PM,27/Oct/26,LUM-1,,
+LUM-9,LUMEN,Lumen Bank — Mobile onboarding,Decision,Approve KYC vendor contract,Waiting,Highest,,1,,01/Jul/26,30/Sep/26 4:12 PM,03/Oct/26,,,Legal asked for a vendor decision on 30 Sep. Still waiting.
+LUM-10,LUMEN,Lumen Bank — Mobile onboarding,Story,App store listing copy,To Do,Low,Nora Feld,2,,05/Jun/26,07/Oct/26 4:12 PM,02/Nov/26,LUM-1,,
+CED-1,CEDAR,Cedar Clinics — Patient portal,Epic,Patient portal,In Progress,High,Elena Voss,20,60,01/May/26,12/Aug/26 4:12 PM,,,,
+CED-2,CEDAR,Cedar Clinics — Patient portal,Story,Appointment view,In Progress,High,Elena Voss,5,40,02/May/26,18/Aug/26 4:12 PM,30/Sep/26,CED-1,,Last standup note: still wiring the calendar.
+CED-3,CEDAR,Cedar Clinics — Patient portal,Story,Prescription refill,In Progress,High,Marco Lind,5,,02/May/26,20/Aug/26 4:12 PM,02/Oct/26,CED-1,,
+CED-4,CEDAR,Cedar Clinics — Patient portal,Story,Lab results,To Do,Medium,Elena Voss,5,,03/May/26,11/Aug/26 4:12 PM,16/Oct/26,CED-1,,
+CED-5,CEDAR,Cedar Clinics — Patient portal,Story,Accessibility pass,To Do,Medium,,3,,04/May/26,11/Aug/26 4:12 PM,23/Oct/26,CED-1,,
+FOR-1,FORGE,Forge Logistics — Warehouse API,Epic,Warehouse API,In Progress,High,Samir Adeyemi,30,50,01/Apr/26,09/Oct/26 4:12 PM,,,,
+FOR-2,FORGE,Forge Logistics — Warehouse API,Story,Inventory endpoint,Done,Medium,Samir Adeyemi,5,100,02/Apr/26,01/Aug/26 4:12 PM,15/Aug/26,FOR-1,,
+FOR-3,FORGE,Forge Logistics — Warehouse API,Story,Legacy data extract consumer,Done,Medium,Samir Adeyemi,5,100,02/Apr/26,20/Jul/26 4:12 PM,31/Jul/26,FOR-1,,Completed from the snapshot feed. The legacy extract was not required.
+FOR-12,FORGE,Forge Logistics — Warehouse API,Task,Rotate carrier credentials,In Progress,Highest,Alex Rahman,5,,01/Sep/26,06/Oct/26 4:12 PM,08/Oct/26,FOR-1,,Alex Rahman owns the rotation before cutover.
+FOR-20,FORGE,Forge Logistics — Warehouse API,Bug,Sandbox returns 401 for pick tickets,Blocked,High,Samir Adeyemi,3,,20/Sep/26,09/Oct/26 4:12 PM,12/Oct/26,FOR-1,FOR-12,Blocked on carrier credentials.
+FOR-21,FORGE,Forge Logistics — Warehouse API,Story,Rate-limit handling,In Progress,Medium,Samir Adeyemi,3,,15/Sep/26,08/Oct/26 4:12 PM,18/Oct/26,FOR-1,,
+AST-1,ASTER,Aster HR — Payroll export,Epic,Payroll export,In Progress,Medium,Mina Cho,15,70,01/Aug/26,09/Oct/26 4:12 PM,,,,
+AST-2,ASTER,Aster HR — Payroll export,Story,Employee file mapping,Done,Medium,Mina Cho,5,100,02/Aug/26,28/Sep/26 4:12 PM,30/Sep/26,AST-1,,
+AST-3,ASTER,Aster HR — Payroll export,Story,Tax code table,Done,Medium,Mina Cho,5,100,02/Aug/26,06/Oct/26 4:12 PM,04/Oct/26,AST-1,,
+AST-4,ASTER,Aster HR — Payroll export,Story,Export scheduler,In Progress,Medium,Mina Cho,5,50,03/Aug/26,09/Oct/26 4:12 PM,24/Oct/26,AST-1,,On track for the 24 Oct dry run.

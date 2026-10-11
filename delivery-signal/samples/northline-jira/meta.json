@@ -1,0 +1,10 @@
+{
+  "portfolio": "Northline Advisory",
+  "as_of": "2026-10-10",
+  "audience": "Delivery director",
+  "description": "Same synthetic portfolio as northline, saved in the jira column layout. Not a customer delivery.",
+  "synthetic": true,
+  "stale_days": 14,
+  "top_n": 5,
+  "min_severity": 40
+}
