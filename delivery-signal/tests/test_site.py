@@ -145,6 +145,11 @@ class PageTests(unittest.TestCase):
             self.assertIn("f1fb4eaa03", body)
             self.assertIn("8 of 38 story points are Done", body)
             self.assertIn("Pick tickets", body)
+            brief_html = frame.locator("body").inner_html()
+            self.assertIn("progressbar", brief_html)
+            self.assertIn("About Delivery pulse", brief_html)
+            frame.locator('summary[aria-label="About Delivery pulse"]').click()
+            self.assertIn("story points marked Done", frame.locator("body").inner_text())
             self.assertNotIn("No previous export was attached.", body)
             page.screenshot(path="/opt/cursor/artifacts/phone_brief.png", full_page=False)
 
