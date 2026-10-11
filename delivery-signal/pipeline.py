@@ -31,6 +31,7 @@ KNOWN_STATUS = {"done", "in progress", "to do", "blocked", "waiting"}
 KNOWN_PRIORITY = {"highest", "high", "medium", "low"}
 HIGH = {"highest", "high"}
 PRIORITY_RANK = {"highest": 0, "high": 1, "medium": 2, "low": 3}
+ROLLUP_TYPES = {"epic", "feature", "initiative"}
 GROUP_AT = 3
 OPTIMISTIC = re.compile(r"\b(green|on track|no risks?|no blockers?)\b", re.I)
 ONLY_OPEN = re.compile(r"\bonly open\b", re.I)
@@ -483,6 +484,89 @@ def _collapse_missing_estimates(findings: list[Finding]) -> list[Finding]:
             )
         )
     return rest + collapsed
+
+
+def _progress_record(kind: str, ident: str, name: str, project: str, items: list[WorkItem]) -> dict | None:
+    counted = [item for item in items if item.story_points is not None]
+    omitted = [item for item in items if item.story_points is None]
+    paired = [
+        item
+        for item in items
+        if item.original_estimate is not None and item.remaining is not None
+    ]
+    if not counted and not paired:
+        return None
+    done_points = sum(item.story_points or 0 for item in counted if _is_done(item.status))
+    total_points = sum(item.story_points or 0 for item in counted)
+    parts = []
+    if total_points > 0:
+        percent = round(done_points / total_points * 100)
+        parts.append(
+            f"{_fmt_num(done_points)} of {_fmt_num(total_points)} story points are Done ({percent}%)."
+        )
+    if omitted:
+        noun = "item has" if len(omitted) == 1 else "items have"
+        parts.append(f"{len(omitted)} {noun} no story point or effort.")
+    if paired:
+        remaining_sum = sum(item.remaining or 0 for item in paired)
+        original_sum = sum(item.original_estimate or 0 for item in paired)
+        parts.append(
+            f"Remaining {_fmt_num(remaining_sum)}, original estimate {_fmt_num(original_sum)}."
+        )
+    evidence = []
+    for item in sorted(counted, key=lambda item: item.key):
+        evidence.extend(
+            [
+                _item_evidence(item, "status").to_dict(),
+                _item_evidence(item, "story_points").to_dict(),
+            ]
+        )
+    for item in sorted(omitted, key=lambda item: item.key):
+        evidence.append(_item_evidence(item, "story_points").to_dict())
+    for item in sorted(paired, key=lambda item: item.key):
+        evidence.extend(
+            [
+                _item_evidence(item, "remaining").to_dict(),
+                _item_evidence(item, "original_estimate").to_dict(),
+            ]
+        )
+    return {
+        "kind": kind,
+        "id": ident,
+        "name": name,
+        "project": project,
+        "text": " ".join(parts),
+        "evidence": evidence,
+    }
+
+
+def _portfolio_progress(data: dict, names: dict[str, str]) -> list[dict]:
+    rows = []
+    for project in sorted(names):
+        leaves = [
+            item
+            for item in data["items"]
+            if item.project == project and item.type.strip().lower() not in ROLLUP_TYPES
+        ]
+        record = _progress_record("project", project, names[project], project, leaves)
+        if record:
+            rows.append(record)
+        parents = [
+            item
+            for item in data["items"]
+            if item.project == project and item.type.strip().lower() in ROLLUP_TYPES
+        ]
+        for parent in sorted(parents, key=lambda item: item.key):
+            record = _progress_record(
+                parent.type.strip().lower(),
+                parent.key,
+                parent.summary,
+                project,
+                _children(data, parent.key),
+            )
+            if record:
+                rows.append(record)
+    return rows
 
 
 def _file_limits(items: list[WorkItem]) -> list[str]:
@@ -1115,6 +1199,8 @@ def analyse(data: dict) -> dict:
     top = ranked[: data["top_n"]]
     also = [finding for finding in ranked if finding not in top]
 
+    progress = _portfolio_progress(data, names)
+    project_progress = {row["id"]: row["text"] for row in progress if row["kind"] == "project"}
     projects = []
     blocked_projects = {
         item.project
@@ -1131,7 +1217,14 @@ def analyse(data: dict) -> dict:
             state = "unchecked"
         else:
             state = "on_track"
-        projects.append({"id": project, "name": names[project], "state": state})
+        projects.append(
+            {
+                "id": project,
+                "name": names[project],
+                "state": state,
+                "progress": project_progress.get(project, ""),
+            }
+        )
 
     limits = _file_limits(data["items"])
     on_track = [row["name"] for row in projects if row["state"] == "on_track"]
@@ -1212,6 +1305,7 @@ def analyse(data: dict) -> dict:
         "lead": lead,
         "limits": limits,
         "pulse": projects,
+        "progress": progress,
         "top_risks": [finding.to_dict() for finding in top],
         "also_noted": [finding.to_dict() for finding in also],
         "set_aside": [finding.to_dict() for finding in set_aside],
@@ -1294,8 +1388,21 @@ def render_markdown(brief: dict) -> str:
         "blocked": "Blocked",
         "unchecked": "Not checked",
     }
+    show_progress = any(row.get("progress") for row in brief["pulse"])
+    if show_progress:
+        lines[-2] = "| Project | State | Progress |"
+        lines[-1] = "| --- | --- | --- |"
     for row in brief["pulse"]:
-        lines.append(f"| {row['name']} | {labels[row['state']]} |")
+        if show_progress:
+            lines.append(f"| {row['name']} | {labels[row['state']]} | {row.get('progress') or ''} |")
+        else:
+            lines.append(f"| {row['name']} | {labels[row['state']]} |")
+    if brief.get("progress"):
+        lines.extend(["", "## Progress", ""])
+        for row in brief["progress"]:
+            label = row["name"] if row["kind"] == "project" else f"{row['id']} {row['name']}"
+            lines.append(f"- {label}: {row['text']}")
+        lines.append("")
     lines.extend(["", "## Top risks", ""])
     if not brief["top_risks"]:
         lines.append("No risk cleared the evidence rules.")
@@ -1358,6 +1465,7 @@ def render_markdown(brief: dict) -> str:
             "- An open Highest or High item with an empty story point or effort cell has no estimate. Three or more in one project and priority are one count.",
             "- Remaining above the original estimate cites both numbers. A Done item whose remaining cell is not zero is cited. Those figures are not turned into days.",
             "- A story point or remaining figure that changed since the previous export is listed with the other changes.",
+            "- Progress counts story points Done on items that have a story point or effort. Epic, feature, and initiative points stay out of the project total. Those parents are counted from their direct children. Remaining and the original estimate are summed where both cells are numbers.",
             "- Stale and overdue items are raised without a notes file. A note that says the work is on track is still compared with the export.",
             "- Optimistic notes are an inference. The dates and statuses they are compared with are facts.",
             "- These thresholds are operating rules for the sample, not a validated predictor of delay.",
@@ -1406,13 +1514,31 @@ def render_html(brief: dict) -> str:
         "unchecked": "Not checked",
     }
     pulse = "".join(
-        "<li class=\"card\"><span class=\"state {}\">{}</span><span>{}</span></li>".format(
+        "<li class=\"card\"><span class=\"state {}\">{}</span><span>{}</span>{}</li>".format(
             html.escape(row["state"]),
             labels[row["state"]],
             html.escape(row["name"]),
+            (
+                f"<span class=\"progress\">{html.escape(row['progress'])}</span>"
+                if row.get("progress")
+                else ""
+            ),
         )
         for row in brief["pulse"]
     )
+    progress_items = []
+    for row in brief.get("progress") or []:
+        label = row["name"] if row["kind"] == "project" else f"{row['id']} {row['name']}"
+        count = len(row["evidence"])
+        progress_items.append(
+            "<li><strong>{}</strong> {} <details><summary>Evidence, {} fields</summary>{}</details></li>".format(
+                html.escape(label),
+                html.escape(row["text"]),
+                count,
+                _evidence_html(row),
+            )
+        )
+    progress_html = f"<h2>Progress</h2><ul>{''.join(progress_items)}</ul>" if progress_items else ""
     risks = []
     for finding in brief["top_risks"]:
         count = len(finding["evidence"])
@@ -1502,6 +1628,7 @@ def render_html(brief: dict) -> str:
     .card {{ background: #fffdf8; border: 1px solid #e7e0d4; padding: 0.7rem 0.8rem; }}
     .pulse .card {{ display: flex; flex-direction: column; gap: 0.2rem; min-height: 3.2rem; }}
     .state {{ font-weight: 700; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; }}
+    .progress {{ color: #44403c; font-size: 0.85rem; }}
     .on_track {{ color: #166534; }}
     .needs_attention {{ color: #a16207; }}
     .blocked {{ color: #9a3412; }}
@@ -1531,6 +1658,7 @@ def render_html(brief: dict) -> str:
     {quality_html}
     <h2>Delivery pulse</h2>
     <ul class="pulse">{pulse}</ul>
+    {progress_html}
     <h2>What changed</h2>
     <ul>{changes}</ul>
     <h2>Decisions needed</h2>

@@ -55,7 +55,7 @@ class NorthlineSampleTests(unittest.TestCase):
         cls.brief = pipeline.build(SAMPLE)
 
     def test_planted_traps_are_the_top_risks(self) -> None:
-        self.assertEqual(self.brief["result_id"], "e53f514aa6")
+        self.assertEqual(self.brief["result_id"], "f1fb4eaa03")
         ids = [finding["id"] for finding in self.brief["top_risks"]]
         self.assertEqual(
             ids,
@@ -103,23 +103,22 @@ class NorthlineSampleTests(unittest.TestCase):
 
     def test_changes_are_limited_to_the_previous_export(self) -> None:
         by_key = {change["key"]: change for change in self.brief["changes"]}
-        self.assertEqual(set(by_key), {"FOR-12", "LUM-3"})
+        self.assertEqual(set(by_key), {"AST-4", "FOR-12", "LUM-3", "LUM-6"})
         assignee = next(field for field in by_key["FOR-12"]["fields"] if field["field"] == "assignee")
         self.assertEqual(assignee["before"], "Alex Rahman")
         self.assertEqual(assignee["after"], "blank")
         status = next(field for field in by_key["LUM-3"]["fields"] if field["field"] == "status")
         self.assertEqual(status["before"], "In Progress")
         self.assertEqual(status["after"], "Done")
-        for change in self.brief["changes"]:
-            fields = {field["field"] for field in change["fields"]}
-            self.assertNotIn("story_points", fields)
-            self.assertNotIn("remaining", fields)
-        estimate_ids = [
-            finding["id"]
-            for finding in self.brief["top_risks"] + self.brief["also_noted"]
-            if "estimate" in finding["id"] or "remaining" in finding["id"]
-        ]
-        self.assertEqual(estimate_ids, [])
+        points = next(field for field in by_key["AST-4"]["fields"] if field["field"] == "story_points")
+        self.assertEqual((points["before"], points["after"]), ("3", "5"))
+        remaining = next(field for field in by_key["LUM-6"]["fields"] if field["field"] == "remaining")
+        self.assertEqual((remaining["before"], remaining["after"]), ("2", "5"))
+        also = {finding["id"] for finding in self.brief["also_noted"]}
+        self.assertIn("missing-estimate-count:LUMEN:Highest", also)
+        self.assertIn("remaining-above:FOR-21", also)
+        self.assertIn("done-remaining:LUM-2", also)
+        self.assertNotIn("missing-estimate-count:LUMEN:Highest", {finding["id"] for finding in self.brief["top_risks"]})
 
     def test_every_claim_cites_a_real_row(self) -> None:
         loaded = pipeline.load_portfolio(SAMPLE)
@@ -136,6 +135,12 @@ class NorthlineSampleTests(unittest.TestCase):
             for evidence in finding["evidence"]:
                 self.assertIn(evidence["id"], known[evidence["source"]])
                 self.assertTrue(evidence["field"])
+        self.assertTrue(self.brief["progress"])
+        for row in self.brief["progress"]:
+            self.assertTrue(row["evidence"])
+            for evidence in row["evidence"]:
+                self.assertIn(evidence["id"], known[evidence["source"]])
+                self.assertTrue(evidence["field"])
         self.assertEqual(self.brief["data_quality"], [])
         self.assertTrue(self.brief["quality"]["traceable"])
         self.assertEqual(self.brief["approval"], "pending")
@@ -145,6 +150,29 @@ class NorthlineSampleTests(unittest.TestCase):
         for phrase in ("will miss", "predicted", "guarantee", "on schedule to fail"):
             self.assertNotIn(phrase, text)
         self.assertIn("does not forecast", text)
+
+    def test_progress_covers_the_project_the_epic_and_the_feature(self) -> None:
+        by_id = {row["id"]: row["text"] for row in self.brief["progress"]}
+        self.assertEqual(
+            by_id["LUMEN"],
+            "8 of 38 story points are Done (21%). 3 items have no story point or effort. Remaining 7, original estimate 16.",
+        )
+        self.assertEqual(
+            by_id["LUM-1"],
+            "8 of 37 story points are Done (22%). 3 items have no story point or effort. Remaining 7, original estimate 16.",
+        )
+        self.assertEqual(by_id["FORGE"], "12 of 26 story points are Done (46%). Remaining 8, original estimate 18.")
+        self.assertEqual(by_id["FOR-1"], "10 of 26 story points are Done (38%). Remaining 8, original estimate 18.")
+        self.assertEqual(by_id["FOR-30"], "2 of 5 story points are Done (40%). Remaining 3, original estimate 5.")
+        lumen = next(row for row in self.brief["pulse"] if row["id"] == "LUMEN")
+        self.assertEqual(lumen["progress"], by_id["LUMEN"])
+        page = pipeline.render_html(self.brief)
+        self.assertIn("Pick tickets", page)
+        self.assertIn("8 of 38 story points are Done", page)
+        above = next(item for item in self.brief["also_noted"] if item["id"] == "remaining-above:FOR-21")
+        blob = f"{above['title']} {above['summary']}".lower()
+        self.assertNotIn("day", blob)
+        self.assertNotIn("hour", blob)
 
     def test_forge_is_blocked_and_lumen_needs_attention(self) -> None:
         states = {row["id"]: row["state"] for row in self.brief["pulse"]}
