@@ -1,12 +1,11 @@
 # Current task
 
-The checker from `AlexTouvras/AlexTouvras` branch `cursor/delivery-signal-mvp-b09f` is in this repository. Install links point at `AlexTouvras/delivery-signal` on `main`.
+The phone page in `docs/` is on `main`. https://alextouvras.github.io/delivery-signal/ is still "Site not found". Creating the Pages site returns HTTP 403 for this GitHub App, including `actions/configure-pages` with `enablement: true`. A `gh-pages` branch did not create the site and was removed.
 
 ## Verify
 
-`python3 delivery-signal/tests/test_pipeline.py` exits 0. Northline result id remains `e53f514aa6`. `python3 delivery-signal/tests/test_command.py`, `test_connect.py`, `test_link.py`, and `test_site.py` exit 0.
+The HTML preview of `docs/index.html` on `main` reaches Ready and the Northline sample result is `e53f514aa6`. The one-liner from `raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal/install.sh` writes a brief.
 
-## Done
+## Still open
 
-- Product files live under `delivery-signal/`, with the phone page in `docs/`
-- One-liner, npm, and clone links use this repo
+Pages source: branch `main`, folder `/docs`. That setting needs someone who can change repository Settings.

@@ -43,7 +43,7 @@ https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/bl
 
 Choose this week's CSV. The export stays in that browser. Share or download the HTML brief. The page runs the same checker as this repo. The Northline sample produces result `e53f514aa6`.
 
-The files live in [`docs/`](../docs). A durable address a phone can keep on the Home Screen is https://alextouvras.github.io/delivery-signal/ after GitHub Pages is set to branch `main` and folder `/docs`. That setting is in the repository Settings, under Pages.
+The files live in [`docs/`](../docs). Open that preview to use the page today. https://alextouvras.github.io/delivery-signal/ is the Home Screen address after Pages is set to branch `main` and folder `/docs` (Settings, Pages, Deploy from a branch). That switch is not on: creating the Pages site returns HTTP 403 for this access.
 
 ## From your own terminal
 
