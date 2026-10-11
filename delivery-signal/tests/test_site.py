@@ -41,6 +41,11 @@ class PublishedFilesTests(unittest.TestCase):
         self.assertIn('type="file"', page)
         self.assertIn("Add to Home Screen", page)
         self.assertIn("Open the Northline sample", page)
+        self.assertIn("bar for story points Done", page)
+        self.assertIn("Story Points", page)
+        self.assertIn("Remaining Estimate", page)
+        self.assertIn("Remaining Work", page)
+        self.assertIn("f1fb4eaa03", page)
         for label in ("Apps", "One-liner", "npm", "Hackable"):
             self.assertIn(label, page)
         self.assertIn("install.sh | bash", page)

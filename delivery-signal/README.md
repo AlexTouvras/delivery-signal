@@ -114,8 +114,9 @@ If a team renamed a column, put `columns.json` beside the export. `templates/col
 
 ## What the sample shows
 
-`samples/northline` is invented.
+`samples/northline` is invented. The result id is `f1fb4eaa03`.
 
+- The pulse card has a bar for story points Done, and a thinner bar for each epic or feature. An i on each section explains what is shown.
 - Forge `FOR-12` is overdue and unassigned, and it blocks `FOR-20`.
 - Lumen reports the epic 85% complete while 8 of 37 story points are Done. The project line is 8 of 38, because the decision sits outside the epic.
 - Three Highest Lumen stories have an empty story point cell, so they are one count.
