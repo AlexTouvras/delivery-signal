@@ -37,9 +37,9 @@ Hackable, from the checkout: `./run` on macOS and Linux, and `run` on Windows, i
 
 ## On a phone or a computer
 
-Open the page from this repo:
+The product page is a headline, then Quick Start. Orbit hosts the [`docs/`](../docs) folder at `/products/delivery-signal/` on alextouvras.com. Until that section is published, open the page from this repo:
 
-https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/blob/main/docs/index.html
+https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/blob/main/docs/index.html#quickstart
 
 Choose this week's CSV. The export stays in that browser. Share or download the HTML brief. The page runs the same checker as this repo. The Northline sample produces result `e53f514aa6`.
 

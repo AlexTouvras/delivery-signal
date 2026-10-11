@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#1c1917">
+  <meta name="theme-color" content="#12141c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Delivery">
@@ -11,181 +11,219 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <link rel="canonical" href="https://alextouvras.github.io/delivery-signal/">
+  <link rel="canonical" href="https://alextouvras.com/products/delivery-signal/">
   <style>
-    :root { color-scheme: light; }
-    body { margin: 0; background: #f4f1ea; color: #1c1917; font: 16px/1.45 ui-sans-serif, system-ui, sans-serif; }
-    main { max-width: 52rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
-    header { border-top: 6px solid #1c1917; padding-top: 0.8rem; }
-    .stamp { margin: 0; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #9a3412; }
-    h1 { font-size: 1.8rem; line-height: 1.1; margin: 0.35rem 0; }
-    h2 { font-size: 1.05rem; margin: 1.4rem 0 0.45rem; }
-    .meta, .hint { color: #57534e; }
-    .card, form, details.panel { background: #fffdf8; border: 1px solid #e7e0d4; padding: 0.9rem 1rem; }
-    details.panel { margin-top: 0.6rem; }
-    label { display: block; font-weight: 650; margin: 0.75rem 0 0.25rem; }
-    input, select { width: 100%; max-width: 28rem; font: inherit; padding: 0.45rem 0.5rem; box-sizing: border-box; }
-    button, .button { font: inherit; font-weight: 650; background: #1c1917; color: #fff; border: 0; padding: 0.55rem 0.85rem; cursor: pointer; }
-    .install-top { display: flex; justify-content: space-between; gap: 0.75rem; align-items: end; flex-wrap: wrap; }
-    .platforms, .methods { display: flex; gap: 0.85rem; }
-    .methods { border-bottom: 1px solid #e7e0d4; margin: 0.35rem 0 0.8rem; overflow-x: auto; }
+    :root { color-scheme: dark; }
+    body { margin: 0; background: #12141c; color: #e7e9f0; font: 16px/1.5 ui-sans-serif, system-ui, sans-serif; }
+    main { max-width: 52rem; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
+    .eyebrow, .stamp { margin: 0; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #22d3ee; }
+    header.hero { padding-bottom: 0.5rem; }
+    h1 { font-size: 2.6rem; line-height: 1.05; letter-spacing: -0.03em; margin: 0.45rem 0 0.8rem; font-weight: 650; }
+    h2 { font-size: 1.35rem; margin: 0; letter-spacing: -0.02em; }
+    .lede, .meta { color: #c4c8d4; font-size: 1.05rem; max-width: 38rem; }
+    .ownership { color: #9aa0b0; max-width: 38rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.3rem 0 0.4rem; }
+    a.cta, a.ghost { display: inline-flex; align-items: center; text-decoration: none; font-weight: 650; padding: 0.6rem 0.95rem; border-radius: 999px; }
+    a.cta { background: #22d3ee; color: #0b1220; }
+    a.ghost { color: #e7e9f0; border: 1px solid rgba(255,255,255,0.16); }
+    section { margin-top: 2.6rem; }
+    .section-header { display: flex; justify-content: space-between; gap: 1rem; align-items: end; margin-bottom: 0.8rem; }
+    .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin: 0; padding: 0; list-style: none; }
+    .facts li { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.7rem; padding: 0.85rem 0.95rem; }
+    .facts strong { display: block; margin-bottom: 0.25rem; }
+    .facts span { color: #9aa0b0; }
+    .code-block, form, details.panel { background: #0e1016; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.85rem; padding: 0.85rem 0.95rem; }
+    .code-header, .install-top { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; align-items: center; justify-content: space-between; margin-bottom: 0.7rem; }
+    .code-label { font: 0.75rem/1 ui-monospace, monospace; color: #9aa0b0; }
+    .platforms, .methods { display: flex; gap: 0.35rem; flex-wrap: wrap; }
     .platforms button, .methods button, button.copy {
-      background: transparent; color: #57534e; border: 0; border-bottom: 2px solid transparent;
-      border-radius: 0; padding: 0.35rem 0.05rem; font-weight: 650; width: auto;
+      background: transparent; color: #9aa0b0; border: 0; border-radius: 999px;
+      padding: 0.35rem 0.7rem; font: inherit; font-weight: 650; width: auto; cursor: pointer;
     }
-    .platforms button[aria-selected="true"], .methods button[aria-selected="true"] { color: #9a3412; border-bottom-color: #9a3412; }
-    .beta { margin-left: 0.3rem; border: 1px solid #9a3412; color: #9a3412; border-radius: 999px; padding: 0.05rem 0.35rem; font-size: 0.68rem; letter-spacing: 0.04em; }
+    .platforms button[aria-selected="true"], .methods button[aria-selected="true"] { background: rgba(34,211,238,0.14); color: #22d3ee; }
+    .beta { margin-left: 0.3rem; border: 1px solid #22d3ee; color: #22d3ee; border-radius: 999px; padding: 0.05rem 0.35rem; font-size: 0.68rem; letter-spacing: 0.04em; }
     .command-box { position: relative; }
     .command-box pre { margin: 0; padding-right: 4.2rem; }
-    button.copy { position: absolute; top: 0.45rem; right: 0.55rem; border-bottom: 0; color: #f4f1ea; }
-    button.secondary, a.secondary { background: #fffdf8; color: #1c1917; border: 1px solid #1c1917; }
+    button.copy { position: absolute; top: 0.45rem; right: 0.55rem; color: #e7e9f0; }
+    button, .button { font: inherit; font-weight: 650; background: #22d3ee; color: #0b1220; border: 0; padding: 0.55rem 0.85rem; cursor: pointer; border-radius: 999px; }
+    button.secondary, a.secondary { background: transparent; color: #e7e9f0; border: 1px solid rgba(255,255,255,0.2); }
     a.button { display: inline-block; text-decoration: none; }
+    .hint, .meta.quiet { color: #9aa0b0; }
+    details.panel { margin-top: 0.6rem; }
+    label { display: block; font-weight: 650; margin: 0.75rem 0 0.25rem; }
+    input, select { width: 100%; max-width: 28rem; font: inherit; padding: 0.45rem 0.5rem; box-sizing: border-box; background: #171a24; color: #e7e9f0; border: 1px solid rgba(255,255,255,0.12); border-radius: 0.4rem; }
     .row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0.6rem 0; }
-    pre { background: #1c1917; color: #f4f1ea; padding: 0.8rem; overflow-x: auto; white-space: pre-wrap; font: 0.82rem/1.45 ui-monospace, monospace; }
-    iframe { width: 100%; height: 75vh; border: 1px solid #e7e0d4; background: #fff; }
-    ul { padding-left: 1.1rem; }
+    pre { background: #171a24; color: #e7e9f0; padding: 0.85rem; overflow-x: auto; white-space: pre-wrap; font: 0.82rem/1.45 ui-monospace, monospace; border-radius: 0.5rem; }
+    iframe { width: 100%; height: 75vh; border: 1px solid rgba(255,255,255,0.1); background: #fff; border-radius: 0.5rem; }
+    ul.export { padding-left: 1.1rem; color: #c4c8d4; }
     #status { min-height: 1.4em; }
     [hidden] { display: none !important; }
     @media (max-width: 640px) {
-      h1 { font-size: 1.45rem; }
+      h1 { font-size: 2rem; }
+      .facts { grid-template-columns: 1fr; }
       input, select { max-width: none; font-size: 16px; }
-      button, .button { width: 100%; text-align: center; box-sizing: border-box; }
+      .row > button, .row > .button { width: 100%; text-align: center; box-sizing: border-box; }
       .platforms button, .methods button, button.copy { width: auto; text-align: left; }
-      .row { align-items: stretch; }
     }
   </style>
 </head>
 <body>
   <main>
-    <header>
-      <p class="stamp">Phone or computer · the export stays on this device</p>
-      <h1>Delivery Signal</h1>
-      <p class="meta">A weekly brief from a Jira, Azure DevOps, or canonical CSV. Add this page to a phone or install it on a computer, then choose the export. The file is read here. It is not sent to GitHub or written back to the project tool.</p>
+    <header class="hero">
+      <p class="eyebrow">Product</p>
+      <h1>The Monday pack, from the export.</h1>
+      <p class="lede">A weekly brief from a Jira, Azure DevOps, or CSV export. It says what changed, which work needs attention, and which decision is waiting. Every material claim cites a field. The same inputs produce the same result id.</p>
+      <p class="ownership">No account. The export stays on this device. It is not sent to GitHub or written back to the project tool. Send the HTML file.</p>
+      <div class="hero-actions">
+        <a class="cta" href="#quickstart">Get started</a>
+        <a class="ghost" href="#try">Try the sample</a>
+      </div>
     </header>
 
-    <h2>Install</h2>
-    <div class="card" id="install-options">
-      <div class="install-top">
+    <section id="quickstart">
+      <div class="section-header">
+        <h2>Quick Start</h2>
         <p class="stamp">All install options</p>
-        <div class="platforms" role="tablist" aria-label="Platform">
-          <button type="button" role="tab" data-platform="unix" aria-selected="true">macOS &amp; Linux</button>
-          <button type="button" role="tab" data-platform="windows" aria-selected="false">Windows <span class="beta">beta</span></button>
+      </div>
+      <div class="code-block" id="install-options">
+        <div class="code-header">
+          <span class="code-label">install</span>
+          <div class="methods" role="tablist" aria-label="Install method">
+            <button type="button" role="tab" data-method="apps" aria-selected="false">Apps</button>
+            <button type="button" role="tab" data-method="oneliner" aria-selected="true">One-liner</button>
+            <button type="button" role="tab" data-method="npm" aria-selected="false">npm</button>
+            <button type="button" role="tab" data-method="hackable" aria-selected="false">Hackable</button>
+          </div>
+          <div class="platforms" role="tablist" aria-label="Platform">
+            <button type="button" role="tab" data-platform="unix" aria-selected="true">macOS &amp; Linux</button>
+            <button type="button" role="tab" data-platform="windows" aria-selected="false">Windows <span class="beta">beta</span></button>
+          </div>
         </div>
-      </div>
-      <div class="methods" role="tablist" aria-label="Install method">
-        <button type="button" role="tab" data-method="apps" aria-selected="false">Apps</button>
-        <button type="button" role="tab" data-method="oneliner" aria-selected="true">One-liner</button>
-        <button type="button" role="tab" data-method="npm" aria-selected="false">npm</button>
-        <button type="button" role="tab" data-method="hackable" aria-selected="false">Hackable</button>
-      </div>
 
-      <div class="install-panel" data-method-panel="apps" hidden>
-        <p><strong>Phone.</strong> Open this page in the browser, then add it to the Home Screen. On an iPhone that is Share, then Add to Home Screen. On Android, choose Install or Add to Home screen. Open the icon and choose the CSV. Android can also share a CSV into Delivery Signal.</p>
-        <p><strong>Computer.</strong> Install the page from the button or the browser menu. Chrome and Edge can then open a CSV with Delivery Signal. Choosing the file below works either way.</p>
-        <p class="row"><button type="button" id="install" hidden>Install on this device</button></p>
-        <p class="hint" id="install-hint"></p>
-      </div>
+        <div class="install-panel" data-method-panel="apps" hidden>
+          <p><strong>Phone.</strong> Open this page in the browser, then add it to the Home Screen. On an iPhone that is Share, then Add to Home Screen. On Android, choose Install or Add to Home screen. Open the icon and choose the CSV. Android can also share a CSV into Delivery Signal.</p>
+          <p><strong>Computer.</strong> Install the page from the button or the browser menu. Chrome and Edge can then open a CSV with Delivery Signal. Choosing the file below works either way.</p>
+          <p class="row"><button type="button" id="install" hidden>Install on this device</button></p>
+          <p class="hint" id="install-hint"></p>
+        </div>
 
-      <div class="install-panel" data-method-panel="oneliner" data-platform-panel="unix">
-        <div class="command-box">
-          <pre><code># Puts the command on this machine.
+        <div class="install-panel" data-method-panel="oneliner" data-platform-panel="unix">
+          <div class="command-box">
+            <pre><code># Puts the command on this machine.
 $ curl -fsSL https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal/install.sh | bash</code></pre>
-          <button type="button" class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal/install.sh | bash">Copy</button>
+            <button type="button" class="copy" data-copy="curl -fsSL https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal/install.sh | bash">Copy</button>
+          </div>
         </div>
-      </div>
-      <div class="install-panel" data-method-panel="oneliner" data-platform-panel="windows" hidden>
-        <div class="command-box">
-          <pre><code># Puts the command on this machine.
+        <div class="install-panel" data-method-panel="oneliner" data-platform-panel="windows" hidden>
+          <div class="command-box">
+            <pre><code># Puts the command on this machine.
 $ powershell -c "irm https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal/install.ps1 | iex"</code></pre>
-          <button type="button" class="copy" data-copy="powershell -c &quot;irm https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal/install.ps1 | iex&quot;">Copy</button>
+            <button type="button" class="copy" data-copy="powershell -c &quot;irm https://raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal/install.ps1 | iex&quot;">Copy</button>
+          </div>
         </div>
-      </div>
 
-      <div class="install-panel" data-method-panel="npm" hidden>
-        <div class="command-box">
-          <pre><code># For a machine that already has Node and Python.
+        <div class="install-panel" data-method-panel="npm" hidden>
+          <div class="command-box">
+            <pre><code># For a machine that already has Node and Python.
 $ npm install -g github:AlexTouvras/delivery-signal
 $ delivery-signal</code></pre>
-          <button type="button" class="copy" data-copy="npm install -g github:AlexTouvras/delivery-signal">Copy</button>
+            <button type="button" class="copy" data-copy="npm install -g github:AlexTouvras/delivery-signal">Copy</button>
+          </div>
         </div>
-      </div>
 
-      <div class="install-panel" data-method-panel="hackable" data-platform-panel="unix" hidden>
-        <div class="command-box">
-          <pre><code># The checkout is the product.
+        <div class="install-panel" data-method-panel="hackable" data-platform-panel="unix" hidden>
+          <div class="command-box">
+            <pre><code># The checkout is the product.
 $ git clone https://github.com/AlexTouvras/delivery-signal.git
 $ cd delivery-signal/delivery-signal
 $ ./run</code></pre>
-          <button type="button" class="copy" data-copy="git clone https://github.com/AlexTouvras/delivery-signal.git">Copy</button>
+            <button type="button" class="copy" data-copy="git clone https://github.com/AlexTouvras/delivery-signal.git">Copy</button>
+          </div>
         </div>
-      </div>
-      <div class="install-panel" data-method-panel="hackable" data-platform-panel="windows" hidden>
-        <div class="command-box">
-          <pre><code># The checkout is the product.
+        <div class="install-panel" data-method-panel="hackable" data-platform-panel="windows" hidden>
+          <div class="command-box">
+            <pre><code># The checkout is the product.
 $ git clone https://github.com/AlexTouvras/delivery-signal.git
 $ cd delivery-signal\delivery-signal
 $ run</code></pre>
-          <button type="button" class="copy" data-copy="git clone https://github.com/AlexTouvras/delivery-signal.git">Copy</button>
+            <button type="button" class="copy" data-copy="git clone https://github.com/AlexTouvras/delivery-signal.git">Copy</button>
+          </div>
         </div>
+
+        <p class="hint" id="install-blurb">Works on macOS, Linux, and Windows. The one-liner puts the command on this machine and uses Python when Python is already there. Run the same command again to update.</p>
       </div>
+    </section>
 
-      <p class="hint" id="install-blurb">Works on macOS, Linux, and Windows. The one-liner puts the command on this machine and uses Python when Python is already there. Run the same command again to update.</p>
-    </div>
+    <section>
+      <div class="section-header">
+        <h2>What the brief does</h2>
+      </div>
+      <ul class="facts">
+        <li><strong>Same result id</strong><span>The same export and the same rules produce the same id.</span></li>
+        <li><strong>A field on every line</strong><span>A material claim cites a cell. Evidence starts collapsed.</span></li>
+        <li><strong>Set aside</strong><span>A scary row that does not block delivery leaves the first list.</span></li>
+        <li><strong>One file</strong><span>The recipient does not need an account or the original export.</span></li>
+      </ul>
+    </section>
 
-    <h2>Try the sample</h2>
-    <p class="row"><button type="button" id="sample">Open the Northline sample</button></p>
-    <p class="hint">Northline is invented. The result id matches a run of this repo on a computer.</p>
+    <section id="try">
+      <div class="section-header">
+        <h2>Try the sample</h2>
+      </div>
+      <p class="row"><button type="button" id="sample">Open the Northline sample</button></p>
+      <p class="hint">Northline is invented. The result id matches a run of this repo on a computer.</p>
 
-    <h2>Your project</h2>
-    <form id="brief-form">
-      <label for="name">Project or portfolio name</label>
-      <input id="name" name="name" required placeholder="Northwind" autocomplete="organization">
-      <label for="as_of">Report date</label>
-      <input id="as_of" name="as_of" required type="date">
-      <label for="export">This week's CSV</label>
-      <input id="export" name="export" required type="file" accept=".csv,text/csv">
+      <h2 style="margin-top:1.4rem">Your project</h2>
+      <form id="brief-form">
+        <label for="name">Project or portfolio name</label>
+        <input id="name" name="name" required placeholder="Northwind" autocomplete="organization">
+        <label for="as_of">Report date</label>
+        <input id="as_of" name="as_of" required type="date">
+        <label for="export">This week's CSV</label>
+        <input id="export" name="export" required type="file" accept=".csv,text/csv">
+        <details class="panel">
+          <summary>Last week, renamed columns, or a fuller pack</summary>
+          <label for="previous">Last week's CSV</label>
+          <input id="previous" name="previous" type="file" accept=".csv,text/csv">
+          <label for="profile">Export shape</label>
+          <select id="profile" name="profile">
+            <option value="">Detect from the header row</option>
+            <option value="jira">Jira CSV</option>
+            <option value="azure_devops">Azure DevOps CSV</option>
+            <option value="canonical">Canonical columns</option>
+          </select>
+          <label for="columns">columns.json</label>
+          <input id="columns" name="columns" type="file" accept=".json,application/json">
+          <label for="notes">notes.csv</label>
+          <input id="notes" name="notes" type="file" accept=".csv,text/csv">
+          <label for="milestones">milestones.csv</label>
+          <input id="milestones" name="milestones" type="file" accept=".csv,text/csv">
+          <label for="dependencies">dependencies.csv</label>
+          <input id="dependencies" name="dependencies" type="file" accept=".csv,text/csv">
+        </details>
+        <p class="row"><button type="submit" id="build">Build the brief</button></p>
+      </form>
+
+      <h2 style="margin-top:1.4rem">How to export</h2>
+      <ul class="export">
+        <li>Jira: search work items, choose Export, then CSV. Keep Issue key, Summary, Status, Updated, and Due date.</li>
+        <li>Azure DevOps: open the query, add columns, then Export to CSV. Keep ID, Title, Work Item Type, State, and Changed Date.</li>
+        <li>A renamed header goes in columns.json beside the export.</li>
+      </ul>
+
       <details class="panel">
-        <summary>Last week, renamed columns, or a fuller pack</summary>
-        <label for="previous">Last week's CSV</label>
-        <input id="previous" name="previous" type="file" accept=".csv,text/csv">
-        <label for="profile">Export shape</label>
-        <select id="profile" name="profile">
-          <option value="">Detect from the header row</option>
-          <option value="jira">Jira CSV</option>
-          <option value="azure_devops">Azure DevOps CSV</option>
-          <option value="canonical">Canonical columns</option>
-        </select>
-        <label for="columns">columns.json</label>
-        <input id="columns" name="columns" type="file" accept=".json,application/json">
-        <label for="notes">notes.csv</label>
-        <input id="notes" name="notes" type="file" accept=".csv,text/csv">
-        <label for="milestones">milestones.csv</label>
-        <input id="milestones" name="milestones" type="file" accept=".csv,text/csv">
-        <label for="dependencies">dependencies.csv</label>
-        <input id="dependencies" name="dependencies" type="file" accept=".csv,text/csv">
+        <summary>From a terminal in this repo</summary>
+        <pre>python3 delivery-signal/pipeline.py issues.csv --name "Northwind" --as-of 2026-10-10 --previous issues-last-week.csv</pre>
       </details>
-      <p class="row"><button type="submit" id="build">Build the brief</button></p>
-    </form>
 
-    <h2>How to export</h2>
-    <ul>
-      <li>Jira: search work items, choose Export, then CSV. Keep Issue key, Summary, Status, Updated, and Due date.</li>
-      <li>Azure DevOps: open the query, add columns, then Export to CSV. Keep ID, Title, Work Item Type, State, and Changed Date.</li>
-      <li>A renamed header goes in columns.json beside the export.</li>
-    </ul>
-
-    <details class="panel">
-      <summary>From a terminal in this repo</summary>
-      <pre>python3 delivery-signal/pipeline.py issues.csv --name "Northwind" --as-of 2026-10-10 --previous issues-last-week.csv</pre>
-    </details>
-
-    <h2>Brief</h2>
-    <p id="status" role="status" data-state="loading">Loading the checker. The first open downloads it once.</p>
-    <p class="row">
-      <button type="button" id="share" class="secondary" hidden>Share the brief</button>
-      <a id="download" class="button secondary" hidden>Download the brief</a>
-    </p>
-    <iframe id="brief" title="Delivery brief" hidden></iframe>
+      <h2 style="margin-top:1.4rem">Brief</h2>
+      <p id="status" role="status" data-state="loading">Loading the checker. The first open downloads it once.</p>
+      <p class="row">
+        <button type="button" id="share" class="secondary" hidden>Share the brief</button>
+        <a id="download" class="button secondary" hidden>Download the brief</a>
+      </p>
+      <iframe id="brief" title="Delivery brief" hidden></iframe>
+    </section>
   </main>
   <script src="app.js"></script>
 </body>

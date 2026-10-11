@@ -1,11 +1,11 @@
 # Current task
 
-The phone page in `docs/` is on `main`. https://alextouvras.github.io/delivery-signal/ is still "Site not found". Creating the Pages site returns HTTP 403 for this GitHub App, including `actions/configure-pages` with `enablement: true`. A `gh-pages` branch did not create the site and was removed.
+`docs/` is the product page for Orbit's products section: headline, then `#quickstart`, then the sample. Orbit copies that folder to `public/products/delivery-signal/`. The page is not on alextouvras.com yet.
 
 ## Verify
 
-The HTML preview of `docs/index.html` on `main` reaches Ready and the Northline sample result is `e53f514aa6`. The one-liner from `raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal/install.sh` writes a brief.
+`python3 delivery-signal/tests/test_site.py` exits 0. Quick Start still switches Apps, One-liner, npm, and Hackable. Northline result id remains `e53f514aa6`.
 
 ## Still open
 
-Pages source: branch `main`, folder `/docs`. That setting needs someone who can change repository Settings.
+Add Products on Orbit and copy `docs/` into `public/products/delivery-signal/`.
