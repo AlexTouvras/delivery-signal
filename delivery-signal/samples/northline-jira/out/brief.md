@@ -96,6 +96,9 @@ The questions above are the proposed actions. Nothing has been sent, and nothing
 - A completion figure is treated as misleading when an epic reports at least 70% and at most half of its child story points are Done.
 - An overdue predecessor is set aside when its successor is already Done.
 - Jira Blocker counts as Highest and Major counts as High. Three or more unassigned items of one priority are reported as a count.
+- An open Highest or High item with an empty story point or effort cell has no estimate. Three or more in one project and priority are one count.
+- Remaining above the original estimate cites both numbers. A Done item whose remaining cell is not zero is cited. Those figures are not turned into days.
+- A story point or remaining figure that changed since the previous export is listed with the other changes.
 - Stale and overdue items are raised without a notes file. A note that says the work is on track is still compared with the export.
 - Optimistic notes are an inference. The dates and statuses they are compared with are facts.
 - These thresholds are operating rules for the sample, not a validated predictor of delay.

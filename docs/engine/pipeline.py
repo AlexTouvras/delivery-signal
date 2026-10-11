@@ -80,6 +80,8 @@ class WorkItem:
     priority: str
     assignee: str
     story_points: float | None
+    original_estimate: float | None
+    remaining: float | None
     percent_complete: float | None
     created: date | None
     updated: date | None
@@ -259,6 +261,8 @@ def load_portfolio(directory: Path) -> dict:
                     "due": item.due.isoformat() if item.due else "",
                     "blocked_by": item.blocked_by,
                     "percent_complete": "" if item.percent_complete is None else _fmt_num(item.percent_complete),
+                    "story_points": "" if item.story_points is None else _fmt_num(item.story_points),
+                    "remaining": "" if item.remaining is None else _fmt_num(item.remaining),
                 }
             )
 
@@ -295,6 +299,27 @@ def load_portfolio(directory: Path) -> dict:
 
 def _ev(source: str, ident: str, field_name: str, value: object) -> Evidence:
     return Evidence(source, ident, field_name, "" if value is None else str(value))
+
+
+_NUMBER_FIELDS = {"percent_complete", "story_points", "remaining"}
+
+
+def _compared_current(item: WorkItem, name: str) -> str:
+    if name == "due":
+        return item.due.isoformat() if item.due else ""
+    if name in _NUMBER_FIELDS:
+        value = getattr(item, name)
+        return "" if value is None else _fmt_num(value)
+    return _clean(str(getattr(item, name) or ""))
+
+
+def _compared_prior(old: dict, name: str) -> str:
+    prior = _clean(old.get(name))
+    if name in _NUMBER_FIELDS and prior:
+        parsed = _parse_number(prior, name, [])
+        if parsed is not None:
+            return _fmt_num(parsed)
+    return prior
 
 
 def _item_evidence(item: WorkItem, field_name: str) -> Evidence:
@@ -414,6 +439,46 @@ def _collapse_unassigned(findings: list[Finding]) -> list[Finding]:
                 ),
                 blocks_delivery=False,
                 suggested_question=f"Who owns the {len(items)} unassigned {label} priority items?",
+                evidence=evidence,
+            )
+        )
+    return rest + collapsed
+
+
+def _collapse_missing_estimates(findings: list[Finding]) -> list[Finding]:
+    grouped: dict[tuple[str, str], list[Finding]] = {}
+    rest: list[Finding] = []
+    for finding in findings:
+        if finding.kind != "missing_estimate":
+            rest.append(finding)
+            continue
+        grouped.setdefault((finding.project, _priority_label(finding)), []).append(finding)
+    collapsed: list[Finding] = []
+    for (project, label), items in grouped.items():
+        if len(items) < GROUP_AT or not label:
+            collapsed.extend(items)
+            continue
+        ordered = sorted(items, key=lambda finding: (-finding.severity, finding.id))
+        keys = [finding.id.split(":", 1)[1] for finding in ordered]
+        shown = ", ".join(keys[:8])
+        extra = f" and {len(keys) - 8} more" if len(keys) > 8 else ""
+        evidence: list[Evidence] = []
+        for finding in ordered:
+            evidence.extend(finding.evidence)
+        collapsed.append(
+            Finding(
+                id=f"missing-estimate-count:{project}:{label}",
+                kind="missing_estimate_count",
+                severity=ordered[0].severity,
+                confidence="fact",
+                project=project,
+                title=f"{len(items)} {label} priority items have no estimate.",
+                summary=(
+                    f"{len(items)} open items are {label} priority and the story point or effort cell is empty: "
+                    f"{shown}{extra}."
+                ),
+                blocks_delivery=False,
+                suggested_question=f"What is the estimate on the {len(items)} {label} priority items?",
                 evidence=evidence,
             )
         )
@@ -812,6 +877,82 @@ def analyse(data: dict) -> dict:
             )
         )
 
+    for item in data["items"]:
+        if _is_done(item.status) or _priority(item) not in HIGH or item.story_points is not None:
+            continue
+        findings.append(
+            Finding(
+                id=f"missing-estimate:{item.key}",
+                kind="missing_estimate",
+                severity=56,
+                confidence="fact",
+                project=item.project,
+                title=f"{item.key} is {item.priority} priority, open, and has no estimate.",
+                summary=(
+                    f"{item.key} ({item.summary}) is {item.status} and {item.priority} priority. "
+                    "The story point or effort cell is empty."
+                ),
+                blocks_delivery=False,
+                suggested_question=f"What is the estimate on {item.key} ({item.summary})?",
+                evidence=[
+                    _item_evidence(item, "status"),
+                    _item_evidence(item, "priority"),
+                    _item_evidence(item, "story_points"),
+                ],
+            )
+        )
+
+    for item in data["items"]:
+        if item.original_estimate is None or item.remaining is None or item.remaining <= item.original_estimate:
+            continue
+        original = _fmt_num(item.original_estimate)
+        left = _fmt_num(item.remaining)
+        findings.append(
+            Finding(
+                id=f"remaining-above:{item.key}",
+                kind="remaining_above_original",
+                severity=62,
+                confidence="fact",
+                project=item.project,
+                title=f"{item.key} remaining is {left} and the original estimate is {original}.",
+                summary=(
+                    f"{item.key} ({item.summary}) is {item.status}. "
+                    f"Remaining is {left}. The original estimate is {original}."
+                ),
+                blocks_delivery=False,
+                suggested_question=(
+                    f"Why is remaining {left} on {item.key} ({item.summary}) "
+                    f"when the original estimate is {original}?"
+                ),
+                evidence=[
+                    _item_evidence(item, "remaining"),
+                    _item_evidence(item, "original_estimate"),
+                ],
+            )
+        )
+
+    for item in data["items"]:
+        if not _is_done(item.status) or item.remaining is None or item.remaining == 0:
+            continue
+        left = _fmt_num(item.remaining)
+        findings.append(
+            Finding(
+                id=f"done-remaining:{item.key}",
+                kind="done_remaining",
+                severity=54,
+                confidence="fact",
+                project=item.project,
+                title=f"{item.key} is Done and remaining is {left}.",
+                summary=f"{item.key} ({item.summary}) is {item.status} and the remaining cell is {left}.",
+                blocks_delivery=False,
+                suggested_question=f"Why does {item.key} ({item.summary}) still have remaining {left} after it was marked Done?",
+                evidence=[
+                    _item_evidence(item, "status"),
+                    _item_evidence(item, "remaining"),
+                ],
+            )
+        )
+
     for dep in data["dependencies"]:
         pred = dep["predecessor"]
         succ = dep["successor"]
@@ -910,21 +1051,24 @@ def analyse(data: dict) -> dict:
         if key:
             previous_by_key[key] = row
     changes = []
-    compared = ("status", "assignee", "priority", "due", "blocked_by", "percent_complete")
+    compared = (
+        "status",
+        "assignee",
+        "priority",
+        "due",
+        "blocked_by",
+        "percent_complete",
+        "story_points",
+        "remaining",
+    )
     current_keys = set(data["by_key"])
     for key in sorted(current_keys & set(previous_by_key)):
         item = data["by_key"][key]
         old = previous_by_key[key]
         fields = []
         for name in compared:
-            current = _clean(str(getattr(item, name) if name != "percent_complete" else (
-                "" if item.percent_complete is None else _fmt_num(item.percent_complete)
-            )))
-            if name == "due":
-                current = item.due.isoformat() if item.due else ""
-            prior = _clean(old.get(name))
-            if name == "percent_complete" and prior:
-                prior = _fmt_num(float(prior)) if _parse_number(prior, key, []) is not None else prior
+            current = _compared_current(item, name)
+            prior = _compared_prior(old, name)
             if current != prior:
                 fields.append({"field": name, "before": prior or "blank", "after": current or "blank"})
         if fields:
@@ -956,7 +1100,7 @@ def analyse(data: dict) -> dict:
             kept_aside.append(finding)
         else:
             dropped += 1
-    findings = _collapse_unassigned(kept_findings)
+    findings = _collapse_missing_estimates(_collapse_unassigned(kept_findings))
     set_aside = kept_aside
 
     min_severity = data["min_severity"]
@@ -1211,6 +1355,9 @@ def render_markdown(brief: dict) -> str:
             f"- A completion figure is treated as misleading when an epic reports at least {rules['completion_reported_at_least']}% and at most half of its child story points are Done.",
             "- An overdue predecessor is set aside when its successor is already Done.",
             "- Jira Blocker counts as Highest and Major counts as High. Three or more unassigned items of one priority are reported as a count.",
+            "- An open Highest or High item with an empty story point or effort cell has no estimate. Three or more in one project and priority are one count.",
+            "- Remaining above the original estimate cites both numbers. A Done item whose remaining cell is not zero is cited. Those figures are not turned into days.",
+            "- A story point or remaining figure that changed since the previous export is listed with the other changes.",
             "- Stale and overdue items are raised without a notes file. A note that says the work is on track is still compared with the export.",
             "- Optimistic notes are an inference. The dates and statuses they are compared with are facts.",
             "- These thresholds are operating rules for the sample, not a validated predictor of delay.",
