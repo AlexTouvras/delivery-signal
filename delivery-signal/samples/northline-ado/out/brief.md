@@ -2,7 +2,7 @@
 
 Weekly delivery brief · 2026-10-10 · Audience: Delivery director
 
-Source: azure_devops · 25 work items · rules 2026-10-11 · result e53f514aa6
+Source: azure_devops · 31 work items · rules 2026-10-11 · result f1fb4eaa03
 
 **Approval: pending.** A person still has to check this brief before it goes to a customer.
 
@@ -10,12 +10,25 @@ As of 10 Oct 2026, 1 of 4 projects is on track (Aster HR — Payroll export). Th
 
 ## Delivery pulse
 
-| Project | State |
-| --- | --- |
-| Aster HR — Payroll export | On track |
-| Cedar Clinics — Patient portal | Needs attention |
-| Forge Logistics — Warehouse API | Blocked |
-| Lumen Bank — Mobile onboarding | Needs attention |
+| Project | State | Progress |
+| --- | --- | --- |
+| Aster HR — Payroll export | On track | 10 of 15 story points are Done (67%). Remaining 2, original estimate 15. |
+| Cedar Clinics — Patient portal | Needs attention | 0 of 18 story points are Done (0%). Remaining 7, original estimate 10. |
+| Forge Logistics — Warehouse API | Blocked | 12 of 26 story points are Done (46%). Remaining 8, original estimate 18. |
+| Lumen Bank — Mobile onboarding | Needs attention | 8 of 38 story points are Done (21%). 3 items have no story point or effort. Remaining 7, original estimate 16. |
+
+## Progress
+
+- Aster HR — Payroll export: 10 of 15 story points are Done (67%). Remaining 2, original estimate 15.
+- AST-1 Payroll export: 10 of 15 story points are Done (67%). Remaining 2, original estimate 15.
+- Cedar Clinics — Patient portal: 0 of 18 story points are Done (0%). Remaining 7, original estimate 10.
+- CED-1 Patient portal: 0 of 18 story points are Done (0%). Remaining 7, original estimate 10.
+- Forge Logistics — Warehouse API: 12 of 26 story points are Done (46%). Remaining 8, original estimate 18.
+- FOR-1 Warehouse API: 10 of 26 story points are Done (38%). Remaining 8, original estimate 18.
+- FOR-30 Pick tickets: 2 of 5 story points are Done (40%). Remaining 3, original estimate 5.
+- Lumen Bank — Mobile onboarding: 8 of 38 story points are Done (21%). 3 items have no story point or effort. Remaining 7, original estimate 16.
+- LUM-1 Mobile onboarding: 8 of 37 story points are Done (22%). 3 items have no story point or effort. Remaining 7, original estimate 16.
+
 
 ## Top risks
 
@@ -53,7 +66,7 @@ Evidence: work_items:FOR-20.status=Blocked, work_items:FOR-20.blocked_by=FOR-12,
 
 ### Lumen Bank — Mobile onboarding reports 85% complete; 8 of 37 story points are done.
 
-LUM-1 percent_complete is 85. Child items with story points total 37, of which 8 are Done (22%). Still open at High or Highest: LUM-4 (KYC document upload), LUM-5 (Sanctions screening integration), LUM-6 (Biometric capture). N-2 says "Leadership slide says onboarding is 85% complete and the only open item is copy for the app store."
+LUM-1 percent_complete is 85. Child items with story points total 37, of which 8 are Done (22%). Still open at High or Highest: LUM-4 (KYC document upload), LUM-5 (Sanctions screening integration), LUM-6 (Biometric capture), LUM-11 (Address proof), LUM-12 (Device binding), LUM-13 (Fraud rules). N-2 says "Leadership slide says onboarding is 85% complete and the only open item is copy for the app store."
 
 Confidence: fact. Severity: 80.
 
@@ -61,8 +74,10 @@ Evidence: work_items:LUM-1.percent_complete=85, work_items:LUM-2.status=Done, wo
 
 ## Changes since the previous export
 
+- AST-4 (Export scheduler): story_points: 3 → 5.
 - FOR-12 (Rotate carrier credentials): assignee: Alex Rahman → blank.
 - LUM-3 (Email verification): status: In Progress → Done, percent_complete: 60 → 100.
+- LUM-6 (Biometric capture): remaining: 2 → 5.
 
 ## Decisions needed
 
@@ -75,6 +90,9 @@ Evidence: work_items:LUM-1.percent_complete=85, work_items:LUM-2.status=Done, wo
 ## Also noted
 
 - LUM-5 is Highest priority, open, and has no assignee.
+- FOR-21 remaining is 5 and the original estimate is 3.
+- 3 Highest priority items have no estimate.
+- LUM-2 is Done and remaining is 2.
 
 ## Questions for the delivery lead
 
@@ -99,6 +117,7 @@ The questions above are the proposed actions. Nothing has been sent, and nothing
 - An open Highest or High item with an empty story point or effort cell has no estimate. Three or more in one project and priority are one count.
 - Remaining above the original estimate cites both numbers. A Done item whose remaining cell is not zero is cited. Those figures are not turned into days.
 - A story point or remaining figure that changed since the previous export is listed with the other changes.
+- Progress counts story points Done on items that have a story point or effort. Epic, feature, and initiative points stay out of the project total. Those parents are counted from their direct children. Remaining and the original estimate are summed where both cells are numbers.
 - Stale and overdue items are raised without a notes file. A note that says the work is on track is still compared with the export.
 - Optimistic notes are an inference. The dates and statuses they are compared with are facts.
 - These thresholds are operating rules for the sample, not a validated predictor of delay.
