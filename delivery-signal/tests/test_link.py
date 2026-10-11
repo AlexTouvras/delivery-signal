@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Connect a tracker or import a CSV, then write the report. Tokens stay out of the project file."""
 
+import csv
 import io
 import json
 import os
@@ -175,6 +176,8 @@ class LinkTests(unittest.TestCase):
             self.assertIn("Microsoft.VSTS.Scheduling.StoryPoints", requested)
             self.assertIn("Microsoft.VSTS.Scheduling.Effort", requested)
             self.assertIn("Microsoft.VSTS.Scheduling.TargetDate", requested)
+            self.assertIn("Microsoft.VSTS.Scheduling.OriginalEstimate", requested)
+            self.assertIn("Microsoft.VSTS.Scheduling.RemainingWork", requested)
 
     def test_http_site_and_missing_token_are_refused(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -467,6 +470,81 @@ class LinkTests(unittest.TestCase):
             finally:
                 httpd.shutdown()
                 httpd.server_close()
+
+    def test_jira_timetracking_keeps_the_tracker_text(self) -> None:
+        def transport(method, url, headers, body):
+            if method == "GET":
+                return []
+            return {
+                "issues": [
+                    {
+                        "key": "TXT-1",
+                        "fields": {
+                            "summary": "Display text",
+                            "status": {"name": "In Progress"},
+                            "issuetype": {"name": "Story"},
+                            "priority": {"name": "Medium"},
+                            "assignee": {"displayName": "Ada"},
+                            "project": {"key": "FORGE", "name": "Forge"},
+                            "timetracking": {
+                                "originalEstimate": "1d",
+                                "remainingEstimate": "3d",
+                                "originalEstimateSeconds": 28800,
+                                "remainingEstimateSeconds": 86400,
+                            },
+                        },
+                    },
+                    {
+                        "key": "SEC-1",
+                        "fields": {
+                            "summary": "Seconds only",
+                            "status": {"name": "To Do"},
+                            "issuetype": {"name": "Story"},
+                            "priority": {"name": "Low"},
+                            "assignee": {"displayName": "Ada"},
+                            "project": {"key": "FORGE", "name": "Forge"},
+                            "timetracking": {
+                                "originalEstimateSeconds": 5,
+                                "remainingEstimateSeconds": 8,
+                            },
+                        },
+                    },
+                ]
+            }
+
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            with mock.patch.dict(os.environ, {"JIRA_EMAIL": "ada@example.com", "JIRA_API_TOKEN": "secret-token"}):
+                self.assertEqual(
+                    link.main(
+                        [
+                            "--home",
+                            str(home),
+                            "connect",
+                            "jira",
+                            "--site",
+                            "https://acme.atlassian.net",
+                            "--project",
+                            "FORGE",
+                        ]
+                    ),
+                    0,
+                )
+                with mock.patch.object(link, "default_transport", transport):
+                    self.assertEqual(link.main(["--home", str(home), "import"]), 0)
+            table = (home / ".delivery-signal" / "work_items.csv").read_text(encoding="utf-8")
+            rows = list(csv.DictReader(table.splitlines()))
+            by_key = {row["Issue key"]: row for row in rows}
+            self.assertEqual(by_key["TXT-1"]["Original Estimate"], "1d")
+            self.assertEqual(by_key["TXT-1"]["Remaining Estimate"], "3d")
+            self.assertNotIn("28800", table)
+            self.assertEqual(by_key["SEC-1"]["Original Estimate"], "5")
+            self.assertEqual(by_key["SEC-1"]["Remaining Estimate"], "8")
+            self.assertEqual(link.main(["--home", str(home), "report", "--as-of", "2026-10-10"]), 0)
+            brief = json.loads((home / "out" / "brief.json").read_text(encoding="utf-8"))
+            ids = {item["id"] for item in brief["top_risks"] + brief["also_noted"]}
+            self.assertIn("remaining-above:SEC-1", ids)
+            self.assertNotIn("remaining-above:TXT-1", ids)
 
     def test_plain_csv_command_still_writes_a_brief(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

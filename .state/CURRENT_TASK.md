@@ -1,10 +1,12 @@
 # Current task
 
-The phone page in `docs/` is on `main`. https://alextouvras.github.io/delivery-signal/ is still "Site not found". Creating the Pages site returns HTTP 403 for this GitHub App, including `actions/configure-pages` with `enablement: true`. A `gh-pages` branch did not create the site and was removed.
+The brief cites four estimate facts. An open Highest or High item with an empty story point or effort cell has no estimate, and three or more in one project and priority are one count. Remaining above the original estimate cites both numbers. A Done item whose remaining cell is not zero is cited. A story point or remaining figure that changed since the previous export is on the change list.
+
+Those figures are not turned into days. The brief does not forecast a missed date. Northline result id remains `e53f514aa6`.
 
 ## Verify
 
-The HTML preview of `docs/index.html` on `main` reaches Ready and the Northline sample result is `e53f514aa6`. The one-liner from `raw.githubusercontent.com/AlexTouvras/delivery-signal/main/delivery-signal/install.sh` writes a brief.
+`python3 delivery-signal/tests/test_pipeline.py` and `python3 delivery-signal/tests/test_link.py` exit 0. The three Northline encodings still share `e53f514aa6`.
 
 ## Still open
 

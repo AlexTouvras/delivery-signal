@@ -10,4 +10,5 @@
 - [x] Install options on the page: Apps, One-liner, npm, and Hackable
 - [x] Keep a file off "on track" when the rules cannot run
 - [x] Land the checker in `AlexTouvras/delivery-signal`
+- [x] Cite a missing estimate, remaining above the original, Done work that still has remaining, and a point or remaining figure that moved
 - [ ] Run one real project across two weekly exports
