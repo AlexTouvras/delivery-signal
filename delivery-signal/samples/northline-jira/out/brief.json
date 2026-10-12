@@ -6,31 +6,1039 @@
   "approval": "pending",
   "synthetic": true,
   "source_profile": "jira",
-  "item_count": 25,
+  "item_count": 31,
   "rules_version": "2026-10-11",
-  "result_id": "e53f514aa6",
+  "result_id": "f1fb4eaa03",
   "lead": "As of 10 Oct 2026, 1 of 4 projects is on track (Aster HR \u2014 Payroll export). This brief cites rows in the approved export. It does not forecast that a future date will be missed.",
   "limits": [],
   "pulse": [
     {
       "id": "ASTER",
       "name": "Aster HR \u2014 Payroll export",
-      "state": "on_track"
+      "state": "on_track",
+      "progress": "10 of 15 story points are Done (67%). Remaining 2, original estimate 15."
     },
     {
       "id": "CEDAR",
       "name": "Cedar Clinics \u2014 Patient portal",
-      "state": "needs_attention"
+      "state": "needs_attention",
+      "progress": "0 of 18 story points are Done (0%). Remaining 7, original estimate 10."
     },
     {
       "id": "FORGE",
       "name": "Forge Logistics \u2014 Warehouse API",
-      "state": "blocked"
+      "state": "blocked",
+      "progress": "12 of 26 story points are Done (46%). Remaining 8, original estimate 18."
     },
     {
       "id": "LUMEN",
       "name": "Lumen Bank \u2014 Mobile onboarding",
-      "state": "needs_attention"
+      "state": "needs_attention",
+      "progress": "8 of 38 story points are Done (21%). 3 items have no story point or effort. Remaining 7, original estimate 16."
+    }
+  ],
+  "progress": [
+    {
+      "kind": "project",
+      "id": "ASTER",
+      "name": "Aster HR \u2014 Payroll export",
+      "project": "ASTER",
+      "text": "10 of 15 story points are Done (67%). Remaining 2, original estimate 15.",
+      "percent": 67,
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "AST-2",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-2",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-3",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-3",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-4",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-4",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-2",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-2",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-3",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-3",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-4",
+          "field": "remaining",
+          "value": "2"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-4",
+          "field": "original_estimate",
+          "value": "5"
+        }
+      ]
+    },
+    {
+      "kind": "epic",
+      "id": "AST-1",
+      "name": "Payroll export",
+      "project": "ASTER",
+      "text": "10 of 15 story points are Done (67%). Remaining 2, original estimate 15.",
+      "percent": 67,
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "AST-2",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-2",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-3",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-3",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-4",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-4",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-2",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-2",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-3",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-3",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-4",
+          "field": "remaining",
+          "value": "2"
+        },
+        {
+          "source": "work_items",
+          "id": "AST-4",
+          "field": "original_estimate",
+          "value": "5"
+        }
+      ]
+    },
+    {
+      "kind": "project",
+      "id": "CEDAR",
+      "name": "Cedar Clinics \u2014 Patient portal",
+      "project": "CEDAR",
+      "text": "0 of 18 story points are Done (0%). Remaining 7, original estimate 10.",
+      "percent": 0,
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "CED-2",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-2",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-3",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-3",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-4",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-4",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-5",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-5",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-2",
+          "field": "remaining",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-2",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-3",
+          "field": "remaining",
+          "value": "4"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-3",
+          "field": "original_estimate",
+          "value": "5"
+        }
+      ]
+    },
+    {
+      "kind": "epic",
+      "id": "CED-1",
+      "name": "Patient portal",
+      "project": "CEDAR",
+      "text": "0 of 18 story points are Done (0%). Remaining 7, original estimate 10.",
+      "percent": 0,
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "CED-2",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-2",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-3",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-3",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-4",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-4",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-5",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-5",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-2",
+          "field": "remaining",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-2",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-3",
+          "field": "remaining",
+          "value": "4"
+        },
+        {
+          "source": "work_items",
+          "id": "CED-3",
+          "field": "original_estimate",
+          "value": "5"
+        }
+      ]
+    },
+    {
+      "kind": "project",
+      "id": "FORGE",
+      "name": "Forge Logistics \u2014 Warehouse API",
+      "project": "FORGE",
+      "text": "12 of 26 story points are Done (46%). Remaining 8, original estimate 18.",
+      "percent": 46,
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-2",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-2",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-20",
+          "field": "status",
+          "value": "Blocked"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-20",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-21",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-21",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-3",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-3",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-31",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-31",
+          "field": "story_points",
+          "value": "2"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-32",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-32",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-2",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-2",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-21",
+          "field": "remaining",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-21",
+          "field": "original_estimate",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-3",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-3",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-31",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-31",
+          "field": "original_estimate",
+          "value": "2"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-32",
+          "field": "remaining",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-32",
+          "field": "original_estimate",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "kind": "epic",
+      "id": "FOR-1",
+      "name": "Warehouse API",
+      "project": "FORGE",
+      "text": "10 of 26 story points are Done (38%). Remaining 8, original estimate 18.",
+      "percent": 38,
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-12",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-2",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-2",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-20",
+          "field": "status",
+          "value": "Blocked"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-20",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-21",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-21",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-3",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-3",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-30",
+          "field": "status",
+          "value": "In Progress"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-30",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-2",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-2",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-21",
+          "field": "remaining",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-21",
+          "field": "original_estimate",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-3",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-3",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-30",
+          "field": "remaining",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-30",
+          "field": "original_estimate",
+          "value": "5"
+        }
+      ]
+    },
+    {
+      "kind": "feature",
+      "id": "FOR-30",
+      "name": "Pick tickets",
+      "project": "FORGE",
+      "text": "2 of 5 story points are Done (40%). Remaining 3, original estimate 5.",
+      "percent": 40,
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "FOR-31",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-31",
+          "field": "story_points",
+          "value": "2"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-32",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-32",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-31",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-31",
+          "field": "original_estimate",
+          "value": "2"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-32",
+          "field": "remaining",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-32",
+          "field": "original_estimate",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "kind": "project",
+      "id": "LUMEN",
+      "name": "Lumen Bank \u2014 Mobile onboarding",
+      "project": "LUMEN",
+      "text": "8 of 38 story points are Done (21%). 3 items have no story point or effort. Remaining 7, original estimate 16.",
+      "percent": 21,
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "LUM-10",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-10",
+          "field": "story_points",
+          "value": "2"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-3",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-3",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-4",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-4",
+          "field": "story_points",
+          "value": "8"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-5",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-5",
+          "field": "story_points",
+          "value": "8"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-6",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-6",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-7",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-7",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-8",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-8",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-9",
+          "field": "status",
+          "value": "Waiting"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-9",
+          "field": "story_points",
+          "value": "1"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-11",
+          "field": "story_points",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-12",
+          "field": "story_points",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-13",
+          "field": "story_points",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "remaining",
+          "value": "2"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-3",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-3",
+          "field": "original_estimate",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-6",
+          "field": "remaining",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-6",
+          "field": "original_estimate",
+          "value": "8"
+        }
+      ]
+    },
+    {
+      "kind": "epic",
+      "id": "LUM-1",
+      "name": "Mobile onboarding",
+      "project": "LUMEN",
+      "text": "8 of 37 story points are Done (22%). 3 items have no story point or effort. Remaining 7, original estimate 16.",
+      "percent": 22,
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "LUM-10",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-10",
+          "field": "story_points",
+          "value": "2"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-3",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-3",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-4",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-4",
+          "field": "story_points",
+          "value": "8"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-5",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-5",
+          "field": "story_points",
+          "value": "8"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-6",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-6",
+          "field": "story_points",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-7",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-7",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-8",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-8",
+          "field": "story_points",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-11",
+          "field": "story_points",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-12",
+          "field": "story_points",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-13",
+          "field": "story_points",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "remaining",
+          "value": "2"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "original_estimate",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-3",
+          "field": "remaining",
+          "value": "0"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-3",
+          "field": "original_estimate",
+          "value": "3"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-6",
+          "field": "remaining",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-6",
+          "field": "original_estimate",
+          "value": "8"
+        }
+      ]
     }
   ],
   "top_risks": [
@@ -243,7 +1251,7 @@
       "confidence": "fact",
       "project": "LUMEN",
       "title": "Lumen Bank \u2014 Mobile onboarding reports 85% complete; 8 of 37 story points are done.",
-      "summary": "LUM-1 percent_complete is 85. Child items with story points total 37, of which 8 are Done (22%). Still open at High or Highest: LUM-4 (KYC document upload), LUM-5 (Sanctions screening integration), LUM-6 (Biometric capture). N-2 says \"Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.\"",
+      "summary": "LUM-1 percent_complete is 85. Child items with story points total 37, of which 8 are Done (22%). Still open at High or Highest: LUM-4 (KYC document upload), LUM-5 (Sanctions screening integration), LUM-6 (Biometric capture), LUM-11 (Address proof), LUM-12 (Device binding), LUM-13 (Fraud rules). N-2 says \"Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.\"",
       "blocks_delivery": false,
       "suggested_question": "Which completion figure should the steering pack use: 85% or 8 of 37 story points?",
       "evidence": [
@@ -395,6 +1403,123 @@
           "value": "2026-10-28"
         }
       ]
+    },
+    {
+      "id": "remaining-above:FOR-21",
+      "kind": "remaining_above_original",
+      "severity": 62,
+      "confidence": "fact",
+      "project": "FORGE",
+      "title": "FOR-21 remaining is 5 and the original estimate is 3.",
+      "summary": "FOR-21 (Rate-limit handling) is In Progress. Remaining is 5. The original estimate is 3.",
+      "blocks_delivery": false,
+      "suggested_question": "Why is remaining 5 on FOR-21 (Rate-limit handling) when the original estimate is 3?",
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "FOR-21",
+          "field": "remaining",
+          "value": "5"
+        },
+        {
+          "source": "work_items",
+          "id": "FOR-21",
+          "field": "original_estimate",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "id": "missing-estimate-count:LUMEN:Highest",
+      "kind": "missing_estimate_count",
+      "severity": 56,
+      "confidence": "fact",
+      "project": "LUMEN",
+      "title": "3 Highest priority items have no estimate.",
+      "summary": "3 open items are Highest priority and the story point or effort cell is empty: LUM-11, LUM-12, LUM-13.",
+      "blocks_delivery": false,
+      "suggested_question": "What is the estimate on the 3 Highest priority items?",
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "LUM-11",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-11",
+          "field": "priority",
+          "value": "Highest"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-11",
+          "field": "story_points",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-12",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-12",
+          "field": "priority",
+          "value": "Highest"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-12",
+          "field": "story_points",
+          "value": ""
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-13",
+          "field": "status",
+          "value": "To Do"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-13",
+          "field": "priority",
+          "value": "Highest"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-13",
+          "field": "story_points",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "done-remaining:LUM-2",
+      "kind": "done_remaining",
+      "severity": 54,
+      "confidence": "fact",
+      "project": "LUMEN",
+      "title": "LUM-2 is Done and remaining is 2.",
+      "summary": "LUM-2 (Registration form) is Done and the remaining cell is 2.",
+      "blocks_delivery": false,
+      "suggested_question": "Why does LUM-2 (Registration form) still have remaining 2 after it was marked Done?",
+      "evidence": [
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "status",
+          "value": "Done"
+        },
+        {
+          "source": "work_items",
+          "id": "LUM-2",
+          "field": "remaining",
+          "value": "2"
+        }
+      ]
     }
   ],
   "set_aside": [
@@ -495,6 +1620,18 @@
   ],
   "changes": [
     {
+      "key": "AST-4",
+      "project": "ASTER",
+      "summary": "Export scheduler",
+      "fields": [
+        {
+          "field": "story_points",
+          "before": "3",
+          "after": "5"
+        }
+      ]
+    },
+    {
       "key": "FOR-12",
       "project": "FORGE",
       "summary": "Rotate carrier credentials",
@@ -520,6 +1657,18 @@
           "field": "percent_complete",
           "before": "60",
           "after": "100"
+        }
+      ]
+    },
+    {
+      "key": "LUM-6",
+      "project": "LUMEN",
+      "summary": "Biometric capture",
+      "fields": [
+        {
+          "field": "remaining",
+          "before": "2",
+          "after": "5"
         }
       ]
     }
@@ -575,7 +1724,7 @@
   },
   "quality": {
     "traceable": true,
-    "findings": 6,
+    "findings": 9,
     "set_aside": 1,
     "unsupported_dropped": 0,
     "approval": "pending"

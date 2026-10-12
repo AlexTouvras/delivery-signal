@@ -26,6 +26,8 @@ COLUMNS = [
     "priority",
     "assignee",
     "story_points",
+    "original_estimate",
+    "remaining",
     "percent_complete",
     "created",
     "updated",
@@ -36,9 +38,9 @@ COLUMNS = [
 ]
 
 
-def write_items(directory: Path, rows: list[dict]) -> None:
+def write_items(directory: Path, rows: list[dict], name: str = "work_items.csv") -> None:
     directory.mkdir(parents=True, exist_ok=True)
-    with (directory / "work_items.csv").open("w", newline="", encoding="utf-8") as handle:
+    with (directory / name).open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=COLUMNS)
         writer.writeheader()
         for row in rows:
@@ -53,7 +55,7 @@ class NorthlineSampleTests(unittest.TestCase):
         cls.brief = pipeline.build(SAMPLE)
 
     def test_planted_traps_are_the_top_risks(self) -> None:
-        self.assertEqual(self.brief["result_id"], "e53f514aa6")
+        self.assertEqual(self.brief["result_id"], "f1fb4eaa03")
         ids = [finding["id"] for finding in self.brief["top_risks"]]
         self.assertEqual(
             ids,
@@ -101,13 +103,22 @@ class NorthlineSampleTests(unittest.TestCase):
 
     def test_changes_are_limited_to_the_previous_export(self) -> None:
         by_key = {change["key"]: change for change in self.brief["changes"]}
-        self.assertEqual(set(by_key), {"FOR-12", "LUM-3"})
+        self.assertEqual(set(by_key), {"AST-4", "FOR-12", "LUM-3", "LUM-6"})
         assignee = next(field for field in by_key["FOR-12"]["fields"] if field["field"] == "assignee")
         self.assertEqual(assignee["before"], "Alex Rahman")
         self.assertEqual(assignee["after"], "blank")
         status = next(field for field in by_key["LUM-3"]["fields"] if field["field"] == "status")
         self.assertEqual(status["before"], "In Progress")
         self.assertEqual(status["after"], "Done")
+        points = next(field for field in by_key["AST-4"]["fields"] if field["field"] == "story_points")
+        self.assertEqual((points["before"], points["after"]), ("3", "5"))
+        remaining = next(field for field in by_key["LUM-6"]["fields"] if field["field"] == "remaining")
+        self.assertEqual((remaining["before"], remaining["after"]), ("2", "5"))
+        also = {finding["id"] for finding in self.brief["also_noted"]}
+        self.assertIn("missing-estimate-count:LUMEN:Highest", also)
+        self.assertIn("remaining-above:FOR-21", also)
+        self.assertIn("done-remaining:LUM-2", also)
+        self.assertNotIn("missing-estimate-count:LUMEN:Highest", {finding["id"] for finding in self.brief["top_risks"]})
 
     def test_every_claim_cites_a_real_row(self) -> None:
         loaded = pipeline.load_portfolio(SAMPLE)
@@ -124,6 +135,12 @@ class NorthlineSampleTests(unittest.TestCase):
             for evidence in finding["evidence"]:
                 self.assertIn(evidence["id"], known[evidence["source"]])
                 self.assertTrue(evidence["field"])
+        self.assertTrue(self.brief["progress"])
+        for row in self.brief["progress"]:
+            self.assertTrue(row["evidence"])
+            for evidence in row["evidence"]:
+                self.assertIn(evidence["id"], known[evidence["source"]])
+                self.assertTrue(evidence["field"])
         self.assertEqual(self.brief["data_quality"], [])
         self.assertTrue(self.brief["quality"]["traceable"])
         self.assertEqual(self.brief["approval"], "pending")
@@ -133,6 +150,36 @@ class NorthlineSampleTests(unittest.TestCase):
         for phrase in ("will miss", "predicted", "guarantee", "on schedule to fail"):
             self.assertNotIn(phrase, text)
         self.assertIn("does not forecast", text)
+
+    def test_progress_covers_the_project_the_epic_and_the_feature(self) -> None:
+        by_id = {row["id"]: row["text"] for row in self.brief["progress"]}
+        self.assertEqual(
+            by_id["LUMEN"],
+            "8 of 38 story points are Done (21%). 3 items have no story point or effort. Remaining 7, original estimate 16.",
+        )
+        self.assertEqual(
+            by_id["LUM-1"],
+            "8 of 37 story points are Done (22%). 3 items have no story point or effort. Remaining 7, original estimate 16.",
+        )
+        self.assertEqual(by_id["FORGE"], "12 of 26 story points are Done (46%). Remaining 8, original estimate 18.")
+        self.assertEqual(by_id["FOR-1"], "10 of 26 story points are Done (38%). Remaining 8, original estimate 18.")
+        self.assertEqual(by_id["FOR-30"], "2 of 5 story points are Done (40%). Remaining 3, original estimate 5.")
+        lumen = next(row for row in self.brief["pulse"] if row["id"] == "LUMEN")
+        self.assertEqual(lumen["progress"], by_id["LUMEN"])
+        page = pipeline.render_html(self.brief)
+        self.assertNotIn("<h2>Progress</h2>", page)
+        self.assertIn('role="progressbar"', page)
+        self.assertIn('aria-valuenow="21"', page)
+        self.assertIn('aria-label="About Delivery pulse"', page)
+        self.assertIn("Pick tickets", page)
+        self.assertIn("8 of 38 story points are Done", page)
+        markdown = pipeline.render_markdown(self.brief)
+        self.assertNotIn("## Progress", markdown)
+        self.assertIn("FOR-30 Pick tickets", markdown)
+        above = next(item for item in self.brief["also_noted"] if item["id"] == "remaining-above:FOR-21")
+        blob = f"{above['title']} {above['summary']}".lower()
+        self.assertNotIn("day", blob)
+        self.assertNotIn("hour", blob)
 
     def test_forge_is_blocked_and_lumen_needs_attention(self) -> None:
         states = {row["id"]: row["state"] for row in self.brief["pulse"]}
@@ -425,6 +472,184 @@ class LearnedExportTests(unittest.TestCase):
         self.assertIn("1 Oct 2026", finding["summary"])
         due = next(item for item in finding["evidence"] if item["field"] == "due")
         self.assertEqual(due["value"], "2026-10-01")
+
+
+def _estimate_item(**kwargs: str) -> dict:
+    row = {
+        "key": "EST-1",
+        "project": "EST",
+        "project_name": "Estimates",
+        "type": "Story",
+        "summary": "Cutover",
+        "status": "In Progress",
+        "priority": "High",
+        "assignee": "Ada",
+        "story_points": "3",
+        "updated": "2026-10-09",
+        "due": "2026-10-24",
+    }
+    row.update(kwargs)
+    return row
+
+
+def _build_rows(rows: list[dict], previous: list[dict] | None = None) -> dict:
+    with tempfile.TemporaryDirectory() as tmp:
+        directory = Path(tmp)
+        (directory / "meta.json").write_text(
+            json.dumps(
+                {
+                    "portfolio": "Estimates",
+                    "as_of": "2026-10-10",
+                    "audience": "Delivery director",
+                    "synthetic": True,
+                }
+            ),
+            encoding="utf-8",
+        )
+        write_items(directory, rows)
+        if previous is not None:
+            write_items(directory, previous, "previous_work_items.csv")
+        return pipeline.build(directory)
+
+
+def _finding_ids(brief: dict) -> set[str]:
+    return {finding["id"] for finding in brief["top_risks"] + brief["also_noted"] + brief["set_aside"]}
+
+
+class EstimateTests(unittest.TestCase):
+    def test_missing_estimates_count_from_three_and_ignore_lower_priority(self) -> None:
+        brief = _build_rows(
+            [
+                _estimate_item(key="EST-1", story_points="", summary="One"),
+                _estimate_item(key="EST-2", story_points="", remaining="4", original_estimate="8", summary="Hours only"),
+                _estimate_item(key="EST-3", priority="Medium", story_points="", summary="Medium"),
+                _estimate_item(key="EST-4", story_points="5", remaining="", summary="Has points"),
+            ]
+        )
+        ids = _finding_ids(brief)
+        self.assertEqual(
+            {item for item in ids if item.startswith("missing-estimate")},
+            {"missing-estimate:EST-1", "missing-estimate:EST-2"},
+        )
+        self.assertNotIn("remaining-above:EST-2", ids)
+
+    def test_three_open_high_items_without_points_are_one_count(self) -> None:
+        brief = _build_rows(
+            [
+                _estimate_item(key=f"EST-{number}", story_points="", priority="Highest", summary=f"Item {number}")
+                for number in range(1, 4)
+            ]
+            + [_estimate_item(key="EST-9", story_points="", priority="High", summary="Lone")]
+        )
+        ids = _finding_ids(brief)
+        self.assertIn("missing-estimate-count:EST:Highest", ids)
+        self.assertNotIn("missing-estimate:EST-1", ids)
+        self.assertIn("missing-estimate:EST-9", ids)
+        count = next(item for item in brief["top_risks"] + brief["also_noted"] if item["id"].startswith("missing-estimate-count"))
+        self.assertEqual(count["title"], "3 Highest priority items have no estimate.")
+        self.assertIn("EST-1", count["summary"])
+        self.assertIn("EST-2", count["summary"])
+        self.assertIn("EST-3", count["summary"])
+        self.assertEqual({item["id"] for item in count["evidence"]}, {"EST-1", "EST-2", "EST-3"})
+
+    def test_remaining_above_original_and_done_remaining_cite_the_cells(self) -> None:
+        brief = _build_rows(
+            [
+                _estimate_item(key="EST-1", original_estimate="5", remaining="8"),
+                _estimate_item(key="EST-2", status="Done", priority="Medium", original_estimate="5", remaining="8"),
+                _estimate_item(key="EST-3", status="Done", priority="Medium", original_estimate="5", remaining="0"),
+                _estimate_item(key="EST-4", status="Done", priority="Medium", original_estimate="5", remaining=""),
+                _estimate_item(key="EST-5", original_estimate="8", remaining="8"),
+                _estimate_item(key="EST-6", original_estimate="8", remaining="3"),
+            ]
+        )
+        ids = _finding_ids(brief)
+        self.assertEqual(
+            {item for item in ids if item.startswith("remaining-above") or item.startswith("done-remaining")},
+            {"remaining-above:EST-1", "remaining-above:EST-2", "done-remaining:EST-2"},
+        )
+        finding = next(item for item in brief["top_risks"] + brief["also_noted"] if item["id"] == "remaining-above:EST-1")
+        blob = f"{finding['title']} {finding['summary']} {finding['suggested_question']}".lower()
+        self.assertIn("8", blob)
+        self.assertIn("5", blob)
+        for phrase in ("day", "hour", "forecast", "will miss", "velocity"):
+            self.assertNotIn(phrase, blob)
+        done = next(item for item in brief["top_risks"] + brief["also_noted"] if item["id"] == "done-remaining:EST-2")
+        self.assertIn("8", done["title"])
+        self.assertIn("Done", done["title"])
+
+    def test_duration_text_is_not_turned_into_a_number(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            (directory / "meta.json").write_text(
+                json.dumps({"portfolio": "Durations", "as_of": "2026-10-10", "synthetic": True}),
+                encoding="utf-8",
+            )
+            (directory / "work_items.csv").write_text(
+                "key,summary,status,priority,assignee,story_points,original_estimate,remaining\n"
+                "T-1,Task,In Progress,High,Ada,2,1d,3d\n"
+                "T-2,Other,In Progress,High,Ada,2,??,4\n",
+                encoding="utf-8",
+            )
+            brief = pipeline.build(directory)
+        self.assertNotIn("remaining-above:T-1", _finding_ids(brief))
+        self.assertTrue(any("T-2 original_estimate is not a number" in issue for issue in brief["data_quality"]))
+        self.assertFalse(any("1d" in issue or "3d" in issue for issue in brief["data_quality"]))
+
+    def test_a_moved_point_or_remaining_figure_joins_the_change_list(self) -> None:
+        brief = _build_rows(
+            [
+                _estimate_item(key="OLD-1", story_points="8", remaining="5", original_estimate="9"),
+                _estimate_item(key="NEW-1", story_points="2", remaining="2"),
+            ],
+            [
+                _estimate_item(key="OLD-1", story_points="5", remaining="3", original_estimate="4"),
+                _estimate_item(key="GONE-1", story_points="1", remaining="1"),
+            ],
+        )
+        by_key = {change["key"]: change for change in brief["changes"]}
+        self.assertEqual(set(by_key), {"OLD-1", "NEW-1", "GONE-1"})
+        fields = {field["field"]: field for field in by_key["OLD-1"]["fields"]}
+        self.assertEqual(fields["story_points"], {"field": "story_points", "before": "5", "after": "8"})
+        self.assertEqual(fields["remaining"], {"field": "remaining", "before": "3", "after": "5"})
+        self.assertNotIn("original_estimate", fields)
+        self.assertEqual(by_key["NEW-1"]["fields"][0]["after"], "added")
+        self.assertEqual(by_key["GONE-1"]["fields"][0]["after"], "removed")
+        text = pipeline.render_markdown(brief).lower()
+        self.assertIn("does not forecast", text)
+        for phrase in ("will miss", "predicted", "guarantee", "on schedule to fail"):
+            self.assertNotIn(phrase, text)
+
+    def test_jira_and_azure_devops_estimate_headers(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            (directory / "meta.json").write_text(
+                json.dumps({"portfolio": "Headers", "as_of": "2026-10-10", "synthetic": True}),
+                encoding="utf-8",
+            )
+            (directory / "work_items.csv").write_text(
+                "Issue key,Summary,Status,Priority,Assignee,Story Points,Remaining Estimate,Original Estimate\n"
+                "J-1,Task,Done,Medium,Ada,3,4,2\n"
+                "J-2,Open,To Do,High,Ada,,,\n",
+                encoding="utf-8",
+            )
+            jira = pipeline.build(directory)
+            (directory / "work_items.csv").write_text(
+                "ID,Work Item Type,Title,State,Priority,Assigned To,Effort,Remaining Work,Original Estimate\n"
+                "11,User Story,Pay,Active,2,Ada,,5,8\n"
+                "12,User Story,Ok,Active,2,Ada,3,1,5\n"
+                "10,User Story,Login,Closed,2,Ada,,3,1\n",
+                encoding="utf-8",
+            )
+            ado = pipeline.build(directory)
+        self.assertEqual(
+            {item for item in _finding_ids(jira) if "estimate" in item or "remaining" in item},
+            {"remaining-above:J-1", "done-remaining:J-1", "missing-estimate:J-2"},
+        )
+        self.assertEqual(
+            {item for item in _finding_ids(ado) if "estimate" in item or "remaining" in item},
+            {"missing-estimate:11", "remaining-above:10", "done-remaining:10"},
+        )
 
 
 if __name__ == "__main__":

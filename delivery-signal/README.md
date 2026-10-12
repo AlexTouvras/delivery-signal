@@ -41,7 +41,7 @@ The product page is a headline, then Quick Start. Orbit hosts the [`docs/`](../d
 
 https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/blob/main/docs/index.html#quickstart
 
-Choose this week's CSV. The export stays in that browser. Share or download the HTML brief. The page runs the same checker as this repo. The Northline sample produces result `e53f514aa6`.
+Choose this week's CSV. The export stays in that browser. Share or download the HTML brief. The page runs the same checker as this repo. The Northline sample produces result `f1fb4eaa03`.
 
 The files live in [`docs/`](../docs). Open that preview to use the page today. https://alextouvras.github.io/delivery-signal/ is the Home Screen address after Pages is set to branch `main` and folder `/docs` (Settings, Pages, Deploy from a branch). That switch is not on: creating the Pages site returns HTTP 403 for this access.
 
@@ -114,10 +114,15 @@ If a team renamed a column, put `columns.json` beside the export. `templates/col
 
 ## What the sample shows
 
-`samples/northline` is invented.
+`samples/northline` is invented. The result id is `f1fb4eaa03`.
 
+- The pulse card has a bar for story points Done, and a thinner bar for each epic or feature. An i on each section explains what is shown.
 - Forge `FOR-12` is overdue and unassigned, and it blocks `FOR-20`.
-- Lumen reports the epic 85% complete while 8 of 37 story points are Done.
+- Lumen reports the epic 85% complete while 8 of 37 story points are Done. The project line is 8 of 38, because the decision sits outside the epic.
+- Three Highest Lumen stories have an empty story point cell, so they are one count.
+- `LUM-2` is Done and remaining is 2. `FOR-21` remaining is 5 and the original estimate is 3.
+- `AST-4` story points moved from 3 to 5, and `LUM-6` remaining moved from 2 to 5.
+- Forge feature `FOR-30` Pick tickets is 2 of 5 story points Done. The Forge project line is 12 of 26, and the epic line is 10 of 26.
 - Cedar's 9 Oct note says the project is green. The open stories were last updated in August and are already overdue.
 - The legacy-extract milestone is overdue, and its successor `FOR-3` is Done, so that signal is set aside on the first screen.
 - Aster's note also says "on track". The export agrees, so it stays on track.

@@ -49,6 +49,7 @@ JIRA_FIELDS = [
     "duedate",
     "parent",
     "description",
+    "timetracking",
 ]
 ADO_FIELDS = [
     "System.TeamProject",
@@ -66,6 +67,8 @@ ADO_FIELDS = [
     "Microsoft.VSTS.Scheduling.StoryPoints",
     "Microsoft.VSTS.Scheduling.Effort",
     "Microsoft.VSTS.Scheduling.TargetDate",
+    "Microsoft.VSTS.Scheduling.OriginalEstimate",
+    "Microsoft.VSTS.Scheduling.RemainingWork",
 ]
 JIRA_FIELD_NAMES = {
     "story points": "story_points",
@@ -172,6 +175,16 @@ def _issue_ref(value: object) -> str:
     if value is None:
         return ""
     return str(value).strip()
+
+
+def _tracking_cell(fields: dict, label: str, seconds_name: str) -> str:
+    tracking = fields.get("timetracking")
+    if not isinstance(tracking, dict):
+        return ""
+    shown = tracking.get(label)
+    if shown is not None and str(shown).strip():
+        return str(shown).strip()
+    return _points(tracking.get(seconds_name))
 
 
 def _points(value: object) -> str:
@@ -343,6 +356,8 @@ def fetch_jira(site: str, project_key: str, email: str, token: str, transport=No
                     parent_key,
                     _adf(fields.get("description"))[:500],
                     _points(fields.get(story_id)) if story_id else "",
+                    _tracking_cell(fields, "originalEstimate", "originalEstimateSeconds"),
+                    _tracking_cell(fields, "remainingEstimate", "remainingEstimateSeconds"),
                 ]
             )
             if len(rows) >= MAX_ITEMS:
@@ -399,6 +414,8 @@ def fetch_ado(org: str, project_key: str, token: str, transport=None) -> list[li
                     _points(fields.get("Microsoft.VSTS.Scheduling.StoryPoints")),
                     _points(fields.get("Microsoft.VSTS.Scheduling.Effort")),
                     _day(fields.get("Microsoft.VSTS.Scheduling.TargetDate")),
+                    _points(fields.get("Microsoft.VSTS.Scheduling.OriginalEstimate")),
+                    _points(fields.get("Microsoft.VSTS.Scheduling.RemainingWork")),
                 ]
             )
     return rows
@@ -419,6 +436,8 @@ JIRA_HEADERS = [
     "Parent",
     "Comment",
     "Custom field (Story Points)",
+    "Original Estimate",
+    "Remaining Estimate",
 ]
 ADO_HEADERS = [
     "ID",
@@ -437,6 +456,8 @@ ADO_HEADERS = [
     "Story Points",
     "Effort",
     "Target Date",
+    "Original Estimate",
+    "Remaining Work",
 ]
 
 

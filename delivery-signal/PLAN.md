@@ -33,7 +33,7 @@ The first screen is the pulse, what changed, the open decision, and the question
 
 The page a phone or another computer opens from this repo is the [`docs/`](../docs) folder, through [the HTML preview of `docs/index.html`](https://htmlpreview.github.io/?https://github.com/AlexTouvras/delivery-signal/blob/main/docs/index.html). Choose the CSV there. The export is read in that browser. The brief can be shared or downloaded as one HTML file. Android can share a CSV into the page once it is installed from its own address, and Chrome or Edge on a computer can open a CSV with it. That address is https://alextouvras.github.io/delivery-signal/ after Pages is set to `main` and `/docs`, in the repository Settings under Pages.
 
-That page runs the same Python checker as this repo, so the Northline sample keeps result id `e53f514aa6`. There is no account.
+That page runs the same Python checker as this repo, so the Northline sample keeps result id `f1fb4eaa03`. There is no account.
 
 In the person's own terminal, from `delivery-signal`, `run` opens the configuration page on this computer. Command Prompt uses `run`. PowerShell uses `.\run`. bash uses `./run`. On that page they choose Jira, Azure DevOps, or another tracker. Jira and Azure DevOps are read from the project. A CSV is for another tracker. The report opens on the page. An agent in this repo uses that same command. It does not install a runtime.
 

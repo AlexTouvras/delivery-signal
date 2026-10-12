@@ -1,6 +1,6 @@
 # Trial on public work-item files
 
-The rules from this trial are in the checker as of rules `2026-10-11`. Blocker counts as Highest and Major as High. Three or more unassigned items of one priority are one cited count. A project with open items, no recognized priority, and no due dates is Not checked. Stale and overdue items are raised when the project has no note that says the work is on track. Jira story point estimate, target end, and epic link fill the standard column when that column is empty. The Northline sample remains result `e53f514aa6`.
+The rules from this trial are in the checker as of rules `2026-10-11`. Blocker counts as Highest and Major as High. Three or more unassigned items of one priority are one cited count. A project with open items, no recognized priority, and no due dates is Not checked. Stale and overdue items are raised when the project has no note that says the work is on track. Jira story point estimate, target end, and epic link fill the standard column when that column is empty. The Northline sample remains result `f1fb4eaa03`.
 
 Run on 11 Oct 2026 with the same checker the configuration page uses. The files stayed on this machine. No tracker token was used. Approval stayed pending. These are public files, not a customer delivery.
 

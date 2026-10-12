@@ -11,5 +11,7 @@
 - [x] Keep a file off "on track" when the rules cannot run
 - [x] Land the checker in `AlexTouvras/delivery-signal`
 - [x] Shape the public page as a product page for Orbit `/products/delivery-signal/`
+- [x] Cite a missing estimate, remaining above the original, Done work that still has remaining, and a point or remaining figure that moved
+- [x] Show story-point progress for each project, epic, and feature on the Northline brief
 - [ ] Add the products section on Orbit and copy `docs/` into `public/products/delivery-signal/`
 - [ ] Run one real project across two weekly exports

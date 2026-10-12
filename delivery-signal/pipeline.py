@@ -31,6 +31,7 @@ KNOWN_STATUS = {"done", "in progress", "to do", "blocked", "waiting"}
 KNOWN_PRIORITY = {"highest", "high", "medium", "low"}
 HIGH = {"highest", "high"}
 PRIORITY_RANK = {"highest": 0, "high": 1, "medium": 2, "low": 3}
+ROLLUP_TYPES = {"epic", "feature", "initiative"}
 GROUP_AT = 3
 OPTIMISTIC = re.compile(r"\b(green|on track|no risks?|no blockers?)\b", re.I)
 ONLY_OPEN = re.compile(r"\bonly open\b", re.I)
@@ -80,6 +81,8 @@ class WorkItem:
     priority: str
     assignee: str
     story_points: float | None
+    original_estimate: float | None
+    remaining: float | None
     percent_complete: float | None
     created: date | None
     updated: date | None
@@ -259,6 +262,8 @@ def load_portfolio(directory: Path) -> dict:
                     "due": item.due.isoformat() if item.due else "",
                     "blocked_by": item.blocked_by,
                     "percent_complete": "" if item.percent_complete is None else _fmt_num(item.percent_complete),
+                    "story_points": "" if item.story_points is None else _fmt_num(item.story_points),
+                    "remaining": "" if item.remaining is None else _fmt_num(item.remaining),
                 }
             )
 
@@ -295,6 +300,27 @@ def load_portfolio(directory: Path) -> dict:
 
 def _ev(source: str, ident: str, field_name: str, value: object) -> Evidence:
     return Evidence(source, ident, field_name, "" if value is None else str(value))
+
+
+_NUMBER_FIELDS = {"percent_complete", "story_points", "remaining"}
+
+
+def _compared_current(item: WorkItem, name: str) -> str:
+    if name == "due":
+        return item.due.isoformat() if item.due else ""
+    if name in _NUMBER_FIELDS:
+        value = getattr(item, name)
+        return "" if value is None else _fmt_num(value)
+    return _clean(str(getattr(item, name) or ""))
+
+
+def _compared_prior(old: dict, name: str) -> str:
+    prior = _clean(old.get(name))
+    if name in _NUMBER_FIELDS and prior:
+        parsed = _parse_number(prior, name, [])
+        if parsed is not None:
+            return _fmt_num(parsed)
+    return prior
 
 
 def _item_evidence(item: WorkItem, field_name: str) -> Evidence:
@@ -418,6 +444,131 @@ def _collapse_unassigned(findings: list[Finding]) -> list[Finding]:
             )
         )
     return rest + collapsed
+
+
+def _collapse_missing_estimates(findings: list[Finding]) -> list[Finding]:
+    grouped: dict[tuple[str, str], list[Finding]] = {}
+    rest: list[Finding] = []
+    for finding in findings:
+        if finding.kind != "missing_estimate":
+            rest.append(finding)
+            continue
+        grouped.setdefault((finding.project, _priority_label(finding)), []).append(finding)
+    collapsed: list[Finding] = []
+    for (project, label), items in grouped.items():
+        if len(items) < GROUP_AT or not label:
+            collapsed.extend(items)
+            continue
+        ordered = sorted(items, key=lambda finding: (-finding.severity, finding.id))
+        keys = [finding.id.split(":", 1)[1] for finding in ordered]
+        shown = ", ".join(keys[:8])
+        extra = f" and {len(keys) - 8} more" if len(keys) > 8 else ""
+        evidence: list[Evidence] = []
+        for finding in ordered:
+            evidence.extend(finding.evidence)
+        collapsed.append(
+            Finding(
+                id=f"missing-estimate-count:{project}:{label}",
+                kind="missing_estimate_count",
+                severity=ordered[0].severity,
+                confidence="fact",
+                project=project,
+                title=f"{len(items)} {label} priority items have no estimate.",
+                summary=(
+                    f"{len(items)} open items are {label} priority and the story point or effort cell is empty: "
+                    f"{shown}{extra}."
+                ),
+                blocks_delivery=False,
+                suggested_question=f"What is the estimate on the {len(items)} {label} priority items?",
+                evidence=evidence,
+            )
+        )
+    return rest + collapsed
+
+
+def _progress_record(kind: str, ident: str, name: str, project: str, items: list[WorkItem]) -> dict | None:
+    counted = [item for item in items if item.story_points is not None]
+    omitted = [item for item in items if item.story_points is None]
+    paired = [
+        item
+        for item in items
+        if item.original_estimate is not None and item.remaining is not None
+    ]
+    if not counted and not paired:
+        return None
+    done_points = sum(item.story_points or 0 for item in counted if _is_done(item.status))
+    total_points = sum(item.story_points or 0 for item in counted)
+    parts = []
+    percent = None
+    if total_points > 0:
+        percent = round(done_points / total_points * 100)
+        parts.append(
+            f"{_fmt_num(done_points)} of {_fmt_num(total_points)} story points are Done ({percent}%)."
+        )
+    if omitted:
+        noun = "item has" if len(omitted) == 1 else "items have"
+        parts.append(f"{len(omitted)} {noun} no story point or effort.")
+    if paired:
+        remaining_sum = sum(item.remaining or 0 for item in paired)
+        original_sum = sum(item.original_estimate or 0 for item in paired)
+        parts.append(
+            f"Remaining {_fmt_num(remaining_sum)}, original estimate {_fmt_num(original_sum)}."
+        )
+    evidence = []
+    for item in sorted(counted, key=lambda item: item.key):
+        evidence.extend(
+            [
+                _item_evidence(item, "status").to_dict(),
+                _item_evidence(item, "story_points").to_dict(),
+            ]
+        )
+    for item in sorted(omitted, key=lambda item: item.key):
+        evidence.append(_item_evidence(item, "story_points").to_dict())
+    for item in sorted(paired, key=lambda item: item.key):
+        evidence.extend(
+            [
+                _item_evidence(item, "remaining").to_dict(),
+                _item_evidence(item, "original_estimate").to_dict(),
+            ]
+        )
+    return {
+        "kind": kind,
+        "id": ident,
+        "name": name,
+        "project": project,
+        "text": " ".join(parts),
+        "percent": percent,
+        "evidence": evidence,
+    }
+
+
+def _portfolio_progress(data: dict, names: dict[str, str]) -> list[dict]:
+    rows = []
+    for project in sorted(names):
+        leaves = [
+            item
+            for item in data["items"]
+            if item.project == project and item.type.strip().lower() not in ROLLUP_TYPES
+        ]
+        record = _progress_record("project", project, names[project], project, leaves)
+        if record:
+            rows.append(record)
+        parents = [
+            item
+            for item in data["items"]
+            if item.project == project and item.type.strip().lower() in ROLLUP_TYPES
+        ]
+        for parent in sorted(parents, key=lambda item: item.key):
+            record = _progress_record(
+                parent.type.strip().lower(),
+                parent.key,
+                parent.summary,
+                project,
+                _children(data, parent.key),
+            )
+            if record:
+                rows.append(record)
+    return rows
 
 
 def _file_limits(items: list[WorkItem]) -> list[str]:
@@ -812,6 +963,82 @@ def analyse(data: dict) -> dict:
             )
         )
 
+    for item in data["items"]:
+        if _is_done(item.status) or _priority(item) not in HIGH or item.story_points is not None:
+            continue
+        findings.append(
+            Finding(
+                id=f"missing-estimate:{item.key}",
+                kind="missing_estimate",
+                severity=56,
+                confidence="fact",
+                project=item.project,
+                title=f"{item.key} is {item.priority} priority, open, and has no estimate.",
+                summary=(
+                    f"{item.key} ({item.summary}) is {item.status} and {item.priority} priority. "
+                    "The story point or effort cell is empty."
+                ),
+                blocks_delivery=False,
+                suggested_question=f"What is the estimate on {item.key} ({item.summary})?",
+                evidence=[
+                    _item_evidence(item, "status"),
+                    _item_evidence(item, "priority"),
+                    _item_evidence(item, "story_points"),
+                ],
+            )
+        )
+
+    for item in data["items"]:
+        if item.original_estimate is None or item.remaining is None or item.remaining <= item.original_estimate:
+            continue
+        original = _fmt_num(item.original_estimate)
+        left = _fmt_num(item.remaining)
+        findings.append(
+            Finding(
+                id=f"remaining-above:{item.key}",
+                kind="remaining_above_original",
+                severity=62,
+                confidence="fact",
+                project=item.project,
+                title=f"{item.key} remaining is {left} and the original estimate is {original}.",
+                summary=(
+                    f"{item.key} ({item.summary}) is {item.status}. "
+                    f"Remaining is {left}. The original estimate is {original}."
+                ),
+                blocks_delivery=False,
+                suggested_question=(
+                    f"Why is remaining {left} on {item.key} ({item.summary}) "
+                    f"when the original estimate is {original}?"
+                ),
+                evidence=[
+                    _item_evidence(item, "remaining"),
+                    _item_evidence(item, "original_estimate"),
+                ],
+            )
+        )
+
+    for item in data["items"]:
+        if not _is_done(item.status) or item.remaining is None or item.remaining == 0:
+            continue
+        left = _fmt_num(item.remaining)
+        findings.append(
+            Finding(
+                id=f"done-remaining:{item.key}",
+                kind="done_remaining",
+                severity=54,
+                confidence="fact",
+                project=item.project,
+                title=f"{item.key} is Done and remaining is {left}.",
+                summary=f"{item.key} ({item.summary}) is {item.status} and the remaining cell is {left}.",
+                blocks_delivery=False,
+                suggested_question=f"Why does {item.key} ({item.summary}) still have remaining {left} after it was marked Done?",
+                evidence=[
+                    _item_evidence(item, "status"),
+                    _item_evidence(item, "remaining"),
+                ],
+            )
+        )
+
     for dep in data["dependencies"]:
         pred = dep["predecessor"]
         succ = dep["successor"]
@@ -910,21 +1137,24 @@ def analyse(data: dict) -> dict:
         if key:
             previous_by_key[key] = row
     changes = []
-    compared = ("status", "assignee", "priority", "due", "blocked_by", "percent_complete")
+    compared = (
+        "status",
+        "assignee",
+        "priority",
+        "due",
+        "blocked_by",
+        "percent_complete",
+        "story_points",
+        "remaining",
+    )
     current_keys = set(data["by_key"])
     for key in sorted(current_keys & set(previous_by_key)):
         item = data["by_key"][key]
         old = previous_by_key[key]
         fields = []
         for name in compared:
-            current = _clean(str(getattr(item, name) if name != "percent_complete" else (
-                "" if item.percent_complete is None else _fmt_num(item.percent_complete)
-            )))
-            if name == "due":
-                current = item.due.isoformat() if item.due else ""
-            prior = _clean(old.get(name))
-            if name == "percent_complete" and prior:
-                prior = _fmt_num(float(prior)) if _parse_number(prior, key, []) is not None else prior
+            current = _compared_current(item, name)
+            prior = _compared_prior(old, name)
             if current != prior:
                 fields.append({"field": name, "before": prior or "blank", "after": current or "blank"})
         if fields:
@@ -956,7 +1186,7 @@ def analyse(data: dict) -> dict:
             kept_aside.append(finding)
         else:
             dropped += 1
-    findings = _collapse_unassigned(kept_findings)
+    findings = _collapse_missing_estimates(_collapse_unassigned(kept_findings))
     set_aside = kept_aside
 
     min_severity = data["min_severity"]
@@ -971,6 +1201,8 @@ def analyse(data: dict) -> dict:
     top = ranked[: data["top_n"]]
     also = [finding for finding in ranked if finding not in top]
 
+    progress = _portfolio_progress(data, names)
+    project_progress = {row["id"]: row["text"] for row in progress if row["kind"] == "project"}
     projects = []
     blocked_projects = {
         item.project
@@ -987,7 +1219,14 @@ def analyse(data: dict) -> dict:
             state = "unchecked"
         else:
             state = "on_track"
-        projects.append({"id": project, "name": names[project], "state": state})
+        projects.append(
+            {
+                "id": project,
+                "name": names[project],
+                "state": state,
+                "progress": project_progress.get(project, ""),
+            }
+        )
 
     limits = _file_limits(data["items"])
     on_track = [row["name"] for row in projects if row["state"] == "on_track"]
@@ -1068,6 +1307,7 @@ def analyse(data: dict) -> dict:
         "lead": lead,
         "limits": limits,
         "pulse": projects,
+        "progress": progress,
         "top_risks": [finding.to_dict() for finding in top],
         "also_noted": [finding.to_dict() for finding in also],
         "set_aside": [finding.to_dict() for finding in set_aside],
@@ -1150,8 +1390,21 @@ def render_markdown(brief: dict) -> str:
         "blocked": "Blocked",
         "unchecked": "Not checked",
     }
+    show_progress = any(row.get("progress") for row in brief["pulse"])
+    if show_progress:
+        lines[-2] = "| Project | State | Progress |"
+        lines[-1] = "| --- | --- | --- |"
     for row in brief["pulse"]:
-        lines.append(f"| {row['name']} | {labels[row['state']]} |")
+        if show_progress:
+            lines.append(f"| {row['name']} | {labels[row['state']]} | {row.get('progress') or ''} |")
+        else:
+            lines.append(f"| {row['name']} | {labels[row['state']]} |")
+    children = [row for row in brief.get("progress") or [] if row["kind"] != "project"]
+    if children:
+        lines.append("")
+        for row in children:
+            lines.append(f"- {row['id']} {row['name']}: {row['text']}")
+        lines.append("")
     lines.extend(["", "## Top risks", ""])
     if not brief["top_risks"]:
         lines.append("No risk cleared the evidence rules.")
@@ -1211,6 +1464,10 @@ def render_markdown(brief: dict) -> str:
             f"- A completion figure is treated as misleading when an epic reports at least {rules['completion_reported_at_least']}% and at most half of its child story points are Done.",
             "- An overdue predecessor is set aside when its successor is already Done.",
             "- Jira Blocker counts as Highest and Major counts as High. Three or more unassigned items of one priority are reported as a count.",
+            "- An open Highest or High item with an empty story point or effort cell has no estimate. Three or more in one project and priority are one count.",
+            "- Remaining above the original estimate cites both numbers. A Done item whose remaining cell is not zero is cited. Those figures are not turned into days.",
+            "- A story point or remaining figure that changed since the previous export is listed with the other changes.",
+            "- Progress counts story points Done on items that have a story point or effort. Epic, feature, and initiative points stay out of the project total. Those parents are counted from their direct children. Remaining and the original estimate are summed where both cells are numbers.",
             "- Stale and overdue items are raised without a notes file. A note that says the work is on track is still compared with the export.",
             "- Optimistic notes are an inference. The dates and statuses they are compared with are facts.",
             "- These thresholds are operating rules for the sample, not a validated predictor of delay.",
@@ -1251,6 +1508,26 @@ def _profile_label(profile: str) -> str:
     )
 
 
+def _section(title: str, note: str) -> str:
+    return (
+        '<div class="section-head"><h2>{}</h2><details class="info">'
+        '<summary aria-label="About {}">i</summary><p>{}</p></details></div>'
+    ).format(html.escape(title), html.escape(title), html.escape(note))
+
+
+def _bar_html(row: dict) -> str:
+    percent = row.get("percent")
+    if percent is None:
+        return ""
+    width = max(0, min(100, int(percent)))
+    label = f"{row['name']}, {width} percent of story points Done"
+    return (
+        f'<div class="bar" role="progressbar" aria-valuenow="{width}" aria-valuemin="0" '
+        f'aria-valuemax="100" aria-label="{html.escape(label)}">'
+        f'<span style="width:{width}%"></span></div>'
+    )
+
+
 def render_html(brief: dict) -> str:
     labels = {
         "on_track": "On track",
@@ -1258,14 +1535,37 @@ def render_html(brief: dict) -> str:
         "blocked": "Blocked",
         "unchecked": "Not checked",
     }
-    pulse = "".join(
-        "<li class=\"card\"><span class=\"state {}\">{}</span><span>{}</span></li>".format(
-            html.escape(row["state"]),
-            labels[row["state"]],
-            html.escape(row["name"]),
-        )
-        for row in brief["pulse"]
-    )
+    progress_rows = brief.get("progress") or []
+    by_project = {row["id"]: row for row in progress_rows if row["kind"] == "project"}
+    children_of: dict[str, list[dict]] = {}
+    for row in progress_rows:
+        if row["kind"] != "project":
+            children_of.setdefault(row["project"], []).append(row)
+    cards = []
+    for row in brief["pulse"]:
+        parts = [
+            f'<span class="state {html.escape(row["state"])}">{labels[row["state"]]}</span>',
+            f"<span>{html.escape(row['name'])}</span>",
+        ]
+        record = by_project.get(row["id"])
+        if record:
+            parts.append(_bar_html(record))
+        if row.get("progress"):
+            parts.append(f'<span class="progress">{html.escape(row["progress"])}</span>')
+        nested = []
+        for child in children_of.get(row["id"], []):
+            nested.append(
+                '<li><span class="name">{} {}</span>{}<span class="progress">{}</span></li>'.format(
+                    html.escape(child["id"]),
+                    html.escape(child["name"]),
+                    _bar_html(child),
+                    html.escape(child["text"]),
+                )
+            )
+        if nested:
+            parts.append(f'<ul class="children">{"".join(nested)}</ul>')
+        cards.append('<li class="card">' + "".join(parts) + "</li>")
+    pulse = "".join(cards)
     risks = []
     for finding in brief["top_risks"]:
         count = len(finding["evidence"])
@@ -1322,7 +1622,15 @@ def render_html(brief: dict) -> str:
     stamp = "Synthetic sample · pending approval" if brief["synthetic"] else "Pending approval"
     profile = _profile_label(str(brief.get("source_profile", "canonical")))
     limit_items = "".join(f"<li>{html.escape(item)}</li>" for item in brief.get("limits") or [])
-    limits_html = f"<h2>What this file does not support</h2><ul>{limit_items}</ul>" if limit_items else ""
+    limits_html = (
+        _section(
+            "What this file does not support",
+            "Columns or words the rules could not use. Lateness, priority, and story points are left out when those cells are missing.",
+        )
+        + f"<ul>{limit_items}</ul>"
+        if limit_items
+        else ""
+    )
     quality_rows = brief.get("data_quality") or []
     if quality_rows:
         shown = "".join(f"<li>{html.escape(issue)}</li>" for issue in quality_rows[:40])
@@ -1347,14 +1655,26 @@ def render_html(brief: dict) -> str:
     header {{ border-top: 6px solid #1c1917; padding-top: 0.8rem; }}
     .stamp {{ margin: 0; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #9a3412; }}
     h1 {{ font-size: 1.8rem; line-height: 1.1; margin: 0.35rem 0; }}
-    h2 {{ font-size: 1.05rem; margin: 1.4rem 0 0.45rem; }}
+    h2 {{ font-size: 1.05rem; margin: 0; }}
+    .section-head {{ display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin: 1.4rem 0 0.45rem; }}
+    .info {{ position: relative; margin: 0; }}
+    .info summary {{ list-style: none; width: 1.25rem; height: 1.25rem; border: 1px solid #a8a29e; border-radius: 999px; display: grid; place-items: center; font: italic 700 0.72rem/1 ui-sans-serif, system-ui, sans-serif; color: #57534e; cursor: pointer; }}
+    .info summary::-webkit-details-marker {{ display: none; }}
+    .info p {{ position: absolute; right: 0; z-index: 2; width: min(22rem, 70vw); margin: 0.35rem 0 0; padding: 0.55rem 0.7rem; background: #fffdf8; border: 1px solid #e7e0d4; box-shadow: 0 8px 20px rgba(28, 25, 23, 0.08); font-size: 0.82rem; font-weight: 400; }}
+    .bar {{ height: 0.45rem; background: #e7e0d4; border-radius: 999px; overflow: hidden; margin: 0.35rem 0 0.15rem; }}
+    .bar > span {{ display: block; height: 100%; background: #1c1917; }}
+    .children {{ list-style: none; padding: 0.35rem 0 0; margin: 0.25rem 0 0; border-top: 1px solid #e7e0d4; }}
+    .children li {{ margin-top: 0.45rem; }}
+    .children .name {{ display: block; font-size: 0.82rem; color: #44403c; }}
+    .children .bar {{ height: 0.3rem; }}
     h3 {{ font-size: 1rem; margin: 0 0 0.35rem; }}
     .meta {{ margin: 0; color: #57534e; }}
     .lede {{ font-size: 1.02rem; }}
-    .pulse {{ list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.45rem; }}
+    .pulse {{ list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.45rem; }}
     .card {{ background: #fffdf8; border: 1px solid #e7e0d4; padding: 0.7rem 0.8rem; }}
     .pulse .card {{ display: flex; flex-direction: column; gap: 0.2rem; min-height: 3.2rem; }}
     .state {{ font-weight: 700; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; }}
+    .progress {{ color: #44403c; font-size: 0.85rem; }}
     .on_track {{ color: #166534; }}
     .needs_attention {{ color: #a16207; }}
     .blocked {{ color: #9a3412; }}
@@ -1382,22 +1702,22 @@ def render_html(brief: dict) -> str:
     <p class="lede">{html.escape(brief['lead'])}</p>
     {limits_html}
     {quality_html}
-    <h2>Delivery pulse</h2>
+    {_section("Delivery pulse", "Each card is one project: On track, Needs attention, Blocked, or Not checked. The bar is story points marked Done, among items that have a story point or effort. An epic, feature, or initiative is listed on that card and counted from its direct children. Remaining and the original estimate are sums of rows where both cells are numbers.")}
     <ul class="pulse">{pulse}</ul>
-    <h2>What changed</h2>
+    {_section("What changed", "Fields that differ from the previous export: status, assignee, priority, due date, blocker, percent complete, story points, and remaining. Items that appeared or left the export are listed here too.")}
     <ul>{changes}</ul>
-    <h2>Decisions needed</h2>
+    {_section("Decisions needed", "Open items whose type is Decision, or whose status is Waiting. The owner and the due date come from those cells.")}
     <ul>{''.join(decisions) or '<li>None.</li>'}</ul>
-    <h2>Ask in the review</h2>
+    {_section("Ask in the review", "Questions drawn from the top risks and from open decisions. Nothing is sent until a person approves the brief.")}
     <ul>{questions or '<li>None.</li>'}</ul>
-    <h2>Top risks</h2>
+    {_section("Top risks", "The highest-severity findings that cite a row in the export. Evidence stays folded under each one.")}
     {''.join(risks) or '<p>No risk cleared the evidence rules.</p>'}
-    <h2>Checked and set aside</h2>
+    {_section("Checked and set aside", "A signal the rules looked at and did not promote. An overdue predecessor is set aside when its successor is already Done.")}
     <details>
       <summary>{html.escape(aside_label)}</summary>
       <ul>{aside_items}</ul>
     </details>
-    <h2>Also noted</h2>
+    {_section("Also noted", "Findings that cleared the severity threshold and did not fit at the top of the brief.")}
     <ul>{noted}</ul>
     <footer>
       <p>Send this file. The recipient does not need an account or the original export. Evidence is under each risk. Nothing on this page has been sent to a project tool.</p>

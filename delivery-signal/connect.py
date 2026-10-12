@@ -120,8 +120,8 @@ def connect_page(port: int) -> str:
 
     <h2>How to export</h2>
     <ul>
-      <li>Jira: search work items, choose Export, then CSV (all fields). Keep Issue key, Summary, Status, Updated, and Due date.</li>
-      <li>Azure DevOps: open the query, add columns, then Export to CSV. Keep ID, Title, Work Item Type, State, and Changed Date.</li>
+      <li>Jira: search work items, choose Export, then CSV (all fields). Keep Issue key, Summary, Status, Updated, Due date, Story Points, Original Estimate, and Remaining Estimate.</li>
+      <li>Azure DevOps: open the query, add columns, then Export to CSV. Keep ID, Title, Work Item Type, State, Changed Date, Story Points or Effort, Original Estimate, and Remaining Work.</li>
       <li>A renamed header goes in columns.json. The example is <code>delivery-signal/templates/columns.example.json</code>.</li>
     </ul>
 

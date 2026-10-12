@@ -69,6 +69,16 @@ FIELDS: dict[str, dict[str, list[str]]] = {
         "jira": ["Story Points", "Custom field (Story Points)", "Custom field (Story point estimate)"],
         "azure_devops": ["Story Points", "Effort"],
     },
+    "original_estimate": {
+        "canonical": ["original_estimate"],
+        "jira": ["Original Estimate", "Custom field (Original Estimate)"],
+        "azure_devops": ["Original Estimate"],
+    },
+    "remaining": {
+        "canonical": ["remaining"],
+        "jira": ["Remaining Estimate", "Custom field (Remaining Estimate)"],
+        "azure_devops": ["Remaining Work"],
+    },
     "percent_complete": {
         "canonical": ["percent_complete"],
         "jira": ["Custom field (Percent complete)", "Percent complete"],
@@ -190,6 +200,8 @@ class MappedItem:
     priority: str
     assignee: str
     story_points: float | None
+    original_estimate: float | None
+    remaining: float | None
     percent_complete: float | None
     created: date | None
     updated: date | None
@@ -347,6 +359,8 @@ def map_work_items(
         if not _cell(row, indexes["project"]) and not default_project:
             issues.append(f"{key} has no project column; grouped under Portfolio")
         points = _optional_number(row, indexes, "story_points", key, issues)
+        original = _optional_measure(row, indexes, "original_estimate", key, issues)
+        remaining = _optional_measure(row, indexes, "remaining", key, issues)
         percent = _optional_number(row, indexes, "percent_complete", key, issues)
         created = _dated(row, indexes, "created", profile, key, issues)
         updated = _dated(row, indexes, "updated", profile, key, issues)
@@ -370,6 +384,8 @@ def map_work_items(
                 priority=priority,
                 assignee=_assignee(_cell(row, indexes["assignee"])),
                 story_points=points,
+                original_estimate=original,
+                remaining=remaining,
                 percent_complete=percent,
                 created=created,
                 updated=updated,
@@ -381,6 +397,18 @@ def map_work_items(
             )
         )
     return items
+
+
+def _optional_measure(row: list[str], indexes: dict[str, list[int]], field_name: str, key: str, issues: list[str]) -> float | None:
+    """Read a numeric estimate. A duration such as 2d stays unread, so it is not turned into days."""
+    raw = _cell(row, indexes[field_name])
+    if not raw or any(character.isalpha() for character in raw):
+        return None
+    try:
+        return _number(raw)
+    except ValueError:
+        issues.append(f"{key} {field_name} is not a number: {raw}")
+        return None
 
 
 def _optional_number(row: list[str], indexes: dict[str, list[int]], field_name: str, key: str, issues: list[str]) -> float | None:

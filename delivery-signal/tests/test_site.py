@@ -41,6 +41,11 @@ class PublishedFilesTests(unittest.TestCase):
         self.assertIn('type="file"', page)
         self.assertIn("Add to Home Screen", page)
         self.assertIn("Open the Northline sample", page)
+        self.assertIn("bar for story points Done", page)
+        self.assertIn("Story Points", page)
+        self.assertIn("Remaining Estimate", page)
+        self.assertIn("Remaining Work", page)
+        self.assertIn("f1fb4eaa03", page)
         for label in ("Apps", "One-liner", "npm", "Hackable"):
             self.assertIn(label, page)
         self.assertIn("install.sh | bash", page)
@@ -137,12 +142,19 @@ class PageTests(unittest.TestCase):
                 "() => document.querySelector('#status').dataset.state === 'built'",
                 timeout=120000,
             )
-            self.assertIn("e53f514aa6", page.locator("#status").inner_text())
+            self.assertIn("f1fb4eaa03", page.locator("#status").inner_text())
             frame = page.frame_locator("#brief")
-            frame.get_by_text("FOR-12", exact=False).first.wait_for()
+            frame.get_by_role("heading", name="FOR-12").first.wait_for()
             body = frame.locator("body").inner_text()
             self.assertIn("FOR-12", body)
-            self.assertIn("e53f514aa6", body)
+            self.assertIn("f1fb4eaa03", body)
+            self.assertIn("8 of 38 story points are Done", body)
+            self.assertIn("Pick tickets", body)
+            brief_html = frame.locator("body").inner_html()
+            self.assertIn("progressbar", brief_html)
+            self.assertIn("About Delivery pulse", brief_html)
+            frame.locator('summary[aria-label="About Delivery pulse"]').click()
+            self.assertIn("story points marked Done", frame.locator("body").inner_text())
             self.assertNotIn("No previous export was attached.", body)
             page.screenshot(path="/opt/cursor/artifacts/phone_brief.png", full_page=False)
 
@@ -154,7 +166,7 @@ class PageTests(unittest.TestCase):
                     }""",
                     prefix,
                 )
-                self.assertEqual(result_id, "e53f514aa6", prefix)
+                self.assertEqual(result_id, "f1fb4eaa03", prefix)
 
             export = self.root / "tiny.csv"
             export.write_text(
