@@ -1649,43 +1649,43 @@ def render_html(brief: dict) -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{html.escape(brief['portfolio'])} delivery brief</title>
   <style>
-    :root {{ color-scheme: light; }}
-    body {{ margin: 0; background: #f4f1ea; color: #1c1917; font: 15px/1.45 ui-sans-serif, system-ui, sans-serif; }}
+    :root {{ color-scheme: dark; }}
+    body {{ margin: 0; background: #12141c; color: #e7e9f0; font: 15px/1.45 ui-sans-serif, system-ui, sans-serif; }}
     main {{ max-width: 52rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }}
-    header {{ border-top: 6px solid #1c1917; padding-top: 0.8rem; }}
-    .stamp {{ margin: 0; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #9a3412; }}
+    header {{ border-top: 6px solid #22d3ee; padding-top: 0.8rem; }}
+    .stamp {{ margin: 0; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #22d3ee; }}
     h1 {{ font-size: 1.8rem; line-height: 1.1; margin: 0.35rem 0; }}
     h2 {{ font-size: 1.05rem; margin: 0; }}
     .section-head {{ display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin: 1.4rem 0 0.45rem; }}
     .info {{ position: relative; margin: 0; }}
-    .info summary {{ list-style: none; width: 1.25rem; height: 1.25rem; border: 1px solid #a8a29e; border-radius: 999px; display: grid; place-items: center; font: italic 700 0.72rem/1 ui-sans-serif, system-ui, sans-serif; color: #57534e; cursor: pointer; }}
+    .info summary {{ list-style: none; width: 1.25rem; height: 1.25rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; display: grid; place-items: center; font: italic 700 0.72rem/1 ui-sans-serif, system-ui, sans-serif; color: #9aa0b0; cursor: pointer; }}
     .info summary::-webkit-details-marker {{ display: none; }}
-    .info p {{ position: absolute; right: 0; z-index: 2; width: min(22rem, 70vw); margin: 0.35rem 0 0; padding: 0.55rem 0.7rem; background: #fffdf8; border: 1px solid #e7e0d4; box-shadow: 0 8px 20px rgba(28, 25, 23, 0.08); font-size: 0.82rem; font-weight: 400; }}
-    .bar {{ height: 0.45rem; background: #e7e0d4; border-radius: 999px; overflow: hidden; margin: 0.35rem 0 0.15rem; }}
-    .bar > span {{ display: block; height: 100%; background: #1c1917; }}
-    .children {{ list-style: none; padding: 0.35rem 0 0; margin: 0.25rem 0 0; border-top: 1px solid #e7e0d4; }}
+    .info p {{ position: absolute; right: 0; z-index: 2; width: min(22rem, 70vw); margin: 0.35rem 0 0; padding: 0.55rem 0.7rem; background: #0e1016; color: #c4c8d4; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35); font-size: 0.82rem; font-weight: 400; }}
+    .bar {{ height: 0.45rem; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; margin: 0.35rem 0 0.15rem; }}
+    .bar > span {{ display: block; height: 100%; background: #22d3ee; }}
+    .children {{ list-style: none; padding: 0.35rem 0 0; margin: 0.25rem 0 0; border-top: 1px solid rgba(255,255,255,0.08); }}
     .children li {{ margin-top: 0.45rem; }}
-    .children .name {{ display: block; font-size: 0.82rem; color: #44403c; }}
+    .children .name {{ display: block; font-size: 0.82rem; color: #c4c8d4; }}
     .children .bar {{ height: 0.3rem; }}
     h3 {{ font-size: 1rem; margin: 0 0 0.35rem; }}
-    .meta {{ margin: 0; color: #57534e; }}
+    .meta {{ margin: 0; color: #9aa0b0; }}
     .lede {{ font-size: 1.02rem; }}
     .pulse {{ list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.45rem; }}
-    .card {{ background: #fffdf8; border: 1px solid #e7e0d4; padding: 0.7rem 0.8rem; }}
+    .card {{ background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 0.7rem 0.8rem; }}
     .pulse .card {{ display: flex; flex-direction: column; gap: 0.2rem; min-height: 3.2rem; }}
     .state {{ font-weight: 700; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; }}
-    .progress {{ color: #44403c; font-size: 0.85rem; }}
-    .on_track {{ color: #166534; }}
-    .needs_attention {{ color: #a16207; }}
-    .blocked {{ color: #9a3412; }}
-    .unchecked {{ color: #57534e; }}
-    .kicker {{ margin: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #57534e; }}
+    .progress {{ color: #c4c8d4; font-size: 0.85rem; }}
+    .on_track {{ color: #34d399; }}
+    .needs_attention {{ color: #fcd34d; }}
+    .blocked {{ color: #f87171; }}
+    .unchecked {{ color: #9aa0b0; }}
+    .kicker {{ margin: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #9aa0b0; }}
     article {{ margin: 0.45rem 0; }}
     details {{ margin-top: 0.35rem; }}
-    summary {{ cursor: pointer; color: #44403c; }}
-    .evidence {{ font: 0.78rem/1.4 ui-monospace, monospace; color: #44403c; }}
+    summary {{ cursor: pointer; color: #c4c8d4; }}
+    .evidence {{ font: 0.78rem/1.4 ui-monospace, monospace; color: #c4c8d4; }}
     ul {{ padding-left: 1.1rem; }}
-    footer {{ margin-top: 1.5rem; color: #57534e; }}
+    footer {{ margin-top: 1.5rem; color: #9aa0b0; }}
     @media (max-width: 640px) {{
       h1 {{ font-size: 1.45rem; }}
       .pulse {{ grid-template-columns: 1fr; }}

@@ -80,7 +80,7 @@ def connect_page(port: int) -> str:
     a.button {{ display: inline-block; text-decoration: none; }}
     pre {{ background: #1c1917; color: #f4f1ea; padding: 0.8rem; overflow-x: auto; white-space: pre-wrap; font: 0.82rem/1.45 ui-monospace, monospace; }}
     .row {{ display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }}
-    iframe {{ width: 100%; height: 80vh; border: 1px solid #e7e0d4; background: #fff; }}
+    iframe {{ width: 100%; height: 80vh; border: 1px solid #e7e0d4; background: #12141c; }}
     ul {{ padding-left: 1.1rem; }}
   </style>
 </head>
