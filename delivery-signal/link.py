@@ -584,7 +584,7 @@ def config_page(home: Path) -> str:
     button {{ font: inherit; font-weight: 650; background: #1c1917; color: #fff; border: 0; padding: 0.5rem 0.8rem; }}
     .hint {{ color: #57534e; margin: 0.25rem 0 0; }}
     [hidden] {{ display: none !important; }}
-    iframe {{ width: 100%; height: 80vh; border: 1px solid #e7e0d4; background: #fff; margin-top: 1rem; }}
+    iframe {{ width: 100%; height: 80vh; border: 1px solid #e7e0d4; background: #12141c; margin-top: 1rem; }}
   </style>
 </head>
 <body>
