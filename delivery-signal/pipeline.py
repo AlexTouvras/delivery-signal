@@ -2936,6 +2936,316 @@ def _ask_html(brief: dict) -> str:
     )
 
 
+def _scope_ident(scope_id: str) -> str:
+    return "team-" + re.sub(r"[^A-Za-z0-9_-]", "", scope_id) or "team"
+
+
+def _series_scale(actual: list | None, target: list | None) -> int:
+    values = [
+        int(value)
+        for value in list(actual or []) + list(target or [])
+        if isinstance(value, (int, float))
+    ]
+    return max(values, default=1)
+
+
+def _chart_svg(
+    actual: list | None,
+    target: list | None,
+    labels: list[str],
+    label: str,
+    mode: str,
+) -> str:
+    actual = list(actual or [])
+    target = list(target or [])
+    count = max(len(labels), len(actual), len(target), 1)
+    scale = _series_scale(actual, target)
+    if not any(isinstance(value, (int, float)) for value in actual + target):
+        return '<p class="empty">No points in this window.</p>'
+    width, height = 720, 220
+    pad_l, pad_r, pad_t, pad_b = 46, 16, 16, 36
+    plot_w = width - pad_l - pad_r
+    plot_h = height - pad_t - pad_b
+    slot = plot_w / count
+    y_min, y_max = 0, scale
+    if mode == "line":
+        line_values = [int(value) for value in actual if isinstance(value, (int, float))]
+        if line_values:
+            lo, hi = min(line_values), max(line_values)
+            if lo == hi:
+                pad = max(1, round(hi * 0.12)) if hi else 1
+                y_min, y_max = max(0, lo - pad), hi + pad
+            else:
+                pad = max(1, round((hi - lo) * 0.35))
+                y_min, y_max = max(0, lo - pad), hi + pad
+    y_span = max(y_max - y_min, 1)
+
+    def y_of(value: float) -> float:
+        return pad_t + plot_h - ((float(value) - y_min) / y_span) * plot_h
+
+    def center(index: int) -> float:
+        return pad_l + index * slot + slot / 2
+
+    ticks = sorted({y_min, y_min + (y_max - y_min) // 2, y_max})
+    parts = [
+        f'<svg class="chart" viewBox="0 0 {width} {height}" role="img" aria-label="{html.escape(label)}">'
+    ]
+    base = pad_t + plot_h
+    for tick in ticks:
+        y = y_of(tick)
+        parts.append(
+            f'<line x1="{pad_l}" y1="{y:.1f}" x2="{width - pad_r}" y2="{y:.1f}" class="grid"></line>'
+        )
+        parts.append(
+            f'<text x="{pad_l - 8}" y="{y + 4:.1f}" text-anchor="end">{tick}</text>'
+        )
+    if mode == "bars":
+        bar_w = min(26, slot * 0.42)
+        for index, value in enumerate(actual):
+            if not isinstance(value, (int, float)) or value <= 0:
+                continue
+            y = y_of(value)
+            parts.append(
+                '<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h:.1f}" rx="4" class="bar-col"></rect>'.format(
+                    x=center(index) - bar_w / 2,
+                    y=y,
+                    w=bar_w,
+                    h=max(base - y, 0),
+                )
+            )
+    else:
+        segments: list[list[str]] = []
+        current: list[str] = []
+        for index, value in enumerate(actual):
+            if not isinstance(value, (int, float)):
+                if current:
+                    segments.append(current)
+                    current = []
+                continue
+            current.append(f"{center(index):.1f},{y_of(value):.1f}")
+        if current:
+            segments.append(current)
+        for segment in segments:
+            flat = len({point.split(",")[1] for point in segment}) <= 1
+            if len(segment) >= 2 and not flat:
+                first_x = segment[0].split(",")[0]
+                last_x = segment[-1].split(",")[0]
+                area = " ".join(segment) + f" {last_x},{base:.1f} {first_x},{base:.1f}"
+                parts.append(f'<polygon points="{area}" class="area"></polygon>')
+            parts.append(f'<polyline points="{" ".join(segment)}" class="series"></polyline>')
+        for index, value in enumerate(actual):
+            if not isinstance(value, (int, float)):
+                continue
+            last = index == len(actual) - 1 or not any(
+                isinstance(item, (int, float)) for item in actual[index + 1 :]
+            )
+            radius = 4.2 if last else 2.6
+            parts.append(
+                f'<circle cx="{center(index):.1f}" cy="{y_of(value):.1f}" r="{radius}" class="dot"></circle>'
+            )
+    if target:
+        points = [
+            f"{center(index):.1f},{y_of(value):.1f}"
+            for index, value in enumerate(target)
+            if isinstance(value, (int, float))
+        ]
+        if len(points) >= 2:
+            parts.append(f'<polyline points="{" ".join(points)}" class="target"></polyline>')
+        for index, value in enumerate(target):
+            if not isinstance(value, (int, float)):
+                continue
+            parts.append(
+                f'<circle cx="{center(index):.1f}" cy="{y_of(value):.1f}" r="2.3" class="target-dot"></circle>'
+            )
+    for index, text in enumerate(labels):
+        if index >= count:
+            break
+        parts.append(
+            f'<text class="axis" x="{center(index):.1f}" y="{height - 8}" text-anchor="middle">{html.escape(text)}</text>'
+        )
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def _meter_html(actual: int | None, target: int | None, higher_is_better: bool) -> str:
+    if actual is None:
+        return '<div class="meter meter-empty"></div>'
+    ceiling = max(actual, 0 if target is None else target, 1)
+    fill = max(0, min(100, 100 * actual / ceiling))
+    tone = "open"
+    mark = ""
+    if target is not None:
+        short = actual < target if higher_is_better else actual > target
+        tone = "short" if short else "met"
+        mark_at = max(0, min(100, 100 * target / ceiling))
+        mark = f'<i class="meter-mark" style="left:{mark_at:.1f}%"></i>'
+    return (
+        f'<div class="meter {tone}" role="img" '
+        f'aria-label="{actual} against {target if target is not None else "no target"}">'
+        f'<span class="meter-fill" style="width:{fill:.1f}%"></span>{mark}</div>'
+    )
+
+
+def _history_rail(weekly: list | None, current: int | None) -> str:
+    nums = [int(value) for value in (weekly or []) if isinstance(value, (int, float))]
+    if current is None or not nums:
+        return ""
+    high = max(max(nums), current, 1)
+    pos = max(0, min(100, 100 * current / high))
+    return (
+        f'<div class="rail" role="img" aria-label="This reading on an eight-week high of {high}">'
+        f'<span class="rail-mark" style="left:{pos:.1f}%"></span></div>'
+    )
+
+
+def _level_figure(kpi: dict) -> str:
+    if kpi["actual"] is None:
+        return "—"
+    if kpi["id"] == "cycle":
+        return f'{kpi["actual"]}<span class="unit">d</span>'
+    if kpi["target"] is not None:
+        return f'{kpi["actual"]}<span class="unit">/ {kpi["target"]}</span>'
+    return str(kpi["actual"])
+
+
+def _level_card(kpi: dict, kind: str, caption: str) -> str:
+    change = ""
+    if kpi["delta"] is not None:
+        change = _change_html(kpi)
+    gap = ""
+    if kpi["gap"] is not None:
+        gap = f'<span class="gap">Gap {kpi["gap"]}</span>'
+    meter = ""
+    if kind == "target":
+        higher = kpi.get("better") != "down"
+        meter = _meter_html(kpi["actual"], kpi["target"], higher)
+    elif kind == "history":
+        meter = _history_rail(kpi.get("weekly"), kpi["actual"] if isinstance(kpi["actual"], int) else None)
+    note = kpi.get("actual_note") or ""
+    note_html = f'<p class="quiet">{html.escape(note)}</p>' if note else ""
+    meta = f'<p class="level-meta">{gap}{change}</p>' if gap or change else ""
+    return (
+        f'<article class="level-card {kind}">'
+        f'<p class="kicker">{html.escape(kpi["name"])}</p>'
+        f'<p class="figure">{_level_figure(kpi)}</p>'
+        f"{note_html}{meter}{meta}"
+        f'<p class="quiet">{html.escape(caption)}</p></article>'
+    )
+
+
+def _chart_card(title: str, note: str, legend: str, svg: str, wide: bool) -> str:
+    klass = "chart-card wide" if wide else "chart-card"
+    return (
+        f'<article class="{klass}"><p class="kicker">Over time</p><h3>{html.escape(title)}</h3>'
+        f"{legend}<p class=\"quiet\">{html.escape(note)}</p>{svg}</article>"
+    )
+
+
+def _board_html(brief: dict) -> str:
+    metrics = brief.get("metrics") or {}
+    scopes = metrics.get("scopes") or []
+    if not scopes:
+        return ""
+    labels = _week_labels(metrics)
+    inputs = []
+    pills = []
+    panels = []
+    rules = []
+    captions = {
+        "throughput": "Latest week against items dated that week.",
+        "dates": "Items already Done whose due date is on or before the report date, against every such date.",
+        "closed": "Moved to Done since the previous export.",
+        "wip": "No target in the file. The mark is this week on the eight-week high.",
+        "cycle": "No target in the file. Finished items only.",
+        "blocked": "No target in the file.",
+        "unassigned": "No target in the file.",
+    }
+    chart_notes = {
+        "throughput": "Bars are items marked Done. The dashed line is due dates in that week. They are not the same items.",
+        "dates": "Bars are due dates reached that week. The dashed line is items dated that week.",
+        "wip": "Open stories, bugs, and tasks at each week end.",
+        "cycle": "Cycle p85 of items already Done by that week end. Gaps are weeks with nothing finished.",
+    }
+    for scope in scopes:
+        ident = _scope_ident(scope["id"])
+        board_id = "board-" + ident
+        checked = " checked" if scope["id"] == "all" else ""
+        inputs.append(f'<input class="team-input" type="radio" name="board" id="{board_id}"{checked}>')
+        pills.append(f'<label for="{board_id}">{html.escape(scope["name"])}</label>')
+        by_id = {kpi["id"]: kpi for kpi in scope["kpis"]}
+        levels = []
+        for key, kind in (
+            ("throughput", "target"),
+            ("dates", "target"),
+        ):
+            kpi = by_id.get(key)
+            if kpi:
+                levels.append(_level_card(kpi, kind, captions[key]))
+        snaps = []
+        for key, kind in (
+            ("wip", "history"),
+            ("cycle", "history"),
+            ("closed", "snap"),
+            ("blocked", "snap"),
+            ("unassigned", "snap"),
+        ):
+            kpi = by_id.get(key)
+            if kpi:
+                snaps.append(_level_card(kpi, kind, captions[key]))
+        charts = []
+        chart_titles = {
+            "throughput": "Marked Done",
+            "dates": "Dates reached each week",
+            "wip": "WIP",
+            "cycle": "Cycle p85",
+        }
+        for key, mode, legend in (
+            (
+                "throughput",
+                "bars",
+                '<p class="chart-legend"><i class="swatch actual"></i>Marked Done<i class="swatch target"></i>Dated that week</p>',
+            ),
+            (
+                "dates",
+                "bars",
+                '<p class="chart-legend"><i class="swatch actual"></i>Reached<i class="swatch target"></i>Dated that week</p>',
+            ),
+            ("wip", "line", ""),
+            ("cycle", "line", ""),
+        ):
+            kpi = by_id.get(key)
+            if not kpi:
+                continue
+            svg = _chart_svg(kpi.get("weekly"), kpi.get("target_weekly"), labels, chart_titles[key], mode)
+            charts.append(_chart_card(chart_titles[key], chart_notes[key], legend, svg, True))
+        panels.append(
+            f'<div class="board-scope board-scope-{ident}">'
+            f'<div class="levels-target">{"".join(levels)}</div>'
+            f'<div class="levels-snap">{"".join(snaps)}</div>'
+            f'<div class="chart-grid">{"".join(charts)}</div></div>'
+        )
+        rules.append(
+            f"#{board_id}:checked ~ .board-stage .board-scope-{ident} {{ display: block; }}"
+            f'#{board_id}:checked ~ .board-pills label[for="{board_id}"] {{ color: #071018; background: var(--cyan); border-color: var(--cyan); }}'
+        )
+    note = (
+        "Stories, bugs, and tasks. A target is filled only from a due date in the file. "
+        "Marked Done and Dates reached draw that target. "
+        "WIP, cycle p85, blocked, and unassigned have no target in the file. "
+        "Each chart uses its own scale. Cycle p85 describes items already Done. This is not a forecast."
+    )
+    return (
+        "<style>" + "".join(rules) + "</style>"
+        + '<div class="section-head"><div><p class="kicker">Board</p>'
+        + "<h2>Levels, then the path</h2></div><details class=\"info\">"
+        + f'<summary aria-label="About the board">i</summary><p>{html.escape(note)}</p></details></div>'
+        + '<div class="board">'
+        + "".join(inputs)
+        + f'<div class="board-pills" role="radiogroup" aria-label="Team">{"".join(pills)}</div>'
+        + f'<div class="board-stage">{"".join(panels)}</div></div>'
+    )
+
+
 def render_html(brief: dict) -> str:
     labels = {
         "on_track": "On track",
@@ -3264,10 +3574,12 @@ def render_html(brief: dict) -> str:
     }}
     .page {{ display: none; animation: rise 320ms ease both; }}
     #page-summary:checked ~ #summary,
+    #page-board:checked ~ #board,
     #page-progress:checked ~ #progress,
     #page-metrics:checked ~ #metrics,
     #page-risks:checked ~ #risks {{ display: block; }}
     #page-summary:checked ~ .pages label[for="page-summary"],
+    #page-board:checked ~ .pages label[for="page-board"],
     #page-progress:checked ~ .pages label[for="page-progress"],
     #page-metrics:checked ~ .pages label[for="page-metrics"],
     #page-risks:checked ~ .pages label[for="page-risks"] {{
@@ -3647,6 +3959,129 @@ def render_html(brief: dict) -> str:
       font-size: 0.88rem;
     }}
     footer p {{ margin: 0.35rem 0; max-width: 42rem; }}
+    .board .board-scope {{ display: none; }}
+    .board-pills {{ display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0 0 0.85rem; }}
+    .board-pills label {{
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      padding: 0.22rem 0.75rem;
+      font-size: 0.78rem;
+      cursor: pointer;
+      color: var(--muted);
+    }}
+    .levels-target {{ display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }}
+    .levels-snap {{
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0.55rem;
+      margin-top: 0.65rem;
+    }}
+    .level-card {{
+      padding: 0.9rem 0.95rem 0.85rem;
+      border: 1px solid var(--line);
+      border-radius: 0.95rem;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.035), transparent 58%),
+        rgba(12, 15, 22, 0.5);
+    }}
+    .level-card .figure {{
+      margin: 0.2rem 0 0.35rem;
+      font-family: var(--display);
+      font-size: 2.05rem;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+    }}
+    .levels-snap .figure {{ font-size: 1.55rem; }}
+    .level-card .unit {{ font-size: 0.95rem; color: var(--muted); font-family: var(--font); }}
+    .level-meta {{ display: flex; flex-wrap: wrap; gap: 0.45rem 0.7rem; align-items: center; margin: 0.4rem 0 0.15rem; }}
+    .gap {{ color: var(--soft); font-size: 0.8rem; font-variant-numeric: tabular-nums; }}
+    .meter {{
+      position: relative;
+      height: 0.5rem;
+      margin-top: 0.15rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+    }}
+    .meter-fill {{
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #1fb8cc, var(--cyan));
+    }}
+    .meter.met .meter-fill {{ background: linear-gradient(90deg, #1f9d6a, var(--green)); }}
+    .meter.short .meter-fill {{ background: linear-gradient(90deg, #b8882a, var(--amber)); }}
+    .meter-mark {{
+      position: absolute;
+      top: -0.22rem;
+      width: 2px;
+      height: 0.94rem;
+      background: var(--fg);
+      border-radius: 1px;
+    }}
+    .rail {{
+      position: relative;
+      height: 0.28rem;
+      margin-top: 0.35rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(45,212,232,0.15), rgba(45,212,232,0.45));
+    }}
+    .rail-mark {{
+      position: absolute;
+      top: 50%;
+      width: 0.62rem;
+      height: 0.62rem;
+      border-radius: 50%;
+      background: var(--cyan);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 4px rgba(45, 212, 232, 0.16);
+    }}
+    .chart-grid {{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.65rem;
+      margin-top: 0.75rem;
+    }}
+    .chart-card {{
+      padding: 0.85rem 0.85rem 0.55rem;
+      border: 1px solid var(--line);
+      border-radius: 0.95rem;
+      background: rgba(8, 10, 16, 0.45);
+    }}
+    .chart-card.wide {{ grid-column: 1 / -1; }}
+    .chart-card h3 {{ margin: 0.12rem 0 0.2rem; font-size: 1.05rem; font-weight: 600; letter-spacing: -0.02em; }}
+    .chart-legend {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.9rem;
+      margin: 0.1rem 0 0.15rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }}
+    .swatch {{
+      display: inline-block;
+      width: 0.85rem;
+      height: 0.4rem;
+      margin-right: 0.35rem;
+      border-radius: 2px;
+      vertical-align: -0.05rem;
+    }}
+    .swatch.actual {{ background: var(--cyan); }}
+    .swatch.target {{
+      height: 0;
+      border-top: 2px dashed var(--amber);
+      border-radius: 0;
+      vertical-align: 0.15rem;
+    }}
+    .chart {{ width: 100%; height: auto; display: block; }}
+    .chart .grid {{ stroke: rgba(231, 233, 240, 0.08); stroke-width: 1; }}
+    .chart text {{ fill: #8f96a8; font-size: 11px; font-family: "IBM Plex Sans", sans-serif; }}
+    .chart .bar-col {{ fill: #2dd4e8; }}
+    .chart .series {{ fill: none; stroke: #2dd4e8; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }}
+    .chart .area {{ fill: rgba(45, 212, 232, 0.16); stroke: none; }}
+    .chart .dot {{ fill: #2dd4e8; stroke: #090b10; stroke-width: 1.5; }}
+    .chart .target {{ fill: none; stroke: #e8b84a; stroke-width: 1.7; stroke-dasharray: 5 4; stroke-linejoin: round; }}
+    .chart .target-dot {{ fill: #e8b84a; stroke: none; }}
     @keyframes rise {{
       from {{ opacity: 0; transform: translateY(8px); }}
       to {{ opacity: 1; transform: translateY(0); }}
@@ -3666,6 +4101,9 @@ def render_html(brief: dict) -> str:
       .cast .figure {{ font-size: 1.55rem; }}
       .pulse {{ grid-template-columns: 1fr; }}
       .pages {{ border-radius: 0.9rem; }}
+      .levels-target, .levels-snap, .chart-grid {{ grid-template-columns: 1fr; }}
+      .chart-card.wide {{ grid-column: auto; }}
+      .levels-snap {{ grid-template-columns: 1fr 1fr; }}
     }}
     @media (prefers-reduced-motion: reduce) {{
       .page, .bar > span, .health .pulse-dot {{ animation: none !important; }}
@@ -3675,7 +4113,7 @@ def render_html(brief: dict) -> str:
       body {{ background: white; color: #111; }}
       body::before, .pages, .info {{ display: none !important; }}
       .page {{ display: block !important; break-inside: avoid; }}
-      .hero, .panel, .brief-line, .ask-card, .pulse-card, .risk-card, .cast-cell {{
+      .hero, .panel, .brief-line, .ask-card, .pulse-card, .risk-card, .cast-cell, .level-card, .chart-card {{
         box-shadow: none;
         background: white;
         border-color: #ddd;
@@ -3699,11 +4137,13 @@ def render_html(brief: dict) -> str:
       <p class="meta">{html.escape(as_of_label)} · {html.escape(brief['audience'] or 'Delivery lead')} · {html.escape(profile)} · {brief.get('item_count', 0)} work items · rules {html.escape(str(brief.get('rules_version', '')))} · result {html.escape(str(brief.get('result_id', '')))}</p>
     </header>
     <input class="sheet-input" type="radio" name="page" id="page-summary" checked>
+    <input class="sheet-input" type="radio" name="page" id="page-board">
     <input class="sheet-input" type="radio" name="page" id="page-progress">
     <input class="sheet-input" type="radio" name="page" id="page-metrics">
     <input class="sheet-input" type="radio" name="page" id="page-risks">
     <nav class="pages" aria-label="Report pages">
       <label for="page-summary">Summary</label>
+      <label for="page-board">Board</label>
       <label for="page-progress">Progress</label>
       <label for="page-metrics">Metrics</label>
       <label for="page-risks">Risks</label>
@@ -3721,6 +4161,9 @@ def render_html(brief: dict) -> str:
     <ul class="pulse">{pulse}</ul>
     {_section("Field changes", "Every compared cell: status, assignee, priority, due date, blocker, percent complete, story points, and remaining. The week reading is the conclusion. This list is the audit.")}
     <ul class="changelog">{changes}</ul>
+    </section>
+    <section class="page" id="board">
+    {_board_html(brief)}
     </section>
     <section class="page" id="metrics">
     {_metrics_html(brief)}
