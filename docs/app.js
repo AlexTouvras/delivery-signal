@@ -143,6 +143,10 @@ async function loadDirectory(prefix) {
 function showBrief(payload) {
   latest = payload;
   setStatus("built", payload.portfolio + " · result " + payload.result_id);
+  const shell = document.querySelector("#brief-shell");
+  if (shell) {
+    shell.hidden = false;
+  }
   briefFrame.hidden = false;
   briefFrame.srcdoc = payload.html;
   const blob = new Blob([payload.html], { type: "text/html" });

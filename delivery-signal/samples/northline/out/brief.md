@@ -8,6 +8,102 @@ Source: canonical · 31 work items · rules 2026-10-11 · result f1fb4eaa03
 
 As of 10 Oct 2026, 1 of 4 projects is on track (Aster HR — Payroll export). This brief cites rows in the approved export. It does not forecast that a future date will be missed.
 
+## Summary
+
+10–16 Oct · next 17–23 Oct
+
+**Closed.** LUM-3, 3 points.
+**Moved.** FOR-12 lost Alex Rahman. LUM-6 remaining 2→5. AST-4 estimate 3→5.
+**Next week.** Remaining up LUM-6 2→5. Over estimate FOR-21 5 vs 3. KYC ready for UAT 17 Oct, milestone. CED-5 23 Oct, no owner.
+**Late.** LUM-9 → LUM-4, no owners. FOR-12 (no owner) → FOR-20 → Carrier cutover 15 Oct. Later: LUM-5 no owner 28 Oct; LUM-11, LUM-12, LUM-13 no estimate 30 Oct.
+**Disagrees.** N-1 vs CED-2 and CED-3, 51d. 85% is 8/37. N-2: one item.
+
+
+## Metrics
+
+5 weeks closed nothing. Then 1, 2, and 2.
+
+Stories, bugs, and tasks. All is the total. A target is a count of due dates in the file. The gap on Marked Done is items dated that week minus items marked Done that week. The gap on Dates reached is items still open after a date that has arrived. A triangle points the way the number moved. Better means more finished work, or fewer open, blocked, unassigned, or days.
+
+### All
+
+| KPI | Actual | Target | Gap | Change | Trendline |
+| --- | --- | --- | --- | --- | --- |
+| Since last export | 1 · 3 pts | — | — | — | 0 0 0 0 0 1 2 2 |
+| Marked Done | 2 · latest week | 4 | 2 | same | 0 0 0 0 0 1 2 2 |
+| Dates reached | 7 | 11 | 4 | ▲ 1 better | 0 0 0 0 1 1 1 2 |
+| WIP | 18 | — | — | ▼ 1 better | 18 18 21 21 22 22 20 18 |
+| Cycle p85 | 121d · 7 finished | — | — | same | 121 121 121 121 121 121 121 121 |
+| Blocked | 1 | — | — | same | — |
+| Unassigned | 5 | — | — | ▲ 1 worse | — |
+
+### Aster HR
+
+| KPI | Actual | Target | Gap | Change | Trendline |
+| --- | --- | --- | --- | --- | --- |
+| Since last export | 0 | — | — | — | 0 0 0 0 0 0 1 1 |
+| Marked Done | 1 · latest week | 1 | 0 | same | 0 0 0 0 0 0 1 1 |
+| Dates reached | 2 | 2 | 0 | same | 0 0 0 0 0 0 1 1 |
+| WIP | 1 | — | — | same | 3 3 3 3 3 3 2 1 |
+| Cycle p85 | 65d · 2 finished | — | — | same | — — — — — — 57 65 |
+| Blocked | 0 | — | — | same | — |
+| Unassigned | 0 | — | — | same | — |
+
+### Cedar Clinics
+
+| KPI | Actual | Target | Gap | Change | Trendline |
+| --- | --- | --- | --- | --- | --- |
+| Since last export | 0 | — | — | — | 0 0 0 0 0 0 0 0 |
+| Marked Done | 0 · latest week | 0 | 0 | same | 0 0 0 0 0 0 0 0 |
+| Dates reached | 0 | 2 | 2 | same | 0 0 0 0 0 0 0 0 |
+| WIP | 4 | — | — | same | 4 4 4 4 4 4 4 4 |
+| Cycle p85 | — | — | — | — | — — — — — — — — |
+| Blocked | 0 | — | — | same | — |
+| Unassigned | 1 | — | — | same | — |
+
+### Forge Logistics
+
+| KPI | Actual | Target | Gap | Change | Trendline |
+| --- | --- | --- | --- | --- | --- |
+| Since last export | 0 | — | — | — | 0 0 0 0 0 0 1 0 |
+| Marked Done | 0 · latest week | 2 | 2 | ▼ 1 worse | 0 0 0 0 0 0 1 0 |
+| Dates reached | 3 | 4 | 1 | same | 0 0 0 0 0 0 0 1 |
+| WIP | 4 | — | — | same | 0 0 3 3 4 5 4 4 |
+| Cycle p85 | 121d · 3 finished | — | — | same | 121 121 121 121 121 121 121 121 |
+| Blocked | 1 | — | — | same | — |
+| Unassigned | 1 | — | — | ▲ 1 worse | — |
+
+### Lumen Bank
+
+| KPI | Actual | Target | Gap | Change | Trendline |
+| --- | --- | --- | --- | --- | --- |
+| Since last export | 1 · 3 pts | — | — | — | 0 0 0 0 0 1 0 1 |
+| Marked Done | 1 · latest week | 1 | 0 | ▲ 1 better | 0 0 0 0 0 1 0 1 |
+| Dates reached | 2 | 3 | 1 | ▲ 1 better | 0 0 0 0 1 1 0 0 |
+| WIP | 9 | — | — | ▼ 1 better | 11 11 11 11 11 10 10 9 |
+| Cycle p85 | 129d · 2 finished | — | — | ▲ 19 worse | — — — — — 110 110 129 |
+| Blocked | 0 | — | — | same | — |
+| Unassigned | 3 | — | — | same | — |
+
+### Weekly counts
+
+Marked Done, then items dated that week.
+
+| Team | Series | 22 Aug | 29 Aug | 5 Sep | 12 Sep | 19 Sep | 26 Sep | 3 Oct | 10 Oct |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| All | Marked Done | 0 | 0 | 0 | 0 | 0 | 1 | 2 | 2 |
+| All | Dated | 0 | 0 | 0 | 0 | 1 | 1 | 3 | 4 |
+| Aster HR | Marked Done | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 |
+| Aster HR | Dated | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 |
+| Cedar Clinics | Marked Done | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Cedar Clinics | Dated | 0 | 0 | 0 | 0 | 0 | 0 | 2 | 0 |
+| Forge Logistics | Marked Done | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 |
+| Forge Logistics | Dated | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
+| Lumen Bank | Marked Done | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 1 |
+| Lumen Bank | Dated | 0 | 0 | 0 | 0 | 1 | 1 | 0 | 1 |
+
+## Progress
+
 ## Delivery pulse
 
 | Project | State | Progress |
@@ -23,6 +119,8 @@ As of 10 Oct 2026, 1 of 4 projects is on track (Aster HR — Payroll export). Th
 - FOR-30 Pick tickets: 2 of 5 story points are Done (40%). Remaining 3, original estimate 5.
 - LUM-1 Mobile onboarding: 8 of 37 story points are Done (22%). 3 items have no story point or effort. Remaining 7, original estimate 16.
 
+
+## Risks
 
 ## Top risks
 
@@ -66,7 +164,7 @@ Confidence: fact. Severity: 80.
 
 Evidence: work_items:LUM-1.percent_complete=85, work_items:LUM-2.status=Done, work_items:LUM-2.story_points=5, work_items:LUM-3.status=Done, work_items:LUM-3.story_points=3, work_items:LUM-4.status=To Do, work_items:LUM-4.story_points=8, work_items:LUM-5.status=To Do, work_items:LUM-5.story_points=8, work_items:LUM-6.status=To Do, work_items:LUM-6.story_points=5, work_items:LUM-7.status=To Do, work_items:LUM-7.story_points=3, work_items:LUM-8.status=To Do, work_items:LUM-8.story_points=3, work_items:LUM-10.status=To Do, work_items:LUM-10.story_points=2, notes:N-2.text=Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.
 
-## Changes since the previous export
+## Field changes
 
 - AST-4 (Export scheduler): story_points: 3 → 5.
 - FOR-12 (Rotate carrier credentials): assignee: Alex Rahman → blank.
@@ -114,6 +212,8 @@ The questions above are the proposed actions. Nothing has been sent, and nothing
 - Progress counts story points Done on items that have a story point or effort. Epic, feature, and initiative points stay out of the project total. Those parents are counted from their direct children. Remaining and the original estimate are summed where both cells are numbers.
 - Stale and overdue items are raised without a notes file. A note that says the work is on track is still compared with the export.
 - Optimistic notes are an inference. The dates and statuses they are compared with are facts.
+- This week is the report date and the six days after it. Next week is the seven days after that. A due date in either window is the date in the file.
+- Metrics count stories, bugs, and tasks. The opening sentence is the portfolio's weekly closes. Since last export is what moved to Done. Marked Done is the latest week, and its target is how many items are dated in that week. Dates reached counts items whose due date is on or before the report date, and how many of those are Done. The gap is the ones still open. Cycle p85 is the 85th percentile of days from created to the newest update on Done items, with the count of those items. A triangle points the way the number moved. Better means more finished work, or fewer open, blocked, unassigned, or days. None of these is a forecast.
 - These thresholds are operating rules for the sample, not a validated predictor of delay.
 
 Synthetic sample.

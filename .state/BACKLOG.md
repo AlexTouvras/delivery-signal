@@ -13,5 +13,7 @@
 - [x] Shape the public page as a product page for Orbit `/products/delivery-signal/`
 - [x] Cite a missing estimate, remaining above the original, Done work that still has remaining, and a point or remaining figure that moved
 - [x] Show story-point progress for each project, epic, and feature on the Northline brief
+- [x] Monday brief redesign for PO / SM / delivery lead — verdict, week, ask, flow; product-page brand pass (2026-11-26)
+- [x] Sync Orbit week-reading / sheets checker into this repo engine (2026-11-26)
 - [ ] Add the products section on Orbit and copy `docs/` into `public/products/delivery-signal/`
 - [ ] Run one real project across two weekly exports
