@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#12141c">
+  <meta name="theme-color" content="#090b10">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Delivery">
@@ -12,73 +12,334 @@
   <link rel="icon" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="canonical" href="https://alextouvras.com/products/delivery-signal/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
   <style>
-    :root { color-scheme: dark; }
-    body { margin: 0; background: #12141c; color: #e7e9f0; font: 16px/1.5 ui-sans-serif, system-ui, sans-serif; }
-    main { max-width: 52rem; margin: 0 auto; padding: 2.5rem 1rem 4rem; }
-    .eyebrow, .stamp { margin: 0; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #22d3ee; }
-    header.hero { padding-bottom: 0.5rem; }
-    h1 { font-size: 2.6rem; line-height: 1.05; letter-spacing: -0.03em; margin: 0.45rem 0 0.8rem; font-weight: 650; }
-    h2 { font-size: 1.35rem; margin: 0; letter-spacing: -0.02em; }
-    .lede, .meta { color: #c4c8d4; font-size: 1.05rem; max-width: 38rem; }
-    .ownership { color: #9aa0b0; max-width: 38rem; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.3rem 0 0.4rem; }
-    a.cta, a.ghost { display: inline-flex; align-items: center; text-decoration: none; font-weight: 650; padding: 0.6rem 0.95rem; border-radius: 999px; }
-    a.cta { background: #22d3ee; color: #0b1220; }
-    a.ghost { color: #e7e9f0; border: 1px solid rgba(255,255,255,0.16); }
-    section { margin-top: 2.6rem; }
-    .section-header { display: flex; justify-content: space-between; gap: 1rem; align-items: end; margin-bottom: 0.8rem; }
-    .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin: 0; padding: 0; list-style: none; }
-    .facts li { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.7rem; padding: 0.85rem 0.95rem; }
-    .facts strong { display: block; margin-bottom: 0.25rem; }
-    .facts span { color: #9aa0b0; }
-    .code-block, form, details.panel { background: #0e1016; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.85rem; padding: 0.85rem 0.95rem; }
-    .code-header, .install-top { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; align-items: center; justify-content: space-between; margin-bottom: 0.7rem; }
-    .code-label { font: 0.75rem/1 ui-monospace, monospace; color: #9aa0b0; }
+    :root {
+      color-scheme: dark;
+      --void: #090b10;
+      --panel: rgba(22, 26, 36, 0.88);
+      --panel-solid: #161a24;
+      --line: rgba(231, 233, 240, 0.10);
+      --line-strong: rgba(231, 233, 240, 0.16);
+      --fg: #e8eaf2;
+      --soft: #c4c9d8;
+      --muted: #8f96a8;
+      --cyan: #2dd4e8;
+      --cyan-dim: rgba(45, 212, 232, 0.14);
+      --green: #3ecf8e;
+      --amber: #e8b84a;
+      --red: #f07178;
+      --shadow: 0 22px 60px rgba(0, 0, 0, 0.38);
+      --font: "IBM Plex Sans", "Segoe UI", sans-serif;
+      --display: "IBM Plex Serif", Georgia, serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--fg);
+      font: 16px/1.5 var(--font);
+      background:
+        radial-gradient(1100px 560px at 12% -8%, rgba(45, 212, 232, 0.18), transparent 55%),
+        radial-gradient(800px 420px at 100% 8%, rgba(62, 207, 142, 0.08), transparent 48%),
+        radial-gradient(700px 380px at 80% 100%, rgba(240, 113, 120, 0.07), transparent 50%),
+        linear-gradient(180deg, #0c1018 0%, var(--void) 40%, #080a0e 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    main {
+      position: relative;
+      max-width: 54rem;
+      margin: 0 auto;
+      padding: 2.4rem 1.1rem 4.5rem;
+    }
+    .hero {
+      position: relative;
+      padding: 1.6rem 1.35rem 1.5rem;
+      border: 1px solid var(--line);
+      border-radius: 1.25rem;
+      background:
+        linear-gradient(140deg, rgba(45, 212, 232, 0.1), transparent 40%),
+        linear-gradient(180deg, rgba(255,255,255,0.03), transparent 60%),
+        var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--cyan), color-mix(in srgb, var(--green) 55%, var(--cyan)));
+    }
+    .brand {
+      margin: 0;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+    .hero h1 {
+      margin: 0.55rem 0 0.2rem;
+      font-family: var(--display);
+      font-size: clamp(2.4rem, 7vw, 3.4rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.02;
+    }
+    .tagline {
+      margin: 0.35rem 0 0;
+      font-size: clamp(1.15rem, 2.8vw, 1.4rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--soft);
+      max-width: 28rem;
+    }
+    .lede, .ownership {
+      margin: 0.85rem 0 0;
+      max-width: 38rem;
+      color: var(--soft);
+    }
+    .ownership { color: var(--muted); font-size: 0.95rem; }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin: 1.35rem 0 0.2rem;
+    }
+    a.cta, a.ghost, button, .button, a.button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font: inherit;
+      font-weight: 650;
+      padding: 0.62rem 1rem;
+      border-radius: 0.7rem;
+      border: 0;
+      cursor: pointer;
+    }
+    a.cta, button, .button {
+      background: var(--cyan);
+      color: #071018;
+    }
+    a.ghost, button.secondary, a.secondary {
+      background: transparent;
+      color: var(--fg);
+      border: 1px solid var(--line-strong);
+    }
+    section { margin-top: 2.5rem; }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: end;
+      margin-bottom: 0.85rem;
+    }
+    h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .stamp {
+      margin: 0;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 0.7rem;
+      color: var(--cyan);
+    }
+    .role-grid, .facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .role-grid li, .facts li {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 0.95rem;
+      padding: 0.95rem 1rem;
+    }
+    .role-grid .role {
+      margin: 0 0 0.35rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+    .role-grid strong, .facts strong {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-size: 1.02rem;
+      letter-spacing: -0.01em;
+    }
+    .role-grid span, .facts span { color: var(--muted); }
+    .code-block, form, details.panel, .preview-shell {
+      background: rgba(10, 12, 18, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      padding: 0.95rem 1rem;
+      box-shadow: var(--shadow);
+    }
+    .code-header, .install-top {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .code-label {
+      font: 0.75rem/1 var(--mono);
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
     .platforms, .methods { display: flex; gap: 0.35rem; flex-wrap: wrap; }
     .platforms button, .methods button, button.copy {
-      background: transparent; color: #9aa0b0; border: 0; border-radius: 999px;
-      padding: 0.35rem 0.7rem; font: inherit; font-weight: 650; width: auto; cursor: pointer;
+      background: transparent;
+      color: var(--muted);
+      border: 0;
+      border-radius: 999px;
+      padding: 0.35rem 0.7rem;
+      font: inherit;
+      font-weight: 650;
+      width: auto;
+      cursor: pointer;
     }
-    .platforms button[aria-selected="true"], .methods button[aria-selected="true"] { background: rgba(34,211,238,0.14); color: #22d3ee; }
-    .beta { margin-left: 0.3rem; border: 1px solid #22d3ee; color: #22d3ee; border-radius: 999px; padding: 0.05rem 0.35rem; font-size: 0.68rem; letter-spacing: 0.04em; }
+    .platforms button[aria-selected="true"],
+    .methods button[aria-selected="true"] {
+      background: var(--cyan-dim);
+      color: var(--cyan);
+    }
+    .beta {
+      margin-left: 0.3rem;
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      border-radius: 999px;
+      padding: 0.05rem 0.35rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.04em;
+    }
     .command-box { position: relative; }
     .command-box pre { margin: 0; padding-right: 4.2rem; }
-    button.copy { position: absolute; top: 0.45rem; right: 0.55rem; color: #e7e9f0; }
-    button, .button { font: inherit; font-weight: 650; background: #22d3ee; color: #0b1220; border: 0; padding: 0.55rem 0.85rem; cursor: pointer; border-radius: 999px; }
-    button.secondary, a.secondary { background: transparent; color: #e7e9f0; border: 1px solid rgba(255,255,255,0.2); }
-    a.button { display: inline-block; text-decoration: none; }
-    .hint, .meta.quiet { color: #9aa0b0; }
-    details.panel { margin-top: 0.6rem; }
-    label { display: block; font-weight: 650; margin: 0.75rem 0 0.25rem; }
-    input, select { width: 100%; max-width: 28rem; font: inherit; padding: 0.45rem 0.5rem; box-sizing: border-box; background: #171a24; color: #e7e9f0; border: 1px solid rgba(255,255,255,0.12); border-radius: 0.4rem; }
-    .row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0.6rem 0; }
-    pre { background: #171a24; color: #e7e9f0; padding: 0.85rem; overflow-x: auto; white-space: pre-wrap; font: 0.82rem/1.45 ui-monospace, monospace; border-radius: 0.5rem; }
-    iframe { width: 100%; height: 75vh; border: 1px solid rgba(255,255,255,0.1); background: #12141c; border-radius: 0.5rem; }
-    ul.export { padding-left: 1.1rem; color: #c4c8d4; }
-    #status { min-height: 1.4em; }
+    button.copy {
+      position: absolute;
+      top: 0.45rem;
+      right: 0.55rem;
+      color: var(--fg);
+    }
+    .hint, .meta.quiet, #status { color: var(--muted); }
+    details.panel { margin-top: 0.65rem; }
+    label {
+      display: block;
+      font-weight: 650;
+      margin: 0.8rem 0 0.28rem;
+    }
+    input, select {
+      width: 100%;
+      max-width: 28rem;
+      font: inherit;
+      padding: 0.5rem 0.55rem;
+      box-sizing: border-box;
+      background: #12151e;
+      color: var(--fg);
+      border: 1px solid var(--line-strong);
+      border-radius: 0.55rem;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin: 0.7rem 0;
+    }
+    pre {
+      background: #12151e;
+      color: var(--fg);
+      padding: 0.9rem;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      font: 0.82rem/1.45 var(--mono);
+      border-radius: 0.65rem;
+      border: 1px solid var(--line);
+    }
+    .preview-shell { padding: 0.55rem; }
+    iframe {
+      width: 100%;
+      height: 78vh;
+      border: 0;
+      background: #090b10;
+      border-radius: 0.75rem;
+    }
+    ul.export { padding-left: 1.1rem; color: var(--soft); }
+    #status { min-height: 1.4em; font-family: var(--mono); font-size: 0.85rem; }
     [hidden] { display: none !important; }
+    @media (max-width: 800px) {
+      .role-grid, .facts { grid-template-columns: 1fr; }
+    }
     @media (max-width: 640px) {
-      h1 { font-size: 2rem; }
-      .facts { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.15rem; }
       input, select { max-width: none; font-size: 16px; }
       .row > button, .row > .button { width: 100%; text-align: center; box-sizing: border-box; }
       .platforms button, .methods button, button.copy { width: auto; text-align: left; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto !important; }
     }
   </style>
 </head>
 <body>
   <main>
     <header class="hero">
-      <p class="eyebrow">Product</p>
-      <h1>The Monday pack, from the export.</h1>
-      <p class="lede">A weekly brief from a Jira, Azure DevOps, or CSV export. It says what changed, which work needs attention, and which decision is waiting. Every material claim cites a field. The same inputs produce the same result id.</p>
+      <p class="brand">Delivery Signal</p>
+      <h1>Delivery Signal</h1>
+      <p class="tagline">The Monday pack, from the export.</p>
+      <p class="lede">A weekly brief for the product owner, scrum master, and delivery lead. It opens with a portfolio verdict, the week that moved, the decision waiting, and flow that is honest about WIP and cycle time. Every material claim cites a field.</p>
       <p class="ownership">No account. The export stays on this device. It is not sent to GitHub or written back to the project tool. Send the HTML file.</p>
       <div class="hero-actions">
-        <a class="cta" href="#quickstart">Get started</a>
-        <a class="ghost" href="#try">Try the sample</a>
+        <a class="cta" href="#try">Open the sample</a>
+        <a class="ghost" href="#quickstart">Get started</a>
       </div>
     </header>
+
+    <section aria-labelledby="roles-title">
+      <div class="section-header">
+        <h2 id="roles-title">Built for the Monday room</h2>
+        <p class="stamp">What the report answers</p>
+      </div>
+      <ul class="role-grid">
+        <li>
+          <p class="role">Product owner</p>
+          <strong>What landed, what is next</strong>
+          <span>Closed work, dates in the coming window, and the ask that needs a product call — not a velocity lecture.</span>
+        </li>
+        <li>
+          <p class="role">Scrum master</p>
+          <strong>Flow and friction</strong>
+          <span>WIP, cycle p85, aging and blocked chains, with evidence folded under each risk so the room can check the board without guessing.</span>
+        </li>
+        <li>
+          <p class="role">Delivery lead</p>
+          <strong>Verdict, then the ask</strong>
+          <span>On track, needs attention, or blocked — then the decision waiting and the questions that unblock the plan.</span>
+        </li>
+      </ul>
+    </section>
 
     <section id="quickstart">
       <div class="section-header">
@@ -163,6 +424,8 @@ $ run</code></pre>
         <li><strong>A field on every line</strong><span>A material claim cites a cell. Evidence starts collapsed.</span></li>
         <li><strong>Set aside</strong><span>A scary row that does not block delivery leaves the first list.</span></li>
         <li><strong>One file</strong><span>The recipient does not need an account or the original export.</span></li>
+        <li><strong>Verdict first</strong><span>Portfolio health, then the week, the ask, and flow — before the field audit.</span></li>
+        <li><strong>Honest metrics</strong><span>Closed, WIP, dates reached, and cycle p85 with trendlines — not a forecast dressed as certainty.</span></li>
       </ul>
     </section>
 
@@ -171,9 +434,9 @@ $ run</code></pre>
         <h2>Try the sample</h2>
       </div>
       <p class="row"><button type="button" id="sample">Open the Northline sample</button></p>
-      <p class="hint">Northline is invented. The pulse has a bar for story points Done, and each section has an i that explains what is shown. The result id is f1fb4eaa03, matching a run of this repo on a computer.</p>
+      <p class="hint">Northline is invented. The pulse has a bar for story points Done, and each section has an i that explains what is shown. The brief opens with a blocked verdict, the week reading, and the ask. The result id is f1fb4eaa03, matching a run of this repo on a computer.</p>
 
-      <h2 style="margin-top:1.4rem">Your project</h2>
+      <h2 style="margin-top:1.5rem">Your project</h2>
       <form id="brief-form">
         <label for="name">Project or portfolio name</label>
         <input id="name" name="name" required placeholder="Northwind" autocomplete="organization">
@@ -204,7 +467,7 @@ $ run</code></pre>
         <p class="row"><button type="submit" id="build">Build the brief</button></p>
       </form>
 
-      <h2 style="margin-top:1.4rem">How to export</h2>
+      <h2 style="margin-top:1.5rem">How to export</h2>
       <ul class="export">
         <li>Jira: search work items, choose Export, then CSV. Keep Issue key, Summary, Status, Updated, Due date, Story Points, Original Estimate, and Remaining Estimate.</li>
         <li>Azure DevOps: open the query, add columns, then Export to CSV. Keep ID, Title, Work Item Type, State, Changed Date, Story Points or Effort, Original Estimate, and Remaining Work.</li>
@@ -216,13 +479,15 @@ $ run</code></pre>
         <pre>python3 delivery-signal/pipeline.py issues.csv --name "Northwind" --as-of 2026-10-10 --previous issues-last-week.csv</pre>
       </details>
 
-      <h2 style="margin-top:1.4rem">Brief</h2>
+      <h2 style="margin-top:1.5rem">Brief</h2>
       <p id="status" role="status" data-state="loading">Loading the checker. The first open downloads it once.</p>
       <p class="row">
         <button type="button" id="share" class="secondary" hidden>Share the brief</button>
         <a id="download" class="button secondary" hidden>Download the brief</a>
       </p>
-      <iframe id="brief" title="Delivery brief" hidden></iframe>
+      <div class="preview-shell" id="brief-shell" hidden>
+        <iframe id="brief" title="Delivery brief"></iframe>
+      </div>
     </section>
   </main>
   <script src="app.js"></script>

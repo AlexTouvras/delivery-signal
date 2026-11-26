@@ -3,78 +3,694 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Northline Advisory delivery brief</title>
+  <meta name="color-scheme" content="dark">
+  <title>Northline Advisory · Delivery Signal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
   <style>
-    :root { color-scheme: dark; }
-    body { margin: 0; background: #12141c; color: #e7e9f0; font: 15px/1.45 ui-sans-serif, system-ui, sans-serif; }
-    main { max-width: 52rem; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
-    header { border-top: 6px solid #22d3ee; padding-top: 0.8rem; }
-    .stamp { margin: 0; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 650; font-size: 0.72rem; color: #22d3ee; }
-    h1 { font-size: 1.8rem; line-height: 1.1; margin: 0.35rem 0; }
-    h2 { font-size: 1.05rem; margin: 0; }
-    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin: 1.4rem 0 0.45rem; }
-    .info { position: relative; margin: 0; }
-    .info summary { list-style: none; width: 1.25rem; height: 1.25rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; display: grid; place-items: center; font: italic 700 0.72rem/1 ui-sans-serif, system-ui, sans-serif; color: #9aa0b0; cursor: pointer; }
+    :root {
+      color-scheme: dark;
+      --void: #090b10;
+      --ink: #0f1219;
+      --panel: rgba(22, 26, 36, 0.88);
+      --panel-solid: #161a24;
+      --line: rgba(231, 233, 240, 0.10);
+      --line-strong: rgba(231, 233, 240, 0.16);
+      --fg: #e8eaf2;
+      --soft: #c4c9d8;
+      --muted: #8f96a8;
+      --cyan: #2dd4e8;
+      --cyan-dim: rgba(45, 212, 232, 0.14);
+      --green: #3ecf8e;
+      --amber: #e8b84a;
+      --red: #f07178;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+      --font: "IBM Plex Sans", "Segoe UI", sans-serif;
+      --display: "IBM Plex Serif", "Iowan Old Style", Georgia, serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--fg);
+      font: 15px/1.5 var(--font);
+      background:
+        radial-gradient(1200px 600px at 8% -10%, rgba(45, 212, 232, 0.16), transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, rgba(62, 207, 142, 0.08), transparent 45%),
+        radial-gradient(700px 400px at 70% 100%, rgba(240, 113, 120, 0.07), transparent 50%),
+        linear-gradient(180deg, #0c1018 0%, var(--void) 42%, #0a0c11 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    main {
+      position: relative;
+      max-width: 58rem;
+      margin: 0 auto;
+      padding: 1.5rem 1.1rem 3.5rem;
+    }
+    .hero {
+      position: relative;
+      padding: 1.15rem 1.2rem 1.25rem;
+      border: 1px solid var(--line);
+      border-radius: 1.15rem;
+      background:
+        linear-gradient(135deg, rgba(45, 212, 232, 0.08), transparent 42%),
+        linear-gradient(180deg, rgba(255,255,255,0.03), transparent 55%),
+        var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--health);
+    }
+    .hero.blocked { --health: var(--red); }
+    .hero.needs_attention { --health: var(--amber); }
+    .hero.on_track { --health: var(--green); }
+    .hero.unchecked { --health: var(--muted); }
+    .brand-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.55rem 1rem;
+      align-items: center;
+      margin-bottom: 0.85rem;
+    }
+    .brand {
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+    .stamp {
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+    .health {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin: 0 0 0.35rem;
+      padding: 0.22rem 0.55rem 0.22rem 0.35rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--health) 45%, transparent);
+      background: color-mix(in srgb, var(--health) 14%, transparent);
+      color: var(--health);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .health .pulse-dot {
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--health) 55%, transparent);
+      animation: beat 2.4s ease-out infinite;
+    }
+    h1 {
+      margin: 0.1rem 0 0.45rem;
+      font-family: var(--display);
+      font-size: clamp(1.85rem, 4vw, 2.55rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+    }
+    .lede {
+      margin: 0.35rem 0 0;
+      max-width: 42rem;
+      color: var(--soft);
+      font-size: 1.02rem;
+    }
+    .health-note {
+      margin: 0.35rem 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .meta {
+      margin: 0.7rem 0 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-family: var(--mono);
+    }
+    .mix { margin-top: 1rem; }
+    .mix-bar {
+      display: flex;
+      height: 0.42rem;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.06);
+      gap: 2px;
+    }
+    .mix-seg { display: block; min-width: 0.35rem; }
+    .mix-seg.on_track { background: var(--green); }
+    .mix-seg.needs_attention { background: var(--amber); }
+    .mix-seg.blocked { background: var(--red); }
+    .mix-seg.unchecked { background: var(--muted); }
+    .mix-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem 1rem;
+      list-style: none;
+      padding: 0.55rem 0 0;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .mix-legend strong { color: var(--fg); font-weight: 600; }
+    .dot {
+      display: inline-block;
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      margin-right: 0.35rem;
+      vertical-align: 0.05rem;
+    }
+    .dot.on_track, .state.on_track { color: var(--green); }
+    .dot.needs_attention, .state.needs_attention { color: var(--amber); }
+    .dot.blocked, .state.blocked { color: var(--red); }
+    .dot.unchecked, .state.unchecked { color: var(--muted); }
+    .dot.on_track { background: var(--green); }
+    .dot.needs_attention { background: var(--amber); }
+    .dot.blocked { background: var(--red); }
+    .dot.unchecked { background: var(--muted); }
+    .sheet-input, .team-input { position: absolute; opacity: 0; pointer-events: none; }
+    .pages {
+      display: flex;
+      gap: 0.25rem;
+      margin: 1.1rem 0 0.35rem;
+      padding: 0.28rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(8, 10, 14, 0.55);
+      backdrop-filter: blur(8px);
+      overflow-x: auto;
+    }
+    .pages label {
+      cursor: pointer;
+      flex: 1 0 auto;
+      text-align: center;
+      padding: 0.48rem 0.85rem;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 160ms ease, background 160ms ease;
+    }
+    .page { display: none; animation: rise 320ms ease both; }
+    #page-summary:checked ~ #summary,
+    #page-progress:checked ~ #progress,
+    #page-metrics:checked ~ #metrics,
+    #page-risks:checked ~ #risks { display: block; }
+    #page-summary:checked ~ .pages label[for="page-summary"],
+    #page-progress:checked ~ .pages label[for="page-progress"],
+    #page-metrics:checked ~ .pages label[for="page-metrics"],
+    #page-risks:checked ~ .pages label[for="page-risks"] {
+      color: #071018;
+      background: var(--cyan);
+    }
+    .section-head {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin: 1.55rem 0 0.7rem;
+    }
+    .section-head h2 {
+      margin: 0.12rem 0 0;
+      font-size: 1.18rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .flow-head h2 {
+      font-family: var(--display);
+      font-size: clamp(1.25rem, 2.8vw, 1.55rem);
+      font-weight: 500;
+      max-width: 40rem;
+    }
+    .soft { color: var(--muted); font-weight: 500; }
+    .kicker {
+      margin: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .info { position: relative; margin: 0; flex: 0 0 auto; }
+    .info summary {
+      list-style: none;
+      width: 1.35rem;
+      height: 1.35rem;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font: italic 700 0.72rem/1 var(--display);
+      color: var(--muted);
+      cursor: pointer;
+      background: rgba(255,255,255,0.02);
+    }
     .info summary::-webkit-details-marker { display: none; }
-    .info p { position: absolute; right: 0; z-index: 2; width: min(22rem, 70vw); margin: 0.35rem 0 0; padding: 0.55rem 0.7rem; background: #0e1016; color: #c4c8d4; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35); font-size: 0.82rem; font-weight: 400; }
-    .bar { height: 0.45rem; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; margin: 0.35rem 0 0.15rem; }
-    .bar > span { display: block; height: 100%; background: #22d3ee; }
-    .children { list-style: none; padding: 0.35rem 0 0; margin: 0.25rem 0 0; border-top: 1px solid rgba(255,255,255,0.08); }
-    .children li { margin-top: 0.45rem; }
-    .children .name { display: block; font-size: 0.82rem; color: #c4c8d4; }
-    .children .bar { height: 0.3rem; }
-    h3 { font-size: 1rem; margin: 0 0 0.35rem; }
-    .meta { margin: 0; color: #9aa0b0; }
-    .lede { font-size: 1.02rem; }
-    .pulse { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 0.45rem; }
-    .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 0.7rem 0.8rem; }
-    .pulse .card { display: flex; flex-direction: column; gap: 0.2rem; min-height: 3.2rem; }
-    .state { font-weight: 700; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; }
-    .progress { color: #c4c8d4; font-size: 0.85rem; }
-    .on_track { color: #34d399; }
-    .needs_attention { color: #fcd34d; }
-    .blocked { color: #f87171; }
-    .unchecked { color: #9aa0b0; }
-    .kicker { margin: 0; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #9aa0b0; }
-    article { margin: 0.45rem 0; }
-    details { margin-top: 0.35rem; }
-    summary { cursor: pointer; color: #c4c8d4; }
-    .evidence { font: 0.78rem/1.4 ui-monospace, monospace; color: #c4c8d4; }
-    ul { padding-left: 1.1rem; }
-    footer { margin-top: 1.5rem; color: #9aa0b0; }
-    @media (max-width: 640px) {
-      h1 { font-size: 1.45rem; }
+    .info p {
+      position: absolute;
+      right: 0;
+      z-index: 3;
+      width: min(22rem, 74vw);
+      margin: 0.4rem 0 0;
+      padding: 0.7rem 0.8rem;
+      background: var(--panel-solid);
+      color: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 0.7rem;
+      box-shadow: var(--shadow);
+      font-size: 0.82rem;
+      font-weight: 400;
+    }
+    .briefing {
+      display: grid;
+      gap: 0.55rem;
+    }
+    .brief-line {
+      display: grid;
+      grid-template-columns: 6.5rem 1fr;
+      gap: 0.55rem 1rem;
+      padding: 0.85rem 0.95rem;
+      border: 1px solid var(--line);
+      border-radius: 0.85rem;
+      background: rgba(255,255,255,0.025);
+    }
+    .brief-line.tone-warn {
+      border-color: color-mix(in srgb, var(--amber) 35%, var(--line));
+      background: color-mix(in srgb, var(--amber) 7%, transparent);
+    }
+    .brief-line.tone-empty .brief-text { color: var(--muted); }
+    .brief-label {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .brief-text { margin: 0; }
+    .cast {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.65rem;
+      margin: 0.2rem 0 0.4rem;
+    }
+    .cast-cell {
+      padding: 0.85rem 0.9rem;
+      border: 1px solid var(--line);
+      border-radius: 0.9rem;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.03), transparent 55%),
+        rgba(12, 15, 22, 0.55);
+      min-height: 6.2rem;
+    }
+    .cast .figure {
+      margin: 0.28rem 0 0;
+      font-size: clamp(1.7rem, 3.5vw, 2.15rem);
+      line-height: 1;
+      font-weight: 650;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.04em;
+      font-family: var(--display);
+    }
+    .cast .unit { font-size: 0.95rem; font-weight: 500; color: var(--muted); font-family: var(--font); }
+    .cast .quiet { margin: 0.28rem 0 0; color: var(--muted); font-size: 0.8rem; }
+    .ask-grid {
+      display: grid;
+      gap: 0.65rem;
+    }
+    .ask-card {
+      position: relative;
+      padding: 0.95rem 1rem 1rem 1.05rem;
+      border: 1px solid var(--line);
+      border-radius: 0.95rem;
+      background: rgba(255,255,255,0.03);
+      overflow: hidden;
+    }
+    .ask-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 3px;
+      background: var(--cyan);
+    }
+    .ask-card.decision::before { background: var(--amber); }
+    .ask-index {
+      margin: 0 0 0.35rem;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .ask-card h3 {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .ask-card .key, .change-row .key {
+      font-family: var(--mono);
+      color: var(--cyan);
+      font-weight: 500;
+    }
+    .ask-meta { margin: 0.4rem 0 0; color: var(--soft); font-size: 0.9rem; }
+    .ask-text { margin: 0; font-size: 1rem; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.55rem; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid var(--line-strong);
+      color: var(--soft);
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .pill.overdue {
+      border-color: color-mix(in srgb, var(--red) 45%, transparent);
+      color: var(--red);
+      background: color-mix(in srgb, var(--red) 10%, transparent);
+    }
+    .pulse {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr));
+      gap: 0.65rem;
+    }
+    .pulse-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-height: 4.5rem;
+      padding: 0.9rem 0.95rem;
+      border: 1px solid var(--line);
+      border-radius: 0.95rem;
+      background: rgba(255,255,255,0.03);
+      border-top: 2px solid color-mix(in srgb, currentColor 55%, transparent);
+    }
+    .pulse-card.on_track { color: var(--green); }
+    .pulse-card.needs_attention { color: var(--amber); }
+    .pulse-card.blocked { color: var(--red); }
+    .pulse-card.unchecked { color: var(--muted); }
+    .pulse-top { display: flex; flex-direction: column; gap: 0.2rem; color: var(--fg); }
+    .state {
+      font-weight: 700;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .pulse-name { font-weight: 600; letter-spacing: -0.01em; }
+    .progress { color: var(--soft); font-size: 0.85rem; }
+    .bar {
+      height: 0.42rem;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 0.4rem 0 0.15rem;
+    }
+    .bar > span {
+      display: block;
+      height: 100%;
+      width: var(--w);
+      background: linear-gradient(90deg, #1fb8cc, var(--cyan));
+      border-radius: inherit;
+      animation: fill 700ms ease forwards;
+    }
+    .children {
+      list-style: none;
+      padding: 0.45rem 0 0;
+      margin: 0.35rem 0 0;
+      border-top: 1px solid var(--line);
+      color: var(--fg);
+    }
+    .children li { margin-top: 0.5rem; }
+    .children .name { display: block; font-size: 0.82rem; color: var(--soft); }
+    .children .bar { height: 0.28rem; }
+    .changelog {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 0.95rem;
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+    }
+    .change-row {
+      display: grid;
+      grid-template-columns: 6.5rem 1fr;
+      gap: 0.75rem;
+      padding: 0.75rem 0.9rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .change-row:last-child { border-bottom: 0; }
+    .change-body { color: var(--soft); }
+    .panel {
+      padding: 0.85rem;
+      border: 1px solid var(--line);
+      border-radius: 1rem;
+      background: rgba(255,255,255,0.02);
+    }
+    .panel-soft {
+      margin-top: 0.8rem;
+      padding: 0.7rem 0.85rem;
+      border: 1px solid var(--line);
+      border-radius: 0.85rem;
+      background: rgba(255,255,255,0.02);
+    }
+    .flow-wrap { overflow-x: auto; }
+    table.flow { width: 100%; border-collapse: collapse; }
+    table.flow th {
+      text-align: left;
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid var(--line-strong);
+    }
+    table.flow td {
+      padding: 0.48rem 0.5rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+    table.flow .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    table.flow .trend { width: 7.2rem; }
+    table.flow .axis {
+      display: block;
+      margin-top: 0.15rem;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--muted);
+    }
+    table.weeks td, table.weeks th { text-align: right; }
+    table.weeks td:first-child, table.weeks th:first-child,
+    table.weeks td:nth-child(2), table.weeks th:nth-child(2) { text-align: left; }
+    .spark { width: 8rem; height: 2.25rem; display: block; margin-left: auto; }
+    .spark path.actual-line { stroke: var(--cyan); fill: none; stroke-width: 1.7; }
+    .spark path.target-line { stroke: var(--muted); fill: none; stroke-width: 1.4; stroke-dasharray: 3 2; }
+    .spark circle.actual-line { fill: var(--cyan); stroke: none; }
+    .team-bar { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.15rem 0 0.75rem; }
+    .team-bar label {
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      padding: 0.18rem 0.7rem;
+      font-size: 0.78rem;
+      cursor: pointer;
+      color: var(--muted);
+      transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
+    }
+    .metrics .scope { display: none; }
+    .chg { white-space: nowrap; font-size: 0.82rem; }
+    .chg.better { color: var(--green); }
+    .chg.worse { color: var(--red); }
+    .tri {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-left: 0.28rem solid transparent;
+      border-right: 0.28rem solid transparent;
+      margin-right: 0.15rem;
+      vertical-align: 0.05rem;
+    }
+    .tri.up { border-bottom: 0.42rem solid currentColor; }
+    .tri.down { border-top: 0.42rem solid currentColor; }
+    .same, .quiet, .empty { color: var(--muted); }
+    .sheet { margin: 0.45rem 0 0.7rem; }
+    .risk-card {
+      display: grid;
+      grid-template-columns: 0.35rem 1fr;
+      gap: 0;
+      margin: 0.65rem 0;
+      border: 1px solid var(--line);
+      border-radius: 0.95rem;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+    }
+    .risk-rail {
+      background: linear-gradient(180deg, var(--red), color-mix(in srgb, var(--amber) 70%, var(--red)));
+      opacity: 0.9;
+      clip-path: inset(calc(100% - var(--sev, 40%)) 0 0 0);
+      min-height: 100%;
+    }
+    .risk-body { padding: 0.9rem 1rem; }
+    .risk-body h3 { margin: 0.2rem 0 0.4rem; font-size: 1.02rem; }
+    .risk-body p { margin: 0; color: var(--soft); }
+    .fold { margin-top: 0.45rem; }
+    .fold > summary {
+      cursor: pointer;
+      color: var(--soft);
+      font-size: 0.85rem;
+      list-style: none;
+    }
+    .fold > summary::-webkit-details-marker { display: none; }
+    .fold > summary::before {
+      content: "";
+      display: inline-block;
+      width: 0.35rem;
+      height: 0.35rem;
+      margin-right: 0.4rem;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(-45deg);
+      vertical-align: 0.15rem;
+      transition: transform 140ms ease;
+    }
+    .fold[open] > summary::before { transform: rotate(45deg); }
+    .evidence {
+      margin: 0.45rem 0 0;
+      padding-left: 1rem;
+      font: 0.78rem/1.45 var(--mono);
+      color: var(--soft);
+    }
+    ul.plain { padding-left: 1.1rem; color: var(--soft); }
+    footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    footer p { margin: 0.35rem 0; max-width: 42rem; }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fill {
+      from { width: 0; }
+      to { width: var(--w); }
+    }
+    @keyframes beat {
+      0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--health) 45%, transparent); }
+      70% { box-shadow: 0 0 0 0.55rem transparent; }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+    @media (max-width: 720px) {
+      .brief-line, .change-row { grid-template-columns: 1fr; gap: 0.2rem; }
+      .cast { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cast .figure { font-size: 1.55rem; }
       .pulse { grid-template-columns: 1fr; }
+      .pages { border-radius: 0.9rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .page, .bar > span, .health .pulse-dot { animation: none !important; }
+      .bar > span { width: var(--w); }
+    }
+    @media print {
+      body { background: white; color: #111; }
+      body::before, .pages, .info { display: none !important; }
+      .page { display: block !important; break-inside: avoid; }
+      .hero, .panel, .brief-line, .ask-card, .pulse-card, .risk-card, .cast-cell {
+        box-shadow: none;
+        background: white;
+        border-color: #ddd;
+        color: #111;
+      }
     }
   </style>
 </head>
 <body>
   <main>
-    <header>
-      <p class="stamp">Synthetic sample · pending approval</p>
+    <header class="hero blocked">
+      <div class="brand-row">
+        <p class="brand">Delivery Signal</p>
+        <p class="stamp">Synthetic sample · pending approval</p>
+      </div>
+      <p class="health"><span class="pulse-dot" aria-hidden="true"></span>Blocked</p>
       <h1>Northline Advisory</h1>
-      <p class="meta">2026-10-10 · Delivery director · Jira export · 31 work items · rules 2026-10-11 · result f1fb4eaa03</p>
+      <p class="health-note">At least one project has a blocked item. Escalation belongs in the review.</p>
+      <p class="lede">As of 10 Oct 2026, 1 of 4 projects is on track (Aster HR — Payroll export). This brief cites rows in the approved export. It does not forecast that a future date will be missed.</p>
+      <div class="mix" role="img" aria-label="Project status mix"><div class="mix-bar"><span class="mix-seg blocked" style="flex:1" title="Blocked: 1"></span><span class="mix-seg needs_attention" style="flex:2" title="Needs attention: 2"></span><span class="mix-seg on_track" style="flex:1" title="On track: 1"></span></div><ul class="mix-legend"><li><i class="dot blocked" aria-hidden="true"></i>Blocked <strong>1</strong></li><li><i class="dot needs_attention" aria-hidden="true"></i>Needs attention <strong>2</strong></li><li><i class="dot on_track" aria-hidden="true"></i>On track <strong>1</strong></li></ul></div>
+      <p class="meta">10 Oct 2026 · Delivery director · Jira export · 31 work items · rules 2026-10-11 · result f1fb4eaa03</p>
     </header>
-    <p class="lede">As of 10 Oct 2026, 1 of 4 projects is on track (Aster HR — Payroll export). This brief cites rows in the approved export. It does not forecast that a future date will be missed.</p>
+    <input class="sheet-input" type="radio" name="page" id="page-summary" checked>
+    <input class="sheet-input" type="radio" name="page" id="page-progress">
+    <input class="sheet-input" type="radio" name="page" id="page-metrics">
+    <input class="sheet-input" type="radio" name="page" id="page-risks">
+    <nav class="pages" aria-label="Report pages">
+      <label for="page-summary">Summary</label>
+      <label for="page-progress">Progress</label>
+      <label for="page-metrics">Metrics</label>
+      <label for="page-risks">Risks</label>
+    </nav>
+    <section class="page" id="summary">
+    <div class="section-head"><div><p class="kicker">This week</p><h2>10–16 Oct <span class="soft">· next 17–23 Oct</span></h2></div><details class="info"><summary aria-label="About this week">i</summary><p>Five lines from the export. A due date is the date in the file. Evidence is the cells. The field list below is every change.</p></details></div><div class="briefing"><article class="brief-line tone-live"><p class="brief-label">Closed</p><p class="brief-text">LUM-3, 3 points.</p><details class="fold"><summary>Evidence</summary><ul class="evidence"><li><code>work_items</code> LUM-3.status = Done</li><li><code>work_items</code> LUM-3.story_points = 3</li></ul></details></article><article class="brief-line tone-live"><p class="brief-label">Moved</p><p class="brief-text">FOR-12 lost Alex Rahman. LUM-6 remaining 2→5. AST-4 estimate 3→5.</p><details class="fold"><summary>Evidence</summary><ul class="evidence"><li><code>work_items</code> FOR-12.assignee = (blank)</li><li><code>work_items</code> LUM-6.remaining = 5</li><li><code>work_items</code> AST-4.story_points = 5</li></ul></details></article><article class="brief-line tone-live"><p class="brief-label">Next week</p><p class="brief-text">Remaining up LUM-6 2→5. Over estimate FOR-21 5 vs 3. KYC ready for UAT 17 Oct, milestone. CED-5 23 Oct, no owner.</p><details class="fold"><summary>Evidence</summary><ul class="evidence"><li><code>work_items</code> FOR-21.due = 2026-10-18</li><li><code>work_items</code> FOR-21.status = In Progress</li><li><code>work_items</code> FOR-21.assignee = Samir Adeyemi</li><li><code>work_items</code> FOR-21.remaining = 5</li><li><code>work_items</code> FOR-21.original_estimate = 3</li><li><code>work_items</code> LUM-6.due = 2026-10-20</li><li><code>work_items</code> LUM-6.status = To Do</li><li><code>work_items</code> LUM-6.assignee = Jonas Berg</li><li><code>work_items</code> LUM-6.remaining = 5</li><li><code>work_items</code> LUM-6.original_estimate = 8</li><li><code>work_items</code> CED-5.due = 2026-10-23</li><li><code>work_items</code> CED-5.status = To Do</li><li><code>work_items</code> CED-5.assignee = (blank)</li><li><code>milestones</code> MS-LUM.due = 2026-10-17</li><li><code>milestones</code> MS-LUM.status = Open</li></ul></details></article><article class="brief-line tone-warn"><p class="brief-label">Late</p><p class="brief-text">LUM-9 → LUM-4, no owners. FOR-12 (no owner) → FOR-20 → Carrier cutover 15 Oct. Later: LUM-5 no owner 28 Oct; LUM-11, LUM-12, LUM-13 no estimate 30 Oct.</p><details class="fold"><summary>Evidence</summary><ul class="evidence"><li><code>work_items</code> LUM-9.summary = Approve KYC vendor contract</li><li><code>work_items</code> LUM-9.due = 2026-10-03</li><li><code>work_items</code> LUM-9.status = Waiting</li><li><code>work_items</code> LUM-9.assignee = (blank)</li><li><code>work_items</code> LUM-9.priority = Highest</li><li><code>work_items</code> LUM-4.summary = KYC document upload</li><li><code>work_items</code> LUM-4.due = 2026-10-06</li><li><code>work_items</code> LUM-4.status = To Do</li><li><code>work_items</code> LUM-4.assignee = (blank)</li><li><code>work_items</code> LUM-4.priority = Highest</li><li><code>dependencies</code> DEP-KYC.predecessor = LUM-9</li><li><code>dependencies</code> DEP-KYC.successor = LUM-4</li><li><code>work_items</code> FOR-12.summary = Rotate carrier credentials</li><li><code>work_items</code> FOR-12.due = 2026-10-08</li><li><code>work_items</code> FOR-12.status = In Progress</li><li><code>work_items</code> FOR-12.assignee = (blank)</li><li><code>work_items</code> FOR-12.priority = Highest</li><li><code>work_items</code> FOR-20.summary = Sandbox returns 401 for pick tickets</li><li><code>work_items</code> FOR-20.due = 2026-10-12</li><li><code>work_items</code> FOR-20.status = Blocked</li><li><code>work_items</code> FOR-20.assignee = Samir Adeyemi</li><li><code>work_items</code> FOR-20.priority = High</li><li><code>work_items</code> FOR-20.blocked_by = FOR-12</li><li><code>milestones</code> MS-FOR.due = 2026-10-15</li><li><code>milestones</code> MS-FOR.status = Open</li><li><code>dependencies</code> DEP-CRED.predecessor = FOR-12</li><li><code>dependencies</code> DEP-CRED.successor = FOR-20</li><li><code>dependencies</code> DEP-CUT.predecessor = FOR-20</li><li><code>dependencies</code> DEP-CUT.successor = MS-FOR</li><li><code>work_items</code> LUM-5.priority = Highest</li><li><code>work_items</code> LUM-5.due = 2026-10-28</li><li><code>work_items</code> LUM-5.assignee = (blank)</li><li><code>work_items</code> LUM-5.story_points = 8</li><li><code>work_items</code> LUM-11.priority = Highest</li><li><code>work_items</code> LUM-11.due = 2026-10-30</li><li><code>work_items</code> LUM-11.assignee = Nora Feld</li><li><code>work_items</code> LUM-11.story_points = (blank)</li><li><code>work_items</code> LUM-12.priority = Highest</li><li><code>work_items</code> LUM-12.due = 2026-10-30</li><li><code>work_items</code> LUM-12.assignee = Jonas Berg</li><li><code>work_items</code> LUM-12.story_points = (blank)</li><li><code>work_items</code> LUM-13.priority = Highest</li><li><code>work_items</code> LUM-13.due = 2026-10-30</li><li><code>work_items</code> LUM-13.assignee = Nora Feld</li><li><code>work_items</code> LUM-13.story_points = (blank)</li></ul></details></article><article class="brief-line tone-warn"><p class="brief-label">Disagrees</p><p class="brief-text">N-1 vs CED-2 and CED-3, 51d. 85% is 8/37. N-2: one item.</p><details class="fold"><summary>Evidence</summary><ul class="evidence"><li><code>notes</code> N-1.text = Weekly status: Cedar is green and on track. No risks to raise. The team is heads down on the portal.</li><li><code>notes</code> N-1.date = 2026-10-09</li><li><code>work_items</code> CED-2.status = In Progress</li><li><code>work_items</code> CED-2.updated = 2026-08-18</li><li><code>work_items</code> CED-2.due = 2026-09-30</li><li><code>work_items</code> CED-3.status = In Progress</li><li><code>work_items</code> CED-3.updated = 2026-08-20</li><li><code>work_items</code> CED-3.due = 2026-10-02</li><li><code>work_items</code> LUM-1.percent_complete = 85</li><li><code>work_items</code> LUM-2.status = Done</li><li><code>work_items</code> LUM-2.story_points = 5</li><li><code>work_items</code> LUM-3.status = Done</li><li><code>work_items</code> LUM-3.story_points = 3</li><li><code>work_items</code> LUM-4.status = To Do</li><li><code>work_items</code> LUM-4.story_points = 8</li><li><code>work_items</code> LUM-5.status = To Do</li><li><code>work_items</code> LUM-5.story_points = 8</li><li><code>work_items</code> LUM-6.status = To Do</li><li><code>work_items</code> LUM-6.story_points = 5</li><li><code>work_items</code> LUM-7.status = To Do</li><li><code>work_items</code> LUM-7.story_points = 3</li><li><code>work_items</code> LUM-8.status = To Do</li><li><code>work_items</code> LUM-8.story_points = 3</li><li><code>work_items</code> LUM-10.status = To Do</li><li><code>work_items</code> LUM-10.story_points = 2</li><li><code>notes</code> N-2.text = Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.</li></ul></details></article></div>
+    <div class="section-head flow-head"><div><p class="kicker">Flow</p><h2>5 weeks closed nothing. Then 1, 2, and 2.</h2></div><details class="info"><summary aria-label="About this shape">i</summary><p>The sentence is how many stories, bugs, and tasks were marked Done in each of the last eight weeks. The figures under it are the portfolio total.</p></details></div>
+    <div class="cast" role="group" aria-label="Portfolio flow"><div class="cast-cell"><p class="kicker">Closed</p><p class="figure">1</p><p class="quiet">3 pts</p></div><div class="cast-cell"><p class="kicker">WIP</p><p class="figure">18</p><p class="quiet"><span class="chg better"><i class="tri down" aria-hidden="true"></i> 1 better</span></p></div><div class="cast-cell"><p class="kicker">Dates reached</p><p class="figure">7</p><p class="quiet"><span class="chg better"><i class="tri up" aria-hidden="true"></i> 1 better</span></p></div><div class="cast-cell"><p class="kicker">Cycle p85</p><p class="figure">121<span class="unit">d</span></p><p class="quiet">7 finished</p><p class="quiet"><span class="same">same</span></p></div></div>
+    <div class="section-head"><h2>The ask</h2><details class="info"><summary aria-label="About The ask">i</summary><p>What the delivery lead, product owner, or scrum master needs from the room. Questions are drawn from top risks and open decisions. Nothing is sent until a person approves the brief.</p></details></div><div class="ask-grid"><article class="ask-card decision"><p class="ask-index">Decision 01</p><h3><span class="key">LUM-9</span> Approve KYC vendor contract</h3><p class="ask-meta">Owner <strong>missing</strong> · Due <strong>3 Oct 2026</strong></p><div class="pill-row"><span class="pill overdue">Overdue</span><span class="pill">Unknown: owner</span><span class="pill">Before LUM-4</span></div></article><article class="ask-card"><p class="ask-index">Ask 01</p><p class="ask-text">Who owns FOR-12 (Rotate carrier credentials)?</p></article><article class="ask-card"><p class="ask-index">Ask 02</p><p class="ask-text">Who owns LUM-4 (KYC document upload)?</p></article><article class="ask-card"><p class="ask-index">Ask 03</p><p class="ask-text">What changed on Cedar Clinics — Patient portal after 20 Aug 2026? N-1 and the work-item export disagree.</p></article><article class="ask-card"><p class="ask-index">Ask 04</p><p class="ask-text">Does the dependent milestone still hold while FOR-20 is blocked by FOR-12?</p></article><article class="ask-card"><p class="ask-index">Ask 05</p><p class="ask-text">Which completion figure should the steering pack use: 85% or 8 of 37 story points?</p></article><article class="ask-card"><p class="ask-index">Ask 06</p><p class="ask-text">Who can close LUM-9 (Approve KYC vendor contract)? No owner is named. Recorded successor: LUM-4.</p></article></div>
     
     
+    </section>
+    <section class="page" id="progress">
     <div class="section-head"><h2>Delivery pulse</h2><details class="info"><summary aria-label="About Delivery pulse">i</summary><p>Each card is one project: On track, Needs attention, Blocked, or Not checked. The bar is story points marked Done, among items that have a story point or effort. An epic, feature, or initiative is listed on that card and counted from its direct children. Remaining and the original estimate are sums of rows where both cells are numbers.</p></details></div>
-    <ul class="pulse"><li class="card"><span class="state on_track">On track</span><span>Aster HR — Payroll export</span><div class="bar" role="progressbar" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" aria-label="Aster HR — Payroll export, 67 percent of story points Done"><span style="width:67%"></span></div><span class="progress">10 of 15 story points are Done (67%). Remaining 2, original estimate 15.</span><ul class="children"><li><span class="name">AST-1 Payroll export</span><div class="bar" role="progressbar" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" aria-label="Payroll export, 67 percent of story points Done"><span style="width:67%"></span></div><span class="progress">10 of 15 story points are Done (67%). Remaining 2, original estimate 15.</span></li></ul></li><li class="card"><span class="state needs_attention">Needs attention</span><span>Cedar Clinics — Patient portal</span><div class="bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Cedar Clinics — Patient portal, 0 percent of story points Done"><span style="width:0%"></span></div><span class="progress">0 of 18 story points are Done (0%). Remaining 7, original estimate 10.</span><ul class="children"><li><span class="name">CED-1 Patient portal</span><div class="bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Patient portal, 0 percent of story points Done"><span style="width:0%"></span></div><span class="progress">0 of 18 story points are Done (0%). Remaining 7, original estimate 10.</span></li></ul></li><li class="card"><span class="state blocked">Blocked</span><span>Forge Logistics — Warehouse API</span><div class="bar" role="progressbar" aria-valuenow="46" aria-valuemin="0" aria-valuemax="100" aria-label="Forge Logistics — Warehouse API, 46 percent of story points Done"><span style="width:46%"></span></div><span class="progress">12 of 26 story points are Done (46%). Remaining 8, original estimate 18.</span><ul class="children"><li><span class="name">FOR-1 Warehouse API</span><div class="bar" role="progressbar" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100" aria-label="Warehouse API, 38 percent of story points Done"><span style="width:38%"></span></div><span class="progress">10 of 26 story points are Done (38%). Remaining 8, original estimate 18.</span></li><li><span class="name">FOR-30 Pick tickets</span><div class="bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" aria-label="Pick tickets, 40 percent of story points Done"><span style="width:40%"></span></div><span class="progress">2 of 5 story points are Done (40%). Remaining 3, original estimate 5.</span></li></ul></li><li class="card"><span class="state needs_attention">Needs attention</span><span>Lumen Bank — Mobile onboarding</span><div class="bar" role="progressbar" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100" aria-label="Lumen Bank — Mobile onboarding, 21 percent of story points Done"><span style="width:21%"></span></div><span class="progress">8 of 38 story points are Done (21%). 3 items have no story point or effort. Remaining 7, original estimate 16.</span><ul class="children"><li><span class="name">LUM-1 Mobile onboarding</span><div class="bar" role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" aria-label="Mobile onboarding, 22 percent of story points Done"><span style="width:22%"></span></div><span class="progress">8 of 37 story points are Done (22%). 3 items have no story point or effort. Remaining 7, original estimate 16.</span></li></ul></li></ul>
-    <div class="section-head"><h2>What changed</h2><details class="info"><summary aria-label="About What changed">i</summary><p>Fields that differ from the previous export: status, assignee, priority, due date, blocker, percent complete, story points, and remaining. Items that appeared or left the export are listed here too.</p></details></div>
-    <ul><li><strong>AST-4</strong> story_points 3 → 5.</li><li><strong>FOR-12</strong> assignee Alex Rahman → blank.</li><li><strong>LUM-3</strong> status In Progress → Done, percent_complete 60 → 100.</li><li><strong>LUM-6</strong> remaining 2 → 5.</li></ul>
-    <div class="section-head"><h2>Decisions needed</h2><details class="info"><summary aria-label="About Decisions needed">i</summary><p>Open items whose type is Decision, or whose status is Waiting. The owner and the due date come from those cells.</p></details></div>
-    <ul><li><strong>LUM-9</strong> Approve KYC vendor contract — owner missing, due 3 Oct 2026. overdue; unknown owner; before LUM-4</li></ul>
-    <div class="section-head"><h2>Ask in the review</h2><details class="info"><summary aria-label="About Ask in the review">i</summary><p>Questions drawn from the top risks and from open decisions. Nothing is sent until a person approves the brief.</p></details></div>
-    <ul><li>Who owns FOR-12 (Rotate carrier credentials)?</li><li>Who owns LUM-4 (KYC document upload)?</li><li>What changed on Cedar Clinics — Patient portal after 20 Aug 2026? N-1 and the work-item export disagree.</li><li>Does the dependent milestone still hold while FOR-20 is blocked by FOR-12?</li><li>Which completion figure should the steering pack use: 85% or 8 of 37 story points?</li><li>Who can close LUM-9 (Approve KYC vendor contract)? No owner is named. Recorded successor: LUM-4.</li></ul>
+    <ul class="pulse"><li class="card pulse-card on_track"><div class="pulse-top"><span class="state on_track">On track</span><span class="pulse-name">Aster HR — Payroll export</span></div><div class="bar" role="progressbar" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" aria-label="Aster HR — Payroll export, 67 percent of story points Done"><span style="--w:67%"></span></div><span class="progress">10 of 15 story points are Done (67%). Remaining 2, original estimate 15.</span><ul class="children"><li><span class="name">AST-1 Payroll export</span><div class="bar" role="progressbar" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" aria-label="Payroll export, 67 percent of story points Done"><span style="--w:67%"></span></div><span class="progress">10 of 15 story points are Done (67%). Remaining 2, original estimate 15.</span></li></ul></li><li class="card pulse-card needs_attention"><div class="pulse-top"><span class="state needs_attention">Needs attention</span><span class="pulse-name">Cedar Clinics — Patient portal</span></div><div class="bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Cedar Clinics — Patient portal, 0 percent of story points Done"><span style="--w:0%"></span></div><span class="progress">0 of 18 story points are Done (0%). Remaining 7, original estimate 10.</span><ul class="children"><li><span class="name">CED-1 Patient portal</span><div class="bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Patient portal, 0 percent of story points Done"><span style="--w:0%"></span></div><span class="progress">0 of 18 story points are Done (0%). Remaining 7, original estimate 10.</span></li></ul></li><li class="card pulse-card blocked"><div class="pulse-top"><span class="state blocked">Blocked</span><span class="pulse-name">Forge Logistics — Warehouse API</span></div><div class="bar" role="progressbar" aria-valuenow="46" aria-valuemin="0" aria-valuemax="100" aria-label="Forge Logistics — Warehouse API, 46 percent of story points Done"><span style="--w:46%"></span></div><span class="progress">12 of 26 story points are Done (46%). Remaining 8, original estimate 18.</span><ul class="children"><li><span class="name">FOR-1 Warehouse API</span><div class="bar" role="progressbar" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100" aria-label="Warehouse API, 38 percent of story points Done"><span style="--w:38%"></span></div><span class="progress">10 of 26 story points are Done (38%). Remaining 8, original estimate 18.</span></li><li><span class="name">FOR-30 Pick tickets</span><div class="bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" aria-label="Pick tickets, 40 percent of story points Done"><span style="--w:40%"></span></div><span class="progress">2 of 5 story points are Done (40%). Remaining 3, original estimate 5.</span></li></ul></li><li class="card pulse-card needs_attention"><div class="pulse-top"><span class="state needs_attention">Needs attention</span><span class="pulse-name">Lumen Bank — Mobile onboarding</span></div><div class="bar" role="progressbar" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100" aria-label="Lumen Bank — Mobile onboarding, 21 percent of story points Done"><span style="--w:21%"></span></div><span class="progress">8 of 38 story points are Done (21%). 3 items have no story point or effort. Remaining 7, original estimate 16.</span><ul class="children"><li><span class="name">LUM-1 Mobile onboarding</span><div class="bar" role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" aria-label="Mobile onboarding, 22 percent of story points Done"><span style="--w:22%"></span></div><span class="progress">8 of 37 story points are Done (22%). 3 items have no story point or effort. Remaining 7, original estimate 16.</span></li></ul></li></ul>
+    <div class="section-head"><h2>Field changes</h2><details class="info"><summary aria-label="About Field changes">i</summary><p>Every compared cell: status, assignee, priority, due date, blocker, percent complete, story points, and remaining. The week reading is the conclusion. This list is the audit.</p></details></div>
+    <ul class="changelog"><li class="change-row"><span class="key">AST-4</span><span class="change-body">story_points 3 → 5</span></li><li class="change-row"><span class="key">FOR-12</span><span class="change-body">assignee Alex Rahman → blank</span></li><li class="change-row"><span class="key">LUM-3</span><span class="change-body">status In Progress → Done, percent_complete 60 → 100</span></li><li class="change-row"><span class="key">LUM-6</span><span class="change-body">remaining 2 → 5</span></li></ul>
+    </section>
+    <section class="page" id="metrics">
+    <style>#team-all:checked ~ .flow-wrap .scope-team-all { display: table-row-group; }#team-all:checked ~ .team-bar label[for="team-all"] { color: var(--fg); border-color: var(--cyan); background: var(--cyan-dim); }#team-ASTER:checked ~ .flow-wrap .scope-team-ASTER { display: table-row-group; }#team-ASTER:checked ~ .team-bar label[for="team-ASTER"] { color: var(--fg); border-color: var(--cyan); background: var(--cyan-dim); }#team-CEDAR:checked ~ .flow-wrap .scope-team-CEDAR { display: table-row-group; }#team-CEDAR:checked ~ .team-bar label[for="team-CEDAR"] { color: var(--fg); border-color: var(--cyan); background: var(--cyan-dim); }#team-FORGE:checked ~ .flow-wrap .scope-team-FORGE { display: table-row-group; }#team-FORGE:checked ~ .team-bar label[for="team-FORGE"] { color: var(--fg); border-color: var(--cyan); background: var(--cyan-dim); }#team-LUMEN:checked ~ .flow-wrap .scope-team-LUMEN { display: table-row-group; }#team-LUMEN:checked ~ .team-bar label[for="team-LUMEN"] { color: var(--fg); border-color: var(--cyan); background: var(--cyan-dim); }</style><div class="section-head"><div><p class="kicker">Metrics</p><h2>One team, or the total</h2></div><details class="info"><summary aria-label="About Metrics">i</summary><p>Stories, bugs, and tasks. All is the total. A target is filled only from a due date in the file. Marked Done compares items marked Done that week with items dated that week. They are not the same items. Dates reached counts items whose due date is on or before the report date, and how many of those are Done. The gap there is items still open. The solid line is the actual. The dashed line is items dated that week. Every team uses the portfolio scale for that row. A triangle points the way the number moved. Better means more finished work, or fewer open, blocked, unassigned, or days. Cycle p85 describes items already Done. This is not a forecast.</p></details></div><div class="metrics panel"><input class="team-input" type="radio" name="team" id="team-all" checked><input class="team-input" type="radio" name="team" id="team-ASTER"><input class="team-input" type="radio" name="team" id="team-CEDAR"><input class="team-input" type="radio" name="team" id="team-FORGE"><input class="team-input" type="radio" name="team" id="team-LUMEN"><div class="team-bar" role="radiogroup" aria-label="Team"><label for="team-all">All</label><label for="team-ASTER">Aster HR</label><label for="team-CEDAR">Cedar Clinics</label><label for="team-FORGE">Forge Logistics</label><label for="team-LUMEN">Lumen Bank</label></div><div class="flow-wrap"><table class="flow"><thead><tr><th>KPI</th><th class="num">Actual</th><th class="num">Target</th><th class="num">Gap</th><th class="num">Change</th><th class="num">Trendline<span class="axis">22 Aug–10 Oct</span></th></tr></thead><tbody class="scope scope-team-all"><tr><td>Since last export</td><td class="num">1 · 3 pts</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 1, 2, 2"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,19.0 L107.6,5.0 L125.0,5.0" class="actual-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="19.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="5.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="5.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Marked Done</td><td class="num">2 · latest week</td><td class="num">4</td><td class="num">2</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 1, 2, 2. Dated 0, 0, 0, 0, 1, 1, 3, 4"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,26.0 L107.6,19.0 L125.0,19.0" class="actual-line"></path><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,26.0 L90.1,26.0 L107.6,12.0 L125.0,5.0" class="target-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="26.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="19.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="19.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Dates reached</td><td class="num">7</td><td class="num">11</td><td class="num">4</td><td class="num"><span class="chg better"><i class="tri up" aria-hidden="true"></i> 1 better</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 1, 1, 1, 2. Dated 0, 0, 0, 0, 1, 1, 3, 4"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,26.0 L90.1,26.0 L107.6,26.0 L125.0,19.0" class="actual-line"></path><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,26.0 L90.1,26.0 L107.6,12.0 L125.0,5.0" class="target-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="26.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="26.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="26.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="19.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>WIP</td><td class="num">18</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="chg better"><i class="tri down" aria-hidden="true"></i> 1 better</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 18, 18, 21, 21, 22, 22, 20, 18"><path d="M3.0,10.1 L20.4,10.1 L37.9,6.3 L55.3,6.3 L72.7,5.0 L90.1,5.0 L107.6,7.5 L125.0,10.1" class="actual-line"></path><circle cx="3.0" cy="10.1" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="10.1" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="6.3" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="6.3" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="5.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="5.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="7.5" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="10.1" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Cycle p85</td><td class="num">121d · 7 finished</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 121, 121, 121, 121, 121, 121, 121, 121"><path d="M3.0,6.7 L20.4,6.7 L37.9,6.7 L55.3,6.7 L72.7,6.7 L90.1,6.7 L107.6,6.7 L125.0,6.7" class="actual-line"></path><circle cx="3.0" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="6.7" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Blocked</td><td class="num">1</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend">—</td></tr><tr><td>Unassigned</td><td class="num">5</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="chg worse"><i class="tri up" aria-hidden="true"></i> 1 worse</span></td><td class="trend">—</td></tr></tbody><tbody class="scope scope-team-ASTER"><tr><td>Since last export</td><td class="num">0</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 0, 1, 1"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,19.0 L125.0,19.0" class="actual-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="19.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="19.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Marked Done</td><td class="num">1 · latest week</td><td class="num">1</td><td class="num">0</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 0, 1, 1. Dated 0, 0, 0, 0, 0, 0, 1, 1"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,26.0 L125.0,26.0" class="actual-line"></path><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,26.0 L125.0,26.0" class="target-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="26.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="26.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Dates reached</td><td class="num">2</td><td class="num">2</td><td class="num">0</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 0, 1, 1. Dated 0, 0, 0, 0, 0, 0, 1, 1"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,26.0 L125.0,26.0" class="actual-line"></path><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,26.0 L125.0,26.0" class="target-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="26.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="26.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>WIP</td><td class="num">1</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 3, 3, 3, 3, 3, 3, 2, 1"><path d="M3.0,29.2 L20.4,29.2 L37.9,29.2 L55.3,29.2 L72.7,29.2 L90.1,29.2 L107.6,30.5 L125.0,31.7" class="actual-line"></path><circle cx="3.0" cy="29.2" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="29.2" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="29.2" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="29.2" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="29.2" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="29.2" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="30.5" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="31.7" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Cycle p85</td><td class="num">65d · 2 finished</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend —, —, —, —, —, —, 57, 65"><path d="M107.6,20.6 L125.0,18.9" class="actual-line"></path><circle cx="107.6" cy="20.6" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="18.9" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Blocked</td><td class="num">0</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend">—</td></tr><tr><td>Unassigned</td><td class="num">0</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend">—</td></tr></tbody><tbody class="scope scope-team-CEDAR"><tr><td>Since last export</td><td class="num">0</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 0, 0, 0"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,33.0 L125.0,33.0" class="actual-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="33.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Marked Done</td><td class="num">0 · latest week</td><td class="num">0</td><td class="num">0</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 0, 0, 0. Dated 0, 0, 0, 0, 0, 0, 2, 0"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,33.0 L125.0,33.0" class="actual-line"></path><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,19.0 L125.0,33.0" class="target-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="33.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Dates reached</td><td class="num">0</td><td class="num">2</td><td class="num">2</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 0, 0, 0. Dated 0, 0, 0, 0, 0, 0, 2, 0"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,33.0 L125.0,33.0" class="actual-line"></path><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,19.0 L125.0,33.0" class="target-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="33.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>WIP</td><td class="num">4</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 4, 4, 4, 4, 4, 4, 4, 4"><path d="M3.0,27.9 L20.4,27.9 L37.9,27.9 L55.3,27.9 L72.7,27.9 L90.1,27.9 L107.6,27.9 L125.0,27.9" class="actual-line"></path><circle cx="3.0" cy="27.9" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="27.9" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="27.9" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="27.9" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="27.9" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="27.9" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="27.9" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="27.9" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Cycle p85</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend —, —, —, —, —, —, —, —"></svg></td></tr><tr><td>Blocked</td><td class="num">0</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend">—</td></tr><tr><td>Unassigned</td><td class="num">1</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend">—</td></tr></tbody><tbody class="scope scope-team-FORGE"><tr><td>Since last export</td><td class="num">0</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 0, 1, 0"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,19.0 L125.0,33.0" class="actual-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="19.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="33.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Marked Done</td><td class="num">0 · latest week</td><td class="num">2</td><td class="num">2</td><td class="num"><span class="chg worse"><i class="tri down" aria-hidden="true"></i> 1 worse</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 0, 1, 0. Dated 0, 0, 0, 0, 0, 0, 0, 2"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,26.0 L125.0,33.0" class="actual-line"></path><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,33.0 L125.0,19.0" class="target-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="26.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="33.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Dates reached</td><td class="num">3</td><td class="num">4</td><td class="num">1</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 0, 0, 1. Dated 0, 0, 0, 0, 0, 0, 0, 2"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,33.0 L125.0,26.0" class="actual-line"></path><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,33.0 L107.6,33.0 L125.0,19.0" class="target-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="26.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>WIP</td><td class="num">4</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 3, 3, 4, 5, 4, 4"><path d="M3.0,33.0 L20.4,33.0 L37.9,29.2 L55.3,29.2 L72.7,27.9 L90.1,26.6 L107.6,27.9 L125.0,27.9" class="actual-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="29.2" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="29.2" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="27.9" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="26.6" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="27.9" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="27.9" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Cycle p85</td><td class="num">121d · 3 finished</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 121, 121, 121, 121, 121, 121, 121, 121"><path d="M3.0,6.7 L20.4,6.7 L37.9,6.7 L55.3,6.7 L72.7,6.7 L90.1,6.7 L107.6,6.7 L125.0,6.7" class="actual-line"></path><circle cx="3.0" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="6.7" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="6.7" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Blocked</td><td class="num">1</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend">—</td></tr><tr><td>Unassigned</td><td class="num">1</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="chg worse"><i class="tri up" aria-hidden="true"></i> 1 worse</span></td><td class="trend">—</td></tr></tbody><tbody class="scope scope-team-LUMEN"><tr><td>Since last export</td><td class="num">1 · 3 pts</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 1, 0, 1"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,19.0 L107.6,33.0 L125.0,19.0" class="actual-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="19.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="19.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Marked Done</td><td class="num">1 · latest week</td><td class="num">1</td><td class="num">0</td><td class="num"><span class="chg better"><i class="tri up" aria-hidden="true"></i> 1 better</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 0, 1, 0, 1. Dated 0, 0, 0, 0, 1, 1, 0, 1"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,33.0 L90.1,26.0 L107.6,33.0 L125.0,26.0" class="actual-line"></path><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,26.0 L90.1,26.0 L107.6,33.0 L125.0,26.0" class="target-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="26.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="26.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Dates reached</td><td class="num">2</td><td class="num">3</td><td class="num">1</td><td class="num"><span class="chg better"><i class="tri up" aria-hidden="true"></i> 1 better</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 0, 0, 0, 0, 1, 1, 0, 0. Dated 0, 0, 0, 0, 1, 1, 0, 1"><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,26.0 L90.1,26.0 L107.6,33.0 L125.0,33.0" class="actual-line"></path><path d="M3.0,33.0 L20.4,33.0 L37.9,33.0 L55.3,33.0 L72.7,26.0 L90.1,26.0 L107.6,33.0 L125.0,26.0" class="target-line"></path><circle cx="3.0" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="26.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="26.0" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="33.0" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="33.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>WIP</td><td class="num">9</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="chg better"><i class="tri down" aria-hidden="true"></i> 1 better</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend 11, 11, 11, 11, 11, 10, 10, 9"><path d="M3.0,19.0 L20.4,19.0 L37.9,19.0 L55.3,19.0 L72.7,19.0 L90.1,20.3 L107.6,20.3 L125.0,21.5" class="actual-line"></path><circle cx="3.0" cy="19.0" r="1.8" class="actual-line"></circle><circle cx="20.4" cy="19.0" r="1.8" class="actual-line"></circle><circle cx="37.9" cy="19.0" r="1.8" class="actual-line"></circle><circle cx="55.3" cy="19.0" r="1.8" class="actual-line"></circle><circle cx="72.7" cy="19.0" r="1.8" class="actual-line"></circle><circle cx="90.1" cy="20.3" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="20.3" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="21.5" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Cycle p85</td><td class="num">129d · 2 finished</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="chg worse"><i class="tri up" aria-hidden="true"></i> 19 worse</span></td><td class="trend"><svg class="spark" viewBox="0 0 128 36" role="img" aria-label="Trend —, —, —, —, —, 110, 110, 129"><path d="M90.1,9.1 L107.6,9.1 L125.0,5.0" class="actual-line"></path><circle cx="90.1" cy="9.1" r="1.8" class="actual-line"></circle><circle cx="107.6" cy="9.1" r="1.8" class="actual-line"></circle><circle cx="125.0" cy="5.0" r="1.8" class="actual-line"></circle></svg></td></tr><tr><td>Blocked</td><td class="num">0</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend">—</td></tr><tr><td>Unassigned</td><td class="num">3</td><td class="num">—</td><td class="num">—</td><td class="num"><span class="same">same</span></td><td class="trend">—</td></tr></tbody></table></div></div><details class="sheet fold"><summary>Weekly counts</summary><div class="flow-wrap"><table class="flow weeks"><thead><tr><th>Team</th><th>Series</th><th>22 Aug</th><th>29 Aug</th><th>5 Sep</th><th>12 Sep</th><th>19 Sep</th><th>26 Sep</th><th>3 Oct</th><th>10 Oct</th></tr></thead><tbody><tr><td>All</td><td>Marked Done</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>2</td></tr><tr><td>All</td><td>Dated</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>3</td><td>4</td></tr><tr><td>Aster HR</td><td>Marked Done</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>Aster HR</td><td>Dated</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>Cedar Clinics</td><td>Marked Done</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>Cedar Clinics</td><td>Dated</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>2</td><td>0</td></tr><tr><td>Forge Logistics</td><td>Marked Done</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>Forge Logistics</td><td>Dated</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>2</td></tr><tr><td>Lumen Bank</td><td>Marked Done</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr><tr><td>Lumen Bank</td><td>Dated</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr></tbody></table></div></details><details class="fold"><summary>Evidence</summary><ul class="evidence"><li><code>work_items</code> LUM-3.status = Done</li><li><code>work_items</code> LUM-3.updated = 2026-10-09</li><li><code>work_items</code> LUM-3.story_points = 3</li><li><code>work_items</code> LUM-3.status = Done</li><li><code>work_items</code> LUM-3.updated = 2026-10-09</li><li><code>work_items</code> LUM-3.type = Story</li><li><code>work_items</code> AST-3.status = Done</li><li><code>work_items</code> AST-3.updated = 2026-10-06</li><li><code>work_items</code> AST-3.type = Story</li><li><code>work_items</code> LUM-4.status = To Do</li><li><code>work_items</code> LUM-5.status = To Do</li><li><code>work_items</code> LUM-6.status = To Do</li><li><code>work_items</code> LUM-7.status = To Do</li><li><code>work_items</code> LUM-8.status = To Do</li><li><code>work_items</code> LUM-10.status = To Do</li><li><code>work_items</code> LUM-11.status = To Do</li><li><code>work_items</code> LUM-12.status = To Do</li><li><code>work_items</code> LUM-13.status = To Do</li><li><code>work_items</code> CED-2.status = In Progress</li><li><code>work_items</code> CED-3.status = In Progress</li><li><code>work_items</code> CED-4.status = To Do</li><li><code>work_items</code> CED-5.status = To Do</li><li><code>work_items</code> FOR-12.status = In Progress</li><li><code>work_items</code> FOR-20.status = Blocked</li><li><code>work_items</code> FOR-21.status = In Progress</li><li><code>work_items</code> FOR-32.status = To Do</li><li><code>work_items</code> AST-4.status = In Progress</li><li><code>work_items</code> FOR-2.created = 2026-04-02</li><li><code>work_items</code> FOR-2.updated = 2026-08-01</li></ul></details>
+    </section>
+    <section class="page" id="risks">
     <div class="section-head"><h2>Top risks</h2><details class="info"><summary aria-label="About Top risks">i</summary><p>The highest-severity findings that cite a row in the export. Evidence stays folded under each one.</p></details></div>
-    <article class="card"><p class="kicker">fact · severity 90</p><h3>FOR-12 is Highest priority, open, and has no assignee.</h3><p>FOR-12 (Rotate carrier credentials) is In Progress, due 8 Oct 2026 (before this report), and the assignee cell is empty. The item comment says &quot;Unassigned after Alex Rahman went on leave. Due yesterday.&quot;</p><details><summary>Evidence, 5 fields</summary><ul class="evidence"><li><code>work_items</code> FOR-12.assignee = (blank)</li><li><code>work_items</code> FOR-12.priority = Highest</li><li><code>work_items</code> FOR-12.status = In Progress</li><li><code>work_items</code> FOR-12.due = 2026-10-08</li><li><code>work_items</code> FOR-12.comment = Unassigned after Alex Rahman went on leave. Due yesterday.</li></ul></details></article><article class="card"><p class="kicker">fact · severity 90</p><h3>LUM-4 is Highest priority, open, and has no assignee.</h3><p>LUM-4 (KYC document upload) is To Do, due 6 Oct 2026 (before this report), and the assignee cell is empty. The item comment says &quot;Critical path. No owner after the previous owner left the squad.&quot;</p><details><summary>Evidence, 5 fields</summary><ul class="evidence"><li><code>work_items</code> LUM-4.assignee = (blank)</li><li><code>work_items</code> LUM-4.priority = Highest</li><li><code>work_items</code> LUM-4.status = To Do</li><li><code>work_items</code> LUM-4.due = 2026-10-06</li><li><code>work_items</code> LUM-4.comment = Critical path. No owner after the previous owner left the squad.</li></ul></details></article><article class="card"><p class="kicker">inference · severity 86</p><h3>Cedar Clinics — Patient portal is described as on track, but the export disagrees.</h3><p>N-1 on 9 Oct 2026 says the work is on track. CED-2 and CED-3 are already overdue. The newest update among these open items is 20 Aug 2026. CED-2 due 30 Sep 2026, updated 18 Aug 2026, CED-3 due 2 Oct 2026, updated 20 Aug 2026.</p><details><summary>Evidence, 8 fields</summary><ul class="evidence"><li><code>notes</code> N-1.text = Weekly status: Cedar is green and on track. No risks to raise. The team is heads down on the portal.</li><li><code>notes</code> N-1.date = 2026-10-09</li><li><code>work_items</code> CED-2.status = In Progress</li><li><code>work_items</code> CED-2.updated = 2026-08-18</li><li><code>work_items</code> CED-2.due = 2026-09-30</li><li><code>work_items</code> CED-3.status = In Progress</li><li><code>work_items</code> CED-3.updated = 2026-08-20</li><li><code>work_items</code> CED-3.due = 2026-10-02</li></ul></details></article><article class="card"><p class="kicker">fact · severity 85</p><h3>FOR-20 is blocked by FOR-12, which is overdue (8 Oct 2026) and unassigned.</h3><p>FOR-20 (Sandbox returns 401 for pick tickets) is Blocked by FOR-12 (Rotate carrier credentials). FOR-12 is In Progress, overdue (8 Oct 2026) and unassigned. Carrier cutover (MS-FOR) is due 15 Oct 2026.</p><details><summary>Evidence, 7 fields</summary><ul class="evidence"><li><code>work_items</code> FOR-20.status = Blocked</li><li><code>work_items</code> FOR-20.blocked_by = FOR-12</li><li><code>work_items</code> FOR-12.status = In Progress</li><li><code>work_items</code> FOR-12.assignee = (blank)</li><li><code>work_items</code> FOR-12.due = 2026-10-08</li><li><code>dependencies</code> DEP-CUT.successor = MS-FOR</li><li><code>milestones</code> MS-FOR.due = 2026-10-15</li></ul></details></article><article class="card"><p class="kicker">fact · severity 80</p><h3>Lumen Bank — Mobile onboarding reports 85% complete; 8 of 37 story points are done.</h3><p>LUM-1 percent_complete is 85. Child items with story points total 37, of which 8 are Done (22%). Still open at High or Highest: LUM-4 (KYC document upload), LUM-5 (Sanctions screening integration), LUM-6 (Biometric capture), LUM-11 (Address proof), LUM-12 (Device binding), LUM-13 (Fraud rules). N-2 says &quot;Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.&quot;</p><details><summary>Evidence, 18 fields</summary><ul class="evidence"><li><code>work_items</code> LUM-1.percent_complete = 85</li><li><code>work_items</code> LUM-2.status = Done</li><li><code>work_items</code> LUM-2.story_points = 5</li><li><code>work_items</code> LUM-3.status = Done</li><li><code>work_items</code> LUM-3.story_points = 3</li><li><code>work_items</code> LUM-4.status = To Do</li><li><code>work_items</code> LUM-4.story_points = 8</li><li><code>work_items</code> LUM-5.status = To Do</li><li><code>work_items</code> LUM-5.story_points = 8</li><li><code>work_items</code> LUM-6.status = To Do</li><li><code>work_items</code> LUM-6.story_points = 5</li><li><code>work_items</code> LUM-7.status = To Do</li><li><code>work_items</code> LUM-7.story_points = 3</li><li><code>work_items</code> LUM-8.status = To Do</li><li><code>work_items</code> LUM-8.story_points = 3</li><li><code>work_items</code> LUM-10.status = To Do</li><li><code>work_items</code> LUM-10.story_points = 2</li><li><code>notes</code> N-2.text = Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.</li></ul></details></article>
+    <article class="risk-card"><div class="risk-rail" style="--sev:100%"></div><div class="risk-body"><p class="kicker">fact · severity 90</p><h3>FOR-12 is Highest priority, open, and has no assignee.</h3><p>FOR-12 (Rotate carrier credentials) is In Progress, due 8 Oct 2026 (before this report), and the assignee cell is empty. The item comment says &quot;Unassigned after Alex Rahman went on leave. Due yesterday.&quot;</p><details class="fold"><summary>Evidence, 5 fields</summary><ul class="evidence"><li><code>work_items</code> FOR-12.assignee = (blank)</li><li><code>work_items</code> FOR-12.priority = Highest</li><li><code>work_items</code> FOR-12.status = In Progress</li><li><code>work_items</code> FOR-12.due = 2026-10-08</li><li><code>work_items</code> FOR-12.comment = Unassigned after Alex Rahman went on leave. Due yesterday.</li></ul></details></div></article><article class="risk-card"><div class="risk-rail" style="--sev:100%"></div><div class="risk-body"><p class="kicker">fact · severity 90</p><h3>LUM-4 is Highest priority, open, and has no assignee.</h3><p>LUM-4 (KYC document upload) is To Do, due 6 Oct 2026 (before this report), and the assignee cell is empty. The item comment says &quot;Critical path. No owner after the previous owner left the squad.&quot;</p><details class="fold"><summary>Evidence, 5 fields</summary><ul class="evidence"><li><code>work_items</code> LUM-4.assignee = (blank)</li><li><code>work_items</code> LUM-4.priority = Highest</li><li><code>work_items</code> LUM-4.status = To Do</li><li><code>work_items</code> LUM-4.due = 2026-10-06</li><li><code>work_items</code> LUM-4.comment = Critical path. No owner after the previous owner left the squad.</li></ul></details></div></article><article class="risk-card"><div class="risk-rail" style="--sev:100%"></div><div class="risk-body"><p class="kicker">inference · severity 86</p><h3>Cedar Clinics — Patient portal is described as on track, but the export disagrees.</h3><p>N-1 on 9 Oct 2026 says the work is on track. CED-2 and CED-3 are already overdue. The newest update among these open items is 20 Aug 2026. CED-2 due 30 Sep 2026, updated 18 Aug 2026, CED-3 due 2 Oct 2026, updated 20 Aug 2026.</p><details class="fold"><summary>Evidence, 8 fields</summary><ul class="evidence"><li><code>notes</code> N-1.text = Weekly status: Cedar is green and on track. No risks to raise. The team is heads down on the portal.</li><li><code>notes</code> N-1.date = 2026-10-09</li><li><code>work_items</code> CED-2.status = In Progress</li><li><code>work_items</code> CED-2.updated = 2026-08-18</li><li><code>work_items</code> CED-2.due = 2026-09-30</li><li><code>work_items</code> CED-3.status = In Progress</li><li><code>work_items</code> CED-3.updated = 2026-08-20</li><li><code>work_items</code> CED-3.due = 2026-10-02</li></ul></details></div></article><article class="risk-card"><div class="risk-rail" style="--sev:100%"></div><div class="risk-body"><p class="kicker">fact · severity 85</p><h3>FOR-20 is blocked by FOR-12, which is overdue (8 Oct 2026) and unassigned.</h3><p>FOR-20 (Sandbox returns 401 for pick tickets) is Blocked by FOR-12 (Rotate carrier credentials). FOR-12 is In Progress, overdue (8 Oct 2026) and unassigned. Carrier cutover (MS-FOR) is due 15 Oct 2026.</p><details class="fold"><summary>Evidence, 7 fields</summary><ul class="evidence"><li><code>work_items</code> FOR-20.status = Blocked</li><li><code>work_items</code> FOR-20.blocked_by = FOR-12</li><li><code>work_items</code> FOR-12.status = In Progress</li><li><code>work_items</code> FOR-12.assignee = (blank)</li><li><code>work_items</code> FOR-12.due = 2026-10-08</li><li><code>dependencies</code> DEP-CUT.successor = MS-FOR</li><li><code>milestones</code> MS-FOR.due = 2026-10-15</li></ul></details></div></article><article class="risk-card"><div class="risk-rail" style="--sev:100%"></div><div class="risk-body"><p class="kicker">fact · severity 80</p><h3>Lumen Bank — Mobile onboarding reports 85% complete; 8 of 37 story points are done.</h3><p>LUM-1 percent_complete is 85. Child items with story points total 37, of which 8 are Done (22%). Still open at High or Highest: LUM-4 (KYC document upload), LUM-5 (Sanctions screening integration), LUM-6 (Biometric capture), LUM-11 (Address proof), LUM-12 (Device binding), LUM-13 (Fraud rules). N-2 says &quot;Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.&quot;</p><details class="fold"><summary>Evidence, 18 fields</summary><ul class="evidence"><li><code>work_items</code> LUM-1.percent_complete = 85</li><li><code>work_items</code> LUM-2.status = Done</li><li><code>work_items</code> LUM-2.story_points = 5</li><li><code>work_items</code> LUM-3.status = Done</li><li><code>work_items</code> LUM-3.story_points = 3</li><li><code>work_items</code> LUM-4.status = To Do</li><li><code>work_items</code> LUM-4.story_points = 8</li><li><code>work_items</code> LUM-5.status = To Do</li><li><code>work_items</code> LUM-5.story_points = 8</li><li><code>work_items</code> LUM-6.status = To Do</li><li><code>work_items</code> LUM-6.story_points = 5</li><li><code>work_items</code> LUM-7.status = To Do</li><li><code>work_items</code> LUM-7.story_points = 3</li><li><code>work_items</code> LUM-8.status = To Do</li><li><code>work_items</code> LUM-8.story_points = 3</li><li><code>work_items</code> LUM-10.status = To Do</li><li><code>work_items</code> LUM-10.story_points = 2</li><li><code>notes</code> N-2.text = Leadership slide says onboarding is 85% complete and the only open item is copy for the app store.</li></ul></details></div></article>
     <div class="section-head"><h2>Checked and set aside</h2><details class="info"><summary aria-label="About Checked and set aside">i</summary><p>A signal the rules looked at and did not promote. An overdue predecessor is set aside when its successor is already Done.</p></details></div>
-    <details>
+    <details class="fold panel-soft">
       <summary>Legacy data extract (MS-LEG) is overdue, and it does not block FOR-3.</summary>
-      <ul><li>DEP-LEG says MS-LEG precedes FOR-3. Legacy data extract (MS-LEG) is overdue, and FOR-3 is Done. N-5 says &quot;We no longer need the legacy data extract. FOR-3 was finished from the snapshot feed in July.&quot;</li></ul>
+      <ul class="plain"><li>DEP-LEG says MS-LEG precedes FOR-3. Legacy data extract (MS-LEG) is overdue, and FOR-3 is Done. N-5 says &quot;We no longer need the legacy data extract. FOR-3 was finished from the snapshot feed in July.&quot;</li></ul>
     </details>
     <div class="section-head"><h2>Also noted</h2><details class="info"><summary aria-label="About Also noted">i</summary><p>Findings that cleared the severity threshold and did not fit at the top of the brief.</p></details></div>
-    <ul><li>LUM-5 is Highest priority, open, and has no assignee.</li><li>FOR-21 remaining is 5 and the original estimate is 3.</li><li>3 Highest priority items have no estimate.</li><li>LUM-2 is Done and remaining is 2.</li></ul>
+    <ul class="plain"><li>LUM-5 is Highest priority, open, and has no assignee.</li><li>FOR-21 remaining is 5 and the original estimate is 3.</li><li>3 Highest priority items have no estimate.</li><li>LUM-2 is Done and remaining is 2.</li></ul>
+    </section>
     <footer>
       <p>Send this file. The recipient does not need an account or the original export. Evidence is under each risk. Nothing on this page has been sent to a project tool.</p>
       <p>A person approves the brief before a customer sees it. The result id changes when the findings change, so two copies can be compared.</p>

@@ -10,6 +10,1953 @@
   "rules_version": "2026-10-11",
   "result_id": "f1fb4eaa03",
   "lead": "As of 10 Oct 2026, 1 of 4 projects is on track (Aster HR \u2014 Payroll export). This brief cites rows in the approved export. It does not forecast that a future date will be missed.",
+  "reading": {
+    "this_week": [
+      "2026-10-10",
+      "2026-10-16"
+    ],
+    "next_week": [
+      "2026-10-17",
+      "2026-10-23"
+    ],
+    "progress": [
+      {
+        "id": "progress:closed",
+        "text": "LUM-3, 3 points.",
+        "evidence": [
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "status",
+            "value": "Done"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "story_points",
+            "value": "3"
+          }
+        ]
+      }
+    ],
+    "changed": [
+      {
+        "id": "change:drift",
+        "text": "FOR-12 lost Alex Rahman. LUM-6 remaining 2\u21925. AST-4 estimate 3\u21925.",
+        "evidence": [
+          {
+            "source": "work_items",
+            "id": "FOR-12",
+            "field": "assignee",
+            "value": ""
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-6",
+            "field": "remaining",
+            "value": "5"
+          },
+          {
+            "source": "work_items",
+            "id": "AST-4",
+            "field": "story_points",
+            "value": "5"
+          }
+        ]
+      }
+    ],
+    "coming": [
+      {
+        "id": "coming:read",
+        "text": "Remaining up LUM-6 2\u21925. Over estimate FOR-21 5 vs 3. KYC ready for UAT 17 Oct, milestone. CED-5 23 Oct, no owner.",
+        "evidence": [
+          {
+            "source": "work_items",
+            "id": "FOR-21",
+            "field": "due",
+            "value": "2026-10-18"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-21",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-21",
+            "field": "assignee",
+            "value": "Samir Adeyemi"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-21",
+            "field": "remaining",
+            "value": "5"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-21",
+            "field": "original_estimate",
+            "value": "3"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-6",
+            "field": "due",
+            "value": "2026-10-20"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-6",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-6",
+            "field": "assignee",
+            "value": "Jonas Berg"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-6",
+            "field": "remaining",
+            "value": "5"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-6",
+            "field": "original_estimate",
+            "value": "8"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-5",
+            "field": "due",
+            "value": "2026-10-23"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-5",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-5",
+            "field": "assignee",
+            "value": ""
+          },
+          {
+            "source": "milestones",
+            "id": "MS-LUM",
+            "field": "due",
+            "value": "2026-10-17"
+          },
+          {
+            "source": "milestones",
+            "id": "MS-LUM",
+            "field": "status",
+            "value": "Open"
+          }
+        ]
+      }
+    ],
+    "priorities": [
+      {
+        "id": "priority:late",
+        "text": "LUM-9 \u2192 LUM-4, no owners. FOR-12 (no owner) \u2192 FOR-20 \u2192 Carrier cutover 15 Oct. Later: LUM-5 no owner 28 Oct; LUM-11, LUM-12, LUM-13 no estimate 30 Oct.",
+        "evidence": [
+          {
+            "source": "work_items",
+            "id": "LUM-9",
+            "field": "summary",
+            "value": "Approve KYC vendor contract"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-9",
+            "field": "due",
+            "value": "2026-10-03"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-9",
+            "field": "status",
+            "value": "Waiting"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-9",
+            "field": "assignee",
+            "value": ""
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-9",
+            "field": "priority",
+            "value": "Highest"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-4",
+            "field": "summary",
+            "value": "KYC document upload"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-4",
+            "field": "due",
+            "value": "2026-10-06"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-4",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-4",
+            "field": "assignee",
+            "value": ""
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-4",
+            "field": "priority",
+            "value": "Highest"
+          },
+          {
+            "source": "dependencies",
+            "id": "DEP-KYC",
+            "field": "predecessor",
+            "value": "LUM-9"
+          },
+          {
+            "source": "dependencies",
+            "id": "DEP-KYC",
+            "field": "successor",
+            "value": "LUM-4"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-12",
+            "field": "summary",
+            "value": "Rotate carrier credentials"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-12",
+            "field": "due",
+            "value": "2026-10-08"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-12",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-12",
+            "field": "assignee",
+            "value": ""
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-12",
+            "field": "priority",
+            "value": "Highest"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-20",
+            "field": "summary",
+            "value": "Sandbox returns 401 for pick tickets"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-20",
+            "field": "due",
+            "value": "2026-10-12"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-20",
+            "field": "status",
+            "value": "Blocked"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-20",
+            "field": "assignee",
+            "value": "Samir Adeyemi"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-20",
+            "field": "priority",
+            "value": "High"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-20",
+            "field": "blocked_by",
+            "value": "FOR-12"
+          },
+          {
+            "source": "milestones",
+            "id": "MS-FOR",
+            "field": "due",
+            "value": "2026-10-15"
+          },
+          {
+            "source": "milestones",
+            "id": "MS-FOR",
+            "field": "status",
+            "value": "Open"
+          },
+          {
+            "source": "dependencies",
+            "id": "DEP-CRED",
+            "field": "predecessor",
+            "value": "FOR-12"
+          },
+          {
+            "source": "dependencies",
+            "id": "DEP-CRED",
+            "field": "successor",
+            "value": "FOR-20"
+          },
+          {
+            "source": "dependencies",
+            "id": "DEP-CUT",
+            "field": "predecessor",
+            "value": "FOR-20"
+          },
+          {
+            "source": "dependencies",
+            "id": "DEP-CUT",
+            "field": "successor",
+            "value": "MS-FOR"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-5",
+            "field": "priority",
+            "value": "Highest"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-5",
+            "field": "due",
+            "value": "2026-10-28"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-5",
+            "field": "assignee",
+            "value": ""
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-5",
+            "field": "story_points",
+            "value": "8"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-11",
+            "field": "priority",
+            "value": "Highest"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-11",
+            "field": "due",
+            "value": "2026-10-30"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-11",
+            "field": "assignee",
+            "value": "Nora Feld"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-11",
+            "field": "story_points",
+            "value": ""
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-12",
+            "field": "priority",
+            "value": "Highest"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-12",
+            "field": "due",
+            "value": "2026-10-30"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-12",
+            "field": "assignee",
+            "value": "Jonas Berg"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-12",
+            "field": "story_points",
+            "value": ""
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-13",
+            "field": "priority",
+            "value": "Highest"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-13",
+            "field": "due",
+            "value": "2026-10-30"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-13",
+            "field": "assignee",
+            "value": "Nora Feld"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-13",
+            "field": "story_points",
+            "value": ""
+          }
+        ]
+      }
+    ],
+    "delay_risks": [
+      {
+        "id": "delay:read",
+        "text": "N-1 vs CED-2 and CED-3, 51d. 85% is 8/37. N-2: one item.",
+        "evidence": [
+          {
+            "source": "notes",
+            "id": "N-1",
+            "field": "text",
+            "value": "Weekly status: Cedar is green and on track. No risks to raise. The team is heads down on the portal."
+          },
+          {
+            "source": "notes",
+            "id": "N-1",
+            "field": "date",
+            "value": "2026-10-09"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-2",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-2",
+            "field": "updated",
+            "value": "2026-08-18"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-2",
+            "field": "due",
+            "value": "2026-09-30"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-3",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-3",
+            "field": "updated",
+            "value": "2026-08-20"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-3",
+            "field": "due",
+            "value": "2026-10-02"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-1",
+            "field": "percent_complete",
+            "value": "85"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-2",
+            "field": "status",
+            "value": "Done"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-2",
+            "field": "story_points",
+            "value": "5"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "status",
+            "value": "Done"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "story_points",
+            "value": "3"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-4",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-4",
+            "field": "story_points",
+            "value": "8"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-5",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-5",
+            "field": "story_points",
+            "value": "8"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-6",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-6",
+            "field": "story_points",
+            "value": "5"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-7",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-7",
+            "field": "story_points",
+            "value": "3"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-8",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-8",
+            "field": "story_points",
+            "value": "3"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-10",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-10",
+            "field": "story_points",
+            "value": "2"
+          },
+          {
+            "source": "notes",
+            "id": "N-2",
+            "field": "text",
+            "value": "Leadership slide says onboarding is 85% complete and the only open item is copy for the app store."
+          }
+        ]
+      }
+    ]
+  },
+  "flow": {
+    "week_ends": [
+      "2026-08-22",
+      "2026-08-29",
+      "2026-09-05",
+      "2026-09-12",
+      "2026-09-19",
+      "2026-09-26",
+      "2026-10-03",
+      "2026-10-10"
+    ],
+    "scale": 2,
+    "rows": [
+      {
+        "id": "all",
+        "name": "All",
+        "closed": 1,
+        "closed_points": 3.0,
+        "wip": 18,
+        "wip_previous": 19,
+        "p85_days": 121,
+        "p85_n": 7,
+        "p85_key": "FOR-2",
+        "weekly": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+          2
+        ],
+        "evidence": [
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "status",
+            "value": "Done"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "updated",
+            "value": "2026-10-09"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "story_points",
+            "value": "3"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "status",
+            "value": "Done"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "updated",
+            "value": "2026-10-09"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "type",
+            "value": "Story"
+          },
+          {
+            "source": "work_items",
+            "id": "AST-3",
+            "field": "status",
+            "value": "Done"
+          },
+          {
+            "source": "work_items",
+            "id": "AST-3",
+            "field": "updated",
+            "value": "2026-10-06"
+          },
+          {
+            "source": "work_items",
+            "id": "AST-3",
+            "field": "type",
+            "value": "Story"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-4",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-5",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-6",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-7",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-8",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-10",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-11",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-12",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-13",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-2",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-3",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-4",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-5",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-12",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-20",
+            "field": "status",
+            "value": "Blocked"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-21",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-32",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "AST-4",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-2",
+            "field": "created",
+            "value": "2026-04-02"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-2",
+            "field": "updated",
+            "value": "2026-08-01"
+          }
+        ]
+      },
+      {
+        "id": "ASTER",
+        "name": "Aster HR",
+        "closed": 0,
+        "closed_points": null,
+        "wip": 1,
+        "wip_previous": 1,
+        "p85_days": 65,
+        "p85_n": 2,
+        "p85_key": "AST-3",
+        "weekly": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1
+        ],
+        "evidence": [
+          {
+            "source": "work_items",
+            "id": "AST-3",
+            "field": "status",
+            "value": "Done"
+          },
+          {
+            "source": "work_items",
+            "id": "AST-3",
+            "field": "updated",
+            "value": "2026-10-06"
+          },
+          {
+            "source": "work_items",
+            "id": "AST-3",
+            "field": "type",
+            "value": "Story"
+          },
+          {
+            "source": "work_items",
+            "id": "AST-4",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "AST-3",
+            "field": "created",
+            "value": "2026-08-02"
+          },
+          {
+            "source": "work_items",
+            "id": "AST-3",
+            "field": "updated",
+            "value": "2026-10-06"
+          }
+        ]
+      },
+      {
+        "id": "CEDAR",
+        "name": "Cedar Clinics",
+        "closed": 0,
+        "closed_points": null,
+        "wip": 4,
+        "wip_previous": 4,
+        "p85_days": null,
+        "p85_n": 0,
+        "p85_key": "",
+        "weekly": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "evidence": [
+          {
+            "source": "work_items",
+            "id": "CED-2",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-3",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-4",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "CED-5",
+            "field": "status",
+            "value": "To Do"
+          }
+        ]
+      },
+      {
+        "id": "FORGE",
+        "name": "Forge Logistics",
+        "closed": 0,
+        "closed_points": null,
+        "wip": 4,
+        "wip_previous": 4,
+        "p85_days": 121,
+        "p85_n": 3,
+        "p85_key": "FOR-2",
+        "weekly": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "evidence": [
+          {
+            "source": "work_items",
+            "id": "FOR-12",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-20",
+            "field": "status",
+            "value": "Blocked"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-21",
+            "field": "status",
+            "value": "In Progress"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-32",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-2",
+            "field": "created",
+            "value": "2026-04-02"
+          },
+          {
+            "source": "work_items",
+            "id": "FOR-2",
+            "field": "updated",
+            "value": "2026-08-01"
+          }
+        ]
+      },
+      {
+        "id": "LUMEN",
+        "name": "Lumen Bank",
+        "closed": 1,
+        "closed_points": 3.0,
+        "wip": 9,
+        "wip_previous": 10,
+        "p85_days": 129,
+        "p85_n": 2,
+        "p85_key": "LUM-3",
+        "weekly": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1
+        ],
+        "evidence": [
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "status",
+            "value": "Done"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "updated",
+            "value": "2026-10-09"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "story_points",
+            "value": "3"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "status",
+            "value": "Done"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "updated",
+            "value": "2026-10-09"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "type",
+            "value": "Story"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-4",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-5",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-6",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-7",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-8",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-10",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-11",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-12",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-13",
+            "field": "status",
+            "value": "To Do"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "created",
+            "value": "2026-06-02"
+          },
+          {
+            "source": "work_items",
+            "id": "LUM-3",
+            "field": "updated",
+            "value": "2026-10-09"
+          }
+        ]
+      }
+    ]
+  },
+  "metrics": {
+    "week_ends": [
+      "2026-08-22",
+      "2026-08-29",
+      "2026-09-05",
+      "2026-09-12",
+      "2026-09-19",
+      "2026-09-26",
+      "2026-10-03",
+      "2026-10-10"
+    ],
+    "scopes": [
+      {
+        "id": "all",
+        "name": "All",
+        "kpis": [
+          {
+            "id": "closed",
+            "name": "Since last export",
+            "actual": 1,
+            "actual_note": "3 pts",
+            "target": null,
+            "gap": null,
+            "delta": null,
+            "better": null,
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              2,
+              2
+            ],
+            "target_weekly": null,
+            "scale": 2,
+            "judge": "same"
+          },
+          {
+            "id": "throughput",
+            "name": "Marked Done",
+            "actual": 2,
+            "actual_note": "latest week",
+            "target": 4,
+            "gap": 2,
+            "delta": 0,
+            "better": "up",
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              2,
+              2
+            ],
+            "target_weekly": [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              3,
+              4
+            ],
+            "scale": 4,
+            "judge": "same"
+          },
+          {
+            "id": "dates",
+            "name": "Dates reached",
+            "actual": 7,
+            "actual_note": "",
+            "target": 11,
+            "gap": 4,
+            "delta": 1,
+            "better": "up",
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              1,
+              2
+            ],
+            "target_weekly": [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              3,
+              4
+            ],
+            "scale": 4,
+            "judge": "better"
+          },
+          {
+            "id": "wip",
+            "name": "WIP",
+            "actual": 18,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": -1,
+            "better": "down",
+            "weekly": [
+              18,
+              18,
+              21,
+              21,
+              22,
+              22,
+              20,
+              18
+            ],
+            "target_weekly": null,
+            "scale": 22,
+            "judge": "better"
+          },
+          {
+            "id": "cycle",
+            "name": "Cycle p85",
+            "actual": 121,
+            "actual_note": "7 finished",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": [
+              121,
+              121,
+              121,
+              121,
+              121,
+              121,
+              121,
+              121
+            ],
+            "target_weekly": null,
+            "scale": 129,
+            "judge": "same"
+          },
+          {
+            "id": "blocked",
+            "name": "Blocked",
+            "actual": 1,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": null,
+            "target_weekly": null,
+            "scale": 1,
+            "judge": "same"
+          },
+          {
+            "id": "unassigned",
+            "name": "Unassigned",
+            "actual": 5,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 1,
+            "better": "down",
+            "weekly": null,
+            "target_weekly": null,
+            "scale": 1,
+            "judge": "worse"
+          }
+        ]
+      },
+      {
+        "id": "ASTER",
+        "name": "Aster HR",
+        "kpis": [
+          {
+            "id": "closed",
+            "name": "Since last export",
+            "actual": 0,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": null,
+            "better": null,
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1
+            ],
+            "target_weekly": null,
+            "scale": 2,
+            "judge": "same"
+          },
+          {
+            "id": "throughput",
+            "name": "Marked Done",
+            "actual": 1,
+            "actual_note": "latest week",
+            "target": 1,
+            "gap": 0,
+            "delta": 0,
+            "better": "up",
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1
+            ],
+            "target_weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1
+            ],
+            "scale": 4,
+            "judge": "same"
+          },
+          {
+            "id": "dates",
+            "name": "Dates reached",
+            "actual": 2,
+            "actual_note": "",
+            "target": 2,
+            "gap": 0,
+            "delta": 0,
+            "better": "up",
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1
+            ],
+            "target_weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1
+            ],
+            "scale": 4,
+            "judge": "same"
+          },
+          {
+            "id": "wip",
+            "name": "WIP",
+            "actual": 1,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": [
+              3,
+              3,
+              3,
+              3,
+              3,
+              3,
+              2,
+              1
+            ],
+            "target_weekly": null,
+            "scale": 22,
+            "judge": "same"
+          },
+          {
+            "id": "cycle",
+            "name": "Cycle p85",
+            "actual": 65,
+            "actual_note": "2 finished",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              57,
+              65
+            ],
+            "target_weekly": null,
+            "scale": 129,
+            "judge": "same"
+          },
+          {
+            "id": "blocked",
+            "name": "Blocked",
+            "actual": 0,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": null,
+            "target_weekly": null,
+            "scale": 1,
+            "judge": "same"
+          },
+          {
+            "id": "unassigned",
+            "name": "Unassigned",
+            "actual": 0,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": null,
+            "target_weekly": null,
+            "scale": 1,
+            "judge": "same"
+          }
+        ]
+      },
+      {
+        "id": "CEDAR",
+        "name": "Cedar Clinics",
+        "kpis": [
+          {
+            "id": "closed",
+            "name": "Since last export",
+            "actual": 0,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": null,
+            "better": null,
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "target_weekly": null,
+            "scale": 2,
+            "judge": "same"
+          },
+          {
+            "id": "throughput",
+            "name": "Marked Done",
+            "actual": 0,
+            "actual_note": "latest week",
+            "target": 0,
+            "gap": 0,
+            "delta": 0,
+            "better": "up",
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "target_weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            "scale": 4,
+            "judge": "same"
+          },
+          {
+            "id": "dates",
+            "name": "Dates reached",
+            "actual": 0,
+            "actual_note": "",
+            "target": 2,
+            "gap": 2,
+            "delta": 0,
+            "better": "up",
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "target_weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            "scale": 4,
+            "judge": "same"
+          },
+          {
+            "id": "wip",
+            "name": "WIP",
+            "actual": 4,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": [
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4,
+              4
+            ],
+            "target_weekly": null,
+            "scale": 22,
+            "judge": "same"
+          },
+          {
+            "id": "cycle",
+            "name": "Cycle p85",
+            "actual": null,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": null,
+            "better": "down",
+            "weekly": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "target_weekly": null,
+            "scale": 129,
+            "judge": "same"
+          },
+          {
+            "id": "blocked",
+            "name": "Blocked",
+            "actual": 0,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": null,
+            "target_weekly": null,
+            "scale": 1,
+            "judge": "same"
+          },
+          {
+            "id": "unassigned",
+            "name": "Unassigned",
+            "actual": 1,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": null,
+            "target_weekly": null,
+            "scale": 1,
+            "judge": "same"
+          }
+        ]
+      },
+      {
+        "id": "FORGE",
+        "name": "Forge Logistics",
+        "kpis": [
+          {
+            "id": "closed",
+            "name": "Since last export",
+            "actual": 0,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": null,
+            "better": null,
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0
+            ],
+            "target_weekly": null,
+            "scale": 2,
+            "judge": "same"
+          },
+          {
+            "id": "throughput",
+            "name": "Marked Done",
+            "actual": 0,
+            "actual_note": "latest week",
+            "target": 2,
+            "gap": 2,
+            "delta": -1,
+            "better": "up",
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0
+            ],
+            "target_weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            "scale": 4,
+            "judge": "worse"
+          },
+          {
+            "id": "dates",
+            "name": "Dates reached",
+            "actual": 3,
+            "actual_note": "",
+            "target": 4,
+            "gap": 1,
+            "delta": 0,
+            "better": "up",
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "target_weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2
+            ],
+            "scale": 4,
+            "judge": "same"
+          },
+          {
+            "id": "wip",
+            "name": "WIP",
+            "actual": 4,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": [
+              0,
+              0,
+              3,
+              3,
+              4,
+              5,
+              4,
+              4
+            ],
+            "target_weekly": null,
+            "scale": 22,
+            "judge": "same"
+          },
+          {
+            "id": "cycle",
+            "name": "Cycle p85",
+            "actual": 121,
+            "actual_note": "3 finished",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": [
+              121,
+              121,
+              121,
+              121,
+              121,
+              121,
+              121,
+              121
+            ],
+            "target_weekly": null,
+            "scale": 129,
+            "judge": "same"
+          },
+          {
+            "id": "blocked",
+            "name": "Blocked",
+            "actual": 1,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": null,
+            "target_weekly": null,
+            "scale": 1,
+            "judge": "same"
+          },
+          {
+            "id": "unassigned",
+            "name": "Unassigned",
+            "actual": 1,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 1,
+            "better": "down",
+            "weekly": null,
+            "target_weekly": null,
+            "scale": 1,
+            "judge": "worse"
+          }
+        ]
+      },
+      {
+        "id": "LUMEN",
+        "name": "Lumen Bank",
+        "kpis": [
+          {
+            "id": "closed",
+            "name": "Since last export",
+            "actual": 1,
+            "actual_note": "3 pts",
+            "target": null,
+            "gap": null,
+            "delta": null,
+            "better": null,
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              1
+            ],
+            "target_weekly": null,
+            "scale": 2,
+            "judge": "same"
+          },
+          {
+            "id": "throughput",
+            "name": "Marked Done",
+            "actual": 1,
+            "actual_note": "latest week",
+            "target": 1,
+            "gap": 0,
+            "delta": 1,
+            "better": "up",
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              1
+            ],
+            "target_weekly": [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1
+            ],
+            "scale": 4,
+            "judge": "better"
+          },
+          {
+            "id": "dates",
+            "name": "Dates reached",
+            "actual": 2,
+            "actual_note": "",
+            "target": 3,
+            "gap": 1,
+            "delta": 1,
+            "better": "up",
+            "weekly": [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            "target_weekly": [
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              1
+            ],
+            "scale": 4,
+            "judge": "better"
+          },
+          {
+            "id": "wip",
+            "name": "WIP",
+            "actual": 9,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": -1,
+            "better": "down",
+            "weekly": [
+              11,
+              11,
+              11,
+              11,
+              11,
+              10,
+              10,
+              9
+            ],
+            "target_weekly": null,
+            "scale": 22,
+            "judge": "better"
+          },
+          {
+            "id": "cycle",
+            "name": "Cycle p85",
+            "actual": 129,
+            "actual_note": "2 finished",
+            "target": null,
+            "gap": null,
+            "delta": 19,
+            "better": "down",
+            "weekly": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              110,
+              110,
+              129
+            ],
+            "target_weekly": null,
+            "scale": 129,
+            "judge": "worse"
+          },
+          {
+            "id": "blocked",
+            "name": "Blocked",
+            "actual": 0,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": null,
+            "target_weekly": null,
+            "scale": 1,
+            "judge": "same"
+          },
+          {
+            "id": "unassigned",
+            "name": "Unassigned",
+            "actual": 3,
+            "actual_note": "",
+            "target": null,
+            "gap": null,
+            "delta": 0,
+            "better": "down",
+            "weekly": null,
+            "target_weekly": null,
+            "scale": 1,
+            "judge": "same"
+          }
+        ]
+      }
+    ]
+  },
   "limits": [],
   "pulse": [
     {
